@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #sidebar {
+            min-height: 100vh; /* Full height */
+            width: 250px; /* Set the width of the sidebar */
+            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1; /* Stay on top */
+            top: 0; /* Stay at the top */
+            left: 0;
+            background-color: #f8f9fa; /* Light grey background */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 20px;
+        }
+        
+        #main {
+            margin-left: 250px; /* Same as the width of the sidebar */
+            padding: 20px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100px; /* Set height to give space for centering */
+        }
+
+        .navbar-brand img {
+            width: 60px; /* Adjust size as needed */
+            height: auto;
+        }
+    </style>
+    <title>{% block title %}HTTP Request App{% endblock %}</title>
+</head>
+<body>
+<div id="sidebar"> 
+    <a class="navbar-brand" href="/"> <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> </a> 
+    <div class="list-group">
+         <a href="/" class="list-group-item list-group-item-action">Lab Overview</a>
+         <div class="list-group-item disabled"> <i class="fas fa-anchor"></i> App Connect </div>
+         <a href="/page2" class="list-group-item list-group-item-action">Page 2</a>
+         <a href="/page3" class="list-group-item list-group-item-action">Page 3</a> 
+         <a href="/page4" class="list-group-item list-group-item-action">Page 4</a> 
+         <div class="list-group-item disabled"> <i class="fas fa-bell"></i> Network Connect </div>
+         <a href="/page4" class="list-group-item list-group-item-action">Page 5</a> 
+    </div> 
+</div>
+    <div id="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
