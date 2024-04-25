@@ -10,20 +10,18 @@
 <div style="height:40px"></div>
 
 <h2>Test AWS Load Balancer</h2>
-<button id="requestBtn" class="btn btn-primary">Make HTTP Request</button>
-<div id="result" class="mt-3"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<button id="requestBtn1" class="btn btn-primary">Make HTTP Request</button>
+<div id="result1" class="mt-3"></div>
 <script>
-    document.getElementById('requestBtn').addEventListener('click', async () => {
-        const resultDiv = document.getElementById('result');
+    document.getElementById('requestBtn1').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('result1');
         try {
-            const response = await axios.get('/appConnect1');
+            const response = await axios.get('/appCon-aws');
             if(response.data.status === 'success') {
                 const prettyJson = JSON.stringify(response.data.data, null, 4); // Indent with 4 spaces
                 resultDiv.innerHTML += `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
             } else {
-                resultDiv.innerHTML += `<div class="alert alert-danger">Request Failed</div>`;
+                resultDiv.innerHTML += `<div class="alert alert-danger"><b>Request Failed</b></div>`;
             }
         } catch (error) {
             resultDiv.innerHTML += `<div class="alert alert-danger">Error: ${error.message}</div>`;
@@ -31,21 +29,21 @@
     });
 </script>
 
-<h2>Test Azure Load Balancer</h2>
-<button id="requestBtn" class="btn btn-primary">Make HTTP Request</button>
-<div id="result" class="mt-3"></div>
+<div style="height:40px"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<h2>Test Azure Load Balancer</h2>
+<button id="requestBtn2" class="btn btn-primary">Make HTTP Request</button>
+<div id="result2" class="mt-3"></div>
 <script>
-    document.getElementById('requestBtn').addEventListener('click', async () => {
-        const resultDiv = document.getElementById('result');
+    document.getElementById('requestBtn2').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('result2');
         try {
-            const response = await axios.get('/appConnect1');
+            const response = await axios.get('/appCon-azure');
             if(response.data.status === 'success') {
                 const prettyJson = JSON.stringify(response.data.data, null, 4); // Indent with 4 spaces
                 resultDiv.innerHTML += `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
             } else {
-                resultDiv.innerHTML += `<div class="alert alert-danger">Request Failed</div>`;
+                resultDiv.innerHTML += `<div class="alert alert-danger"><b>Request Failed</b></div>`;
             }
         } catch (error) {
             resultDiv.innerHTML += `<div class="alert alert-danger">Error: ${error.message}</div>`;

@@ -1,11 +1,15 @@
-# Welcome to Our App
+# **Overview**
 
-This is a sample page to demonstrate Markdown integration.
+This lab is a "practical" training activity.
+Each exercise will ask you to **configure** F5 Distributed Cloud (XC) objects to reinforce a core XC Multi-Cloud networking concept. 
+Once configured, you'll be asked to **test** your configuration from this web application.
+<br/>
+Exercises will include 
 
-## Features
 
-- **Easy to write**: Markdown is straightforward.
-- **Flexible**: Easily convert to HTML.
-- **Portable**: Use Markdown files across different platforms.
+<br/>
+<br/>
 
-Enjoy using Markdown!
+# **Setup**
+
+Use the [setup](/setup) page to configure variables needed for the exercise and to check the status of your Customer Edge.

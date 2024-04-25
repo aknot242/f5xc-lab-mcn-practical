@@ -43,7 +43,7 @@ def make_request():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/appCon-aws')
-def make_request():
+def make_request_ac1_aws():
     try:
         response = requests.get('https://ifconfig.io/all.json')
         response.raise_for_status() 
@@ -52,9 +52,9 @@ def make_request():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/appCon-azure')
-def make_request():
+def make_request_ac1_azure():
     try:
-        response = requests.get('https://ifconfig.io/all.json')
+        response = requests.get('https://ifconfig1.io/all.json')
         response.raise_for_status() 
         return jsonify(status='success', data=response.json())
     except requests.RequestException as e:
