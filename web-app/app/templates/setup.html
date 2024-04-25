@@ -1,15 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Setup Base Domain</h2>
-<form action="/setup" method="post">
+<h2>Setup Base URL</h2>
+<form id="setupForm" action="{{ url_for('setup') }}" method="post">
     <div class="mb-3">
-        <label for="baseUrlInput" class="form-label"></label>
-        <input type="text" class="form-control" id="baseUrlInput" name="base_url" required placeholder="Enter Domain">
+        <label for="baseUrlInput" class="form-label">Domain</label>
+        <input type="text" class="form-control" id="baseUrlInput" name="base_url" placeholder="Enter Domain">
     </div>
     <button type="submit" name="action" value="save" class="btn btn-primary">Save</button>
-    <button type="submit" name="action" value="clear" class="btn btn-danger">Clear Cookie</button>
+    <button type="button" onclick="clearCookie()" class="btn btn-danger">Clear Cookie</button>
 </form>
+
+<script>
+function clearCookie() {
+    var form = document.getElementById('setupForm');
+    var input = document.getElementById('baseUrlInput');
+    input.removeAttribute('required');  // Remove the required attribute
+    form.action = "{{ url_for('setup', action='clear') }}";  // Modify the form action if needed
+    form.submit();  // Submit the form
+}
+</script>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -21,3 +31,4 @@
     {% endif %}
 {% endwith %}
 {% endblock %}
+
