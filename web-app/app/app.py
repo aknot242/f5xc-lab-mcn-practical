@@ -6,14 +6,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    with open("overview.md", "r") as file:
+    with open("markdown/overview.md", "r") as file:
         content = file.read()
     html = markdown.markdown(content)
     return render_template('overview.html', content=html)
 
 @app.route('/lb')
 def lb():
-    with open("lb.md", "r") as file:
+    with open("markdown/lb.md", "r") as file:
         content = file.read()
     #html = markdown.markdown(content)
     html = markdown.markdown(
@@ -34,7 +34,25 @@ def page4():
 def make_request():
     try:
         response = requests.get('https://ifconfig.io/all.json')
-        response.raise_for_status()  # Raises an HTTPError for bad responses
+        response.raise_for_status() 
+        return jsonify(status='success', data=response.json())
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/appCon-aws')
+def make_request():
+    try:
+        response = requests.get('https://ifconfig.io/all.json')
+        response.raise_for_status() 
+        return jsonify(status='success', data=response.json())
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/appCon-azure')
+def make_request():
+    try:
+        response = requests.get('https://ifconfig.io/all.json')
+        response.raise_for_status() 
         return jsonify(status='success', data=response.json())
     except requests.RequestException as e:
         return jsonify(status='fail', error=str(e))
