@@ -27,11 +27,12 @@ def setup():
         action = request.form['action']
         if action == 'save':
             base_url = request.form['base_url'].strip()
-            if not is_valid_domain(base_url):
+            # Validate domain using the validators library
+            if not validators.domain(base_url):
                 # Handle invalid domain name
                 return render_template('setup.html', error="Invalid domain format.")
             response = make_response(redirect('/setup'))
-            response.set_cookie('base_url', base_url, max_age=60*60*24*365)  # Set cookie for 1 year
+            response.set_cookie('base_url', base_url, max_age=60*60*24)
             return response
         elif action == 'clear':
             response = make_response(redirect('/setup'))
@@ -43,7 +44,6 @@ def setup():
 def test():
     base_url = request.cookies.get('base_url')
     url = f"https://echo.{base_url}"
-    print(url)
     try:
         response = requests.get(url)
         response.raise_for_status()
