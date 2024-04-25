@@ -15,9 +15,18 @@
 function clearCookie() {
     var form = document.getElementById('setupForm');
     var input = document.getElementById('baseUrlInput');
-    input.removeAttribute('required');  // Remove the required attribute
-    form.action = "{{ url_for('setup', action='clear') }}";  // Modify the form action if needed
-    form.submit();  // Submit the form
+    input.value = '';  // Optionally clear the input
+    // Create a hidden input to set the action to 'clear'
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'action';
+    hiddenInput.value = 'clear';
+    form.appendChild(hiddenInput);
+    // Ensure no other hidden input for action persists
+    form.querySelectorAll('[name="action"]').forEach((elem, index, arr) => {
+        if (arr.length > 1 && elem !== hiddenInput) form.removeChild(elem);
+    });
+    form.submit();  // Submit the form with the correct data
 }
 </script>
 
