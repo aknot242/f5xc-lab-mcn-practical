@@ -1,21 +1,20 @@
 """
 Flask app for lab/guide
 """
-from flask import Flask, render_template, jsonify, request, redirect, make_response
+from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
 import requests
 import markdown
 import re
 import validators
 
 app = Flask(__name__)
-
-def is_valid_domain(domain):
-    """Simple regex to validate a domain name."""
-    pattern = r'^[a-zA-Z\d-]{,63}(\.[a-zA-Z\d-]{,63})*$'
-    return re.match(pattern, domain) is not None
+app.secret_key = 'super_secret'
 
 @app.route('/')
 def index():
+    """
+    index
+    """
     with open("markdown/overview.md", "r") as file:
         content = file.read()
     html = markdown.markdown(content)
@@ -27,16 +26,17 @@ def setup():
         action = request.form['action']
         if action == 'save':
             base_url = request.form['base_url'].strip()
-            # Validate domain using the validators library
             if not validators.domain(base_url):
-                # Handle invalid domain name
-                return render_template('setup.html', error="Invalid domain format.")
+                flash("Invalid domain format.", "error")
+                return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
             response.set_cookie('base_url', base_url, max_age=60*60*24)
+            flash("Domain successfully set!", "success")
             return response
         elif action == 'clear':
             response = make_response(redirect('/setup'))
-            response.set_cookie('base_url', '', expires=0)  # Clear the cookie
+            response.set_cookie('base_url', '', expires=0)
+            flash("Domain setting cleared.", "info")
             return response
     return render_template('setup.html')
 
