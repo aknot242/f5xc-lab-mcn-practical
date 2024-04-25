@@ -5,6 +5,7 @@ from flask import Flask, render_template, jsonify, request, redirect, make_respo
 import requests
 import markdown
 import re
+import validators
 
 app = Flask(__name__)
 
@@ -29,10 +30,6 @@ def setup():
             if not is_valid_domain(base_url):
                 # Handle invalid domain name
                 return render_template('setup.html', error="Invalid domain format.")
-            
-            # Assuming the domain is valid, you might want to prepend http:// or https://
-            base_url = 'http://' + base_url
-
             response = make_response(redirect('/setup'))
             response.set_cookie('base_url', base_url, max_age=60*60*24*365)  # Set cookie for 1 year
             return response
@@ -44,9 +41,11 @@ def setup():
 
 @app.route('/test')
 def test():
-    base_url = request.cookies.get('base_url', 'https://ifconfig.io/all.json')  # Default URL if cookie is not set
+    base_url = request.cookies.get('base_url')
+    url = f"https://echo.{base_url}"
+    print(url)
     try:
-        response = requests.get(base_url)
+        response = requests.get(url)
         response.raise_for_status()
         return jsonify(status='success', data=response.json())
     except requests.RequestException as e:
