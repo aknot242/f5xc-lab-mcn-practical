@@ -17,10 +17,16 @@ def index():
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
     if request.method == 'POST':
-        base_url = request.form['base_url']
-        response = make_response(redirect('/'))
-        response.set_cookie('base_url', base_url, max_age=60*60*24)  # Set cookie for 1 day
-        return response
+        action = request.form['action']
+        if action == 'save':
+            base_url = request.form['base_url']
+            response = make_response(redirect('/setup'))
+            response.set_cookie('base_url', base_url, max_age=60*60*24)  # Set cookie for 1 year
+            return response
+        elif action == 'clear':
+            response = make_response(redirect('/setup'))
+            response.set_cookie('base_url', '', expires=0)  # Clear the cookie
+            return response
     return render_template('setup.html')
 
 @app.route('/test')
