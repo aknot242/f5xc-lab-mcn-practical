@@ -1,7 +1,7 @@
 """
 Flask app for lab/guide
 """
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect, make_response
 import requests
 import markdown
 
@@ -14,6 +14,25 @@ def index():
     html = markdown.markdown(content)
     return render_template('overview.html', content=html)
 
+@app.route('/setup', methods=['GET', 'POST'])
+def setup():
+    if request.method == 'POST':
+        base_url = request.form['base_url']
+        response = make_response(redirect('/'))
+        response.set_cookie('base_url', base_url, max_age=60*60*24)  # Set cookie for 1 day
+        return response
+    return render_template('setup.html')
+
+@app.route('/test')
+def make_request():
+    base_url = request.cookies.get('base_url', 'https://ifconfig.io/all.json')  # Default URL if cookie is not set
+    try:
+        response = requests.get(base_url)
+        response.raise_for_status()
+        return jsonify(status='success', data=response.json())
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=str(e))
+
 @app.route('/lb')
 def lb():
     with open("markdown/lb.md", "r") as file:
@@ -21,7 +40,7 @@ def lb():
     #html = markdown.markdown(content)
     html = markdown.markdown(
         content,
-        extensions=['markdown.extensions.attr_list','markdown.extensions.codehilite','markdown.extensions.fenced_code']
+        extensions=['markdown.extensions.codehilite','markdown.extensions.fenced_code']
         )
     return render_template('lb.html', content=html)
 
