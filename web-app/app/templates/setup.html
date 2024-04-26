@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Setup Base URL</h2>
+<h2>Base Domain Setup</h2>
 <form id="setupForm" action="{{ url_for('setup') }}" method="post">
     <div class="mb-3">
-        <label for="baseUrlInput" class="form-label">Domain</label>
-        <input type="text" class="form-control" id="baseUrlInput" name="base_url" placeholder="Enter Domain">
+        <label for="baseUrlInput" class="form-label"></label>
+        <input type="text" class="form-control" id="baseUrlInput" name="base_url" placeholder="Enter domain ending with `mcn-lab.f5-demos.com`">
     </div>
     <button type="submit" name="action" value="save" class="btn btn-primary">Save</button>
     <button type="button" onclick="clearCookie()" class="btn btn-danger">Clear Cookie</button>
@@ -15,17 +15,12 @@
 function clearCookie() {
     var form = document.getElementById('setupForm');
     var input = document.getElementById('baseUrlInput');
-    input.value = '';  // Optionally clear the input
-    // Create a hidden input to set the action to 'clear'
+    input.value = ''; 
     var hiddenInput = document.createElement('input');
     hiddenInput.type = 'hidden';
     hiddenInput.name = 'action';
     hiddenInput.value = 'clear';
     form.appendChild(hiddenInput);
-    // Ensure no other hidden input for action persists
-    form.querySelectorAll('[name="action"]').forEach((elem, index, arr) => {
-        if (arr.length > 1 && elem !== hiddenInput) form.removeChild(elem);
-    });
     form.submit();  // Submit the form with the correct data
 }
 </script>

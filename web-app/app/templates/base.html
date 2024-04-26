@@ -54,7 +54,9 @@
 <div id="sidebar"> 
     <a class="navbar-brand" href="/"> <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> </a> 
     <div class="list-group">
-         <a href="/" class="list-group-item list-group-item-action">Lab Overview</a>
+         <div class="list-group-item disabled"> <i class='fab fa-home' style='font-size:24px'></i><strong> Home </strong></div>
+         <a href="/" class="list-group-item list-group-item-action">Overview</a>
+         <a href="/arch" class="list-group-item list-group-item-action">Architecture</a>
          <div class="list-group-item disabled"> <i class='fab fa-app-store-ios' style='font-size:24px'></i><strong> App Connect </strong></div>
          <a href="/lb" class="list-group-item list-group-item-action">Load Balancer</a>
          <a href="/header" class="list-group-item list-group-item-action">Header Manipulation</a> 
