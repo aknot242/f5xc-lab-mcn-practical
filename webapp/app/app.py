@@ -2,19 +2,24 @@
 Flask app for lab/guide
 """
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
+from flask_caching import Cache
 import requests
 import markdown
-import re
 import validators
+from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-app.secret_key = 'super_secret'
+app.config['ce_info'] = get_ce_info()
+app.config['CACHE_TYPE'] = 'SimpleCache'
+cache = Cache(app)
+#app.secret_key = 'super_secret'
+
+@app.errorhandler(400)
+def return_400():
+    return render_template("error.html"), 400
 
 @app.route('/')
 def index():
-    """
-    index
-    """
     with open("markdown/overview.md", "r") as file:
         content = file.read()
     html = markdown.markdown(content)
@@ -31,7 +36,7 @@ def setup():
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
             response.set_cookie('base_url', base_url, max_age=60*60*24)
-            flash("Domain successfully set!", "success")
+            flash("Domain successfully set.", "success")
             return response
         elif action == 'clear':
             response = make_response(redirect('/setup'))
@@ -39,6 +44,12 @@ def setup():
             flash("Domain setting cleared.", "info")
             return response
     return render_template('setup.html')
+
+@app.route('/ce_state')
+@cache.cached(timeout=30)
+def get_ce_state():
+    data = get_ce_state(app.config['ce_info'])
+    return data
 
 @app.route('/test')
 def test():
