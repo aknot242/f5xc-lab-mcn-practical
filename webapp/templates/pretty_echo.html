@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echo Route</title>
+    <title>Echo</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
 
@@ -26,10 +25,23 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">MCN Practical Echo</h1>
+        <div>
+            <h1 class="mt-5">
+                <img src="/static/logo.png" alt="" width="auto" height="100"/>
+                MCN Practical Cloud App</h1>
+        </div>
         <div class="card mt-3">
             <div class="card-header">Environment</div>
-            <div class="card-body">{{ request_env }}</div>
+            <div class="card-body">
+                {% if request_env == 'AWS' %}
+                <img src="/static/aws.png" alt="" width="auto" height="40">
+                {% elif request_env == 'Azure' %}
+                <img src="/static/azure.png" alt="" width="auto" height="40">
+                {% else %}
+                <img src="/static/flask.png" alt="" width="auto" height="40">
+                {% endif %}
+                &nbsp{{ request_env }}
+            </div>
         </div>
         <div class="card mt-3">
             <div class="card-header">Headers</div>
