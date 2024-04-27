@@ -8,7 +8,7 @@ This lab is a practical and hands on exercise covering core F5 Distributed Cloud
 ## Lab App
 
 
-## Web App
+## Cloud App
 
 
 ## Support

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        .json-output {
+            background-color: #333; /* Dark grey background */
+            color: #fff; /* Ensure text color is white */
+            padding: 1em;
+            border-radius: 0.5em;
+            overflow: auto;
+        }
+        .json-output pre, .json-output code { /* Ensure all text within pre and code tags inherits white color */
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1 class="mt-5">
+                <img src="/static/logo.png" alt="" width="auto" height="100"/>
+                MCN Practical Cloud App</h1>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">Environment</div>
+            <div class="card-body">
+                {% if request_env == 'AWS' %}
+                <img src="/static/aws.png" alt="" width="auto" height="40">
+                {% elif request_env == 'Azure' %}
+                <img src="/static/azure.png" alt="" width="auto" height="40">
+                {% else %}
+                <img src="/static/flask.png" alt="" width="auto" height="40">
+                {% endif %}
+                &nbsp{{ request_env }}
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">Headers</div>
+            <div class="card-body json-output">
+                <pre><code class="json">{{ request_headers | to_pretty_json }}</code></pre>
+            </div>
+        </div>
+        {% if request_data %}
+        <div class="card mt-3">
+            <div class="card-header">Data</div>
+            <div class="card-body json-output">
+                <pre><code class="json">{{ request_data | to_pretty_json }}</code></pre>
+            </div>
+            <div>
+            <form action="/pretty_echo" method="POST">
+                <input type="hidden" name="example" value="data">
+                <button type="submit" class="btn btn-primary">Send POST Data</button>
+            </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+    
+        function sendPostRequest() {
+            fetch('/pretty_echo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    exampleField: 'exampleValue'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('POST request sent.');
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        </script>
+</body>
+</html>

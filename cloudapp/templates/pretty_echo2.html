@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echo</title>
+    <title>Echo Route</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/atom-one-dark.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         .json-output {
             background-color: #333; /* Dark grey background */
@@ -21,27 +18,25 @@
         .json-output pre, .json-output code { /* Ensure all text within pre and code tags inherits white color */
             color: inherit;
         }
+        .btn {
+            padding: 1em;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div>
-            <h1 class="mt-5">
-                <img src="/static/logo.png" alt="" width="auto" height="100"/>
-                MCN Practical Cloud App</h1>
-        </div>
+        <h1 class="mt-5">Request Information</h1>
         <div class="card mt-3">
-            <div class="card-header">Environment</div>
-            <div class="card-body">
+            <div class="card-header">Environment
                 {% if request_env == 'AWS' %}
-                <img src="/static/aws.png" alt="" width="auto" height="40">
-                {% elif request_env == 'Azure' %}
-                <img src="/static/azure.png" alt="" width="auto" height="40">
+                    <i class="fab fa-aws" style="color: orange;"></i>
+                {% elif request_env == 'azure' %}
+                    <i class="fab fa-microsoft" style="color: blue;"></i>
                 {% else %}
-                <img src="/static/flask.png" alt="" width="auto" height="40">
+                    <i class="fas fa-globe" style="color: grey;"></i>
                 {% endif %}
-                &nbsp{{ request_env }}
             </div>
+            <div class="card-body">{{ request_env }}</div>
         </div>
         <div class="card mt-3">
             <div class="card-header">Headers</div>
@@ -57,6 +52,16 @@
             </div>
         </div>
         {% endif %}
+        <form action="/echo" method="POST">
+            <input type="hidden" name="example" value="data">
+            <button type="submit" class="btn btn-primary">Send Example POST</button>
+        </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/highlight.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hljs.highlightAll();
+    });
+    </script>
 </body>
 </html>

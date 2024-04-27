@@ -20,7 +20,7 @@ def index():
     """
     return jsonify(info='MCN Practical web app')
 
-@app.route('/echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+@app.route('/echo_raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def echo():
     """
     Echo the request headers and data
@@ -41,17 +41,21 @@ def echo():
         response['request_data'] = data
     return jsonify(response)
 
-@app.route('/pretty_echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+@app.route('/echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def echo_html():
     """ Same as /echo, just prettier"""
-    env = os.getenv('SITE', 'unknown')
+    env = os.getenv('SITE', 'local')
     headers = dict(request.headers)
     data = None
     if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
         try:
-            data = request.get_json() or request.form.to_dict()
-        except Exception as e:
-            print(e)
+            data = request.get_json()
+        except Exception:
+            pass
+        try:
+            data = request.form.to_dict()
+        except Exception:
+            pass
     return render_template('pretty_echo.html', request_env=env, request_headers=headers, request_data=data)
 
 if __name__ == '__main__':
