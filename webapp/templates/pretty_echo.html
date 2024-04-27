@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Route</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        .json-output {
+            background-color: #333; /* Dark grey background */
+            color: #fff; /* Ensure text color is white */
+            padding: 1em;
+            border-radius: 0.5em;
+            overflow: auto;
+        }
+        .json-output pre, .json-output code { /* Ensure all text within pre and code tags inherits white color */
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">MCN Practical Echo</h1>
+        <div class="card mt-3">
+            <div class="card-header">Environment</div>
+            <div class="card-body">{{ request_env }}</div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">Headers</div>
+            <div class="card-body json-output">
+                <pre><code class="json">{{ request_headers | to_pretty_json }}</code></pre>
+            </div>
+        </div>
+        {% if request_data %}
+        <div class="card mt-3">
+            <div class="card-header">Data</div>
+            <div class="card-body json-output">
+                <pre><code class="json">{{ request_data | to_pretty_json }}</code></pre>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
