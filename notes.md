@@ -12,3 +12,4 @@ deploy site service:dev
 ## possible status:
 WAITING_FOR_CONFIG
 WAITING_FOR_APPROVAL
+PROVISIONING
