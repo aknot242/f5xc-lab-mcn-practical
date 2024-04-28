@@ -32,7 +32,7 @@ Restart=always
 ExecStartPre=-/usr/bin/docker stop $IMAGE
 ExecStartPre=-/usr/bin/docker rm $IMAGE
 ExecStartPre=/usr/bin/docker pull $IMAGE
-ExecStart=/usr/bin/docker run -p 1337:5000 --rm --name $CONTAINER $IMAGE
+ExecStart=/usr/bin/docker run -p 1337:5000 -e UDF="True" --rm --name $CONTAINER $IMAGE
 ExecStop=/usr/bin/docker stop $CONTAINER
 
 [Install]
