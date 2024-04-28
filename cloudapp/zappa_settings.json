@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "app_function": "app.app",
+        "exclude": [
+            "boto3",
+            "dateutil",
+            "botocore",
+            "s3transfer",
+            "concurrent",
+            "azure",
+            "static",
+            "deploy_reqs.txt"
+        ],
+        "profile_name": "default",
+        "project_name": "cloudapp",
+        "runtime": "python3.11",
+        "s3_bucket": "mcn-prac-cloudapp",
+        "aws_region": "us-east-1",
+        "environment_variables": {
+            "SITE": "AWS"
+        }
+    }
+}
