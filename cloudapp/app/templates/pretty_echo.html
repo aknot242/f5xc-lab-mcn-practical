@@ -33,18 +33,18 @@
     <div class="container">
         <div>
             <h1 class="mt-5">
-                <img src="https://github.com/f5devcentral/f5xc-lab-mcn-practical/blob/main/cloudapp/static/logo.png?raw=true" alt="" width="auto" height="100"/>
+                <img src="https://raw.githubusercontent.com/f5devcentral/f5xc-lab-mcn-practical/main/cloudapp/app/static/logo.png" alt="" width="auto" height="100"/>
                 MCN Practical Cloud App</h1>
         </div>
         <div class="card mt-3">
             <div class="card-header">Environment</div>
             <div class="card-body">
                 {% if request_env == 'AWS' %}
-                <img src="https://github.com/f5devcentral/f5xc-lab-mcn-practical/blob/main/cloudapp/app/static/aws.png" alt="" width="auto" height="40">
+                <img src="https://raw.githubusercontent.com/f5devcentral/f5xc-lab-mcn-practical/main/cloudapp/app/static/aws.pngg" alt="" width="auto" height="40">
                 {% elif request_env == 'Azure' %}
-                <img src="https://github.com/f5devcentral/f5xc-lab-mcn-practical/blob/main/cloudapp/app/static/azure.png" alt="" width="auto" height="40">
+                <img src="https://raw.githubusercontent.com/f5devcentral/f5xc-lab-mcn-practical/main/cloudapp/app/static/azure.png" alt="" width="auto" height="40">
                 {% else %}
-                <img src="https://github.com/f5devcentral/f5xc-lab-mcn-practical/blob/main/cloudapp/app/static/flask.png" alt="" width="auto" height="40">
+                <img src="https://raw.githubusercontent.com/f5devcentral/f5xc-lab-mcn-practical/main/cloudapp/app/static/flask.png" alt="" width="auto" height="40">
                 {% endif %}
                 &nbsp{{ request_env }}
             </div>
