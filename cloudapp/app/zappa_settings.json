@@ -6,11 +6,7 @@
             "dateutil",
             "botocore",
             "s3transfer",
-            "concurrent",
-            "azure",
-            "azure_function",
-            "static",
-            "deploy_reqs.txt"
+            "concurrent"
         ],
         "profile_name": "default",
         "project_name": "cloudapp",
