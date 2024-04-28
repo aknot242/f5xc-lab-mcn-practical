@@ -1,6 +1,8 @@
 import azure.functions as func # pylint: disable=all
-from ..app import app
+from ..app import create_app
 
-def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+app = create_app()
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
     """azure handler"""
-    return func.WsgiMiddleware(app.wsgi_app).handle(req, context)
+    return func.WsgiMiddleware(app.wsgi_app).handle(req)
