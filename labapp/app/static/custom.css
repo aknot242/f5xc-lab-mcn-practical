@@ -19,6 +19,24 @@ main {
   overflow-y: auto;
 }
 
+.err {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 100vh; /* Full viewport height */
+}
+
+.err img {
+  display: block;
+  width: 100%; /* This will make the image responsive */
+  max-width: 600px; /* Maximum width of the image */
+  margin: 0 auto; /* Center the image */
+}
+
+.err p {
+  text-align: center; /* Center the text */
+}
+
 .left-aligned-button-container {
   display: flex;
   justify-content: flex-start; /* Aligns items to the left */

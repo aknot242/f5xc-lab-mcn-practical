@@ -6,19 +6,31 @@ from flask_caching import Cache
 import requests
 import markdown
 import validators
+import os
+from dotenv import load_dotenv
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-#app.config['ce_info'] = get_ce_info()
+app.config['site'] =  os.getenv('SITE', None)
+info = None
+if app.config['site']:
+    info = get_ce_info()
+app.config['ce_info'] = info
 app.config['ce_info'] = None
 app.config['base_url'] = "lab-mcn.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
 app.secret_key = "blahblahblah"
 
-@app.errorhandler(400)
-def return_400():
-    return render_template("error.html"), 400
+@app.errorhandler(404)
+@app.errorhandler(500)
+def return_err(err):
+    """common error handler"""
+    img = {
+        404: "/static/404.png",
+        500: "/static/500.png"
+    }
+    return render_template("error.html", err_img=img[err.code])
 
 @app.route('/')
 def index():
@@ -116,4 +128,4 @@ def make_request_ac1_azure():
         return jsonify(status='fail', error=str(e))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
