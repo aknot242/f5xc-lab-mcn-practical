@@ -1,28 +1,15 @@
-# Solutions Engineering Template Repository
+# MCN Practical Lab
 
-A template repository that contains all required files (LICENSE, SUPPORT, CONTRIBUTING, etc) as outlined in the org standards.  
+<img src="/labapp/app/static/logo.png" width="auto" height="200" />
 
-The sections below are recommended in your project's README.md file.
+This lab is a practical and hands on exercise covering core F5 Distributed Cloud ("XC") Multi-Cloud Networking ("MCN") concepts.
 
-## Overview
 
-Provide a short overview of the project.
+## Lab App
 
-## Getting Started
 
-Provide a quick example of how to use your code.  This should provide the user with a launch point to quickly see what the project can offer them.
+## Cloud App
 
-## Installation
-
-Outline the requirements and steps to install this project.
-
-## Usage
-
-Outline how the user can use your project and the various features the project offers.
-
-## Development
-
-Outline any requirements to setup a development environment if someone would like to contribute.  You may also link to another file for this information.
 
 ## Support
 

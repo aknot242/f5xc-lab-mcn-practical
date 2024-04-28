@@ -9,11 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 	<script>hljs.highlightAll();</script>	
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <style>
         #sidebar {
@@ -29,8 +31,8 @@
         }
         
         #main {
-            margin-left: 250px; /* Same as the width of the sidebar */
-            padding: 20px;
+            margin-left: 225px; /* Same as the width of the sidebar */
+            padding: 50px;
         }
 
         .navbar-brand {
@@ -52,7 +54,9 @@
 <div id="sidebar"> 
     <a class="navbar-brand" href="/"> <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> </a> 
     <div class="list-group">
-         <a href="/" class="list-group-item list-group-item-action">Lab Overview</a>
+         <div class="list-group-item disabled"> <i class='fab fa-home' style='font-size:24px'></i><strong> Home </strong></div>
+         <a href="/" class="list-group-item list-group-item-action">Overview</a>
+         <a href="/arch" class="list-group-item list-group-item-action">Architecture</a>
          <div class="list-group-item disabled"> <i class='fab fa-app-store-ios' style='font-size:24px'></i><strong> App Connect </strong></div>
          <a href="/lb" class="list-group-item list-group-item-action">Load Balancer</a>
          <a href="/header" class="list-group-item list-group-item-action">Header Manipulation</a> 
