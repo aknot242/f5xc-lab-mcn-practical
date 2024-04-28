@@ -1,4 +1,4 @@
-name: lab-build
+name: LabApp Build
 
 on:
   workflow_dispatch:
