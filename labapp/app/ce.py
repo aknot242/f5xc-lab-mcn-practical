@@ -161,7 +161,3 @@ def get_ce_info():
         return {
             "err": True
         }
-    
-    
-
-

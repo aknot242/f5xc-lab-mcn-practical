@@ -1,3 +1,4 @@
+<div style="height:40px"></div>
 <img src="static/practical.png" width="900px" height="auto" padding ="80px">
 <div style="height:40px"></div>
 

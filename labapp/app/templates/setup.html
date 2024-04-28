@@ -5,7 +5,7 @@
 <form id="setupForm" action="{{ url_for('setup') }}" method="post">
     <div class="mb-3">
         <label for="baseUrlInput" class="form-label"></label>
-        <input type="text" class="form-control" id="baseUrlInput" name="base_url" placeholder="Enter domain ending with `mcn-lab.f5-demos.com`">
+        <input type="text" class="form-control" id="baseUrlInput" name="base_url" placeholder="Enter domain ending with {{ base_url }}">
     </div>
     <button type="submit" name="action" value="save" class="btn btn-primary">Save</button>
     <button type="button" onclick="clearCookie()" class="btn btn-danger">Clear Cookie</button>
@@ -21,7 +21,7 @@ function clearCookie() {
     hiddenInput.name = 'action';
     hiddenInput.value = 'clear';
     form.appendChild(hiddenInput);
-    form.submit();  // Submit the form with the correct data
+    form.submit();
 }
 </script>
 

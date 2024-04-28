@@ -9,10 +9,12 @@ import validators
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-app.config['ce_info'] = get_ce_info()
+#app.config['ce_info'] = get_ce_info()
+app.config['ce_info'] = None
+app.config['base_url'] = "lab-mcn.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
-#app.secret_key = 'super_secret'
+app.secret_key = "blahblahblah"
 
 @app.errorhandler(400)
 def return_400():
@@ -32,7 +34,10 @@ def setup():
         if action == 'save':
             base_url = request.form['base_url'].strip()
             if not validators.domain(base_url):
-                flash("Invalid domain format.", "error")
+                flash("Invalid domain format.", "info")
+                return redirect(url_for('setup'))
+            if not base_url.endswith(app.config['base_url']):
+                flash(f"Domain must end with {app.config['base_url']}.", "info")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
             response.set_cookie('base_url', base_url, max_age=60*60*24)
@@ -43,11 +48,11 @@ def setup():
             response.set_cookie('base_url', '', expires=0)
             flash("Domain setting cleared.", "info")
             return response
-    return render_template('setup.html')
+    return render_template('setup.html', base_url=app.config['base_url'])
 
 @app.route('/ce_state')
 @cache.cached(timeout=30)
-def get_ce_state():
+def ce_state():
     data = get_ce_state(app.config['ce_info'])
     return data
 
@@ -66,20 +71,31 @@ def test():
 def lb():
     with open("markdown/lb.md", "r") as file:
         content = file.read()
-    #html = markdown.markdown(content)
     html = markdown.markdown(
         content,
         extensions=['markdown.extensions.codehilite','markdown.extensions.fenced_code']
         )
     return render_template('lb.html', content=html)
 
-@app.route('/page3')
-def page3():
-    return render_template('page3.html')
+@app.route('/path')
+def path():
+    with open("markdown/path.md", "r") as file:
+        content = file.read()
+    html = markdown.markdown(
+        content,
+        extensions=['markdown.extensions.codehilite','markdown.extensions.fenced_code']
+        )
+    return render_template('path.html', content=html)
 
-@app.route('/page4')
-def page4():
-    return render_template('page4.html')
+@app.route('/header')
+def header():
+    with open("markdown/header.md", "r") as file:
+        content = file.read()
+    html = markdown.markdown(
+        content,
+        extensions=['markdown.extensions.codehilite','markdown.extensions.fenced_code']
+        )
+    return render_template('header.html', context=html)
 
 @app.route('/appCon-aws')
 def make_request_ac1_aws():

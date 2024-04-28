@@ -2,73 +2,143 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>{% block title %}F5XC MCN Practical Lab{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 	<script>hljs.highlightAll();</script>	
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="/static/custom.css" rel="stylesheet">
 
-    <style>
-        #sidebar {
-            min-height: 100vh; /* Full height */
-            width: 225px; /* Set the width of the sidebar */
-            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-            z-index: 1; /* Stay on top */
-            top: 0; /* Stay at the top */
-            left: 0;
-            background-color: #d9d9d9; /* Light grey background */
-            overflow-x: hidden; /* Disable horizontal scroll */
-            padding-top: 20px;
-        }
-        
-        #main {
-            margin-left: 225px; /* Same as the width of the sidebar */
-            padding: 50px;
-        }
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.btn-toggle').forEach(button => {
+              button.addEventListener('click', function() {
+                  setTimeout(() => { // Wait for the collapse animation to complete
+                      let states = [];
+                      document.querySelectorAll('.collapse').forEach((collapse, index) => {
+                          states.push({
+                              id: collapse.id,
+                              open: collapse.classList.contains('show')
+                          });
+                      });
+                      setCookie('accordionStates', JSON.stringify(states), 1);
+                  }, 350);
+              });
+          });
+          const states = getCookie('accordionStates');
+          if (states) {
+              const accordionStates = JSON.parse(states);
+              accordionStates.forEach(state => {
+                  let element = document.getElementById(state.id);
+                  if (element) {
+                      let bsCollapse = new bootstrap.Collapse(element, {
+                          toggle: false // Disable automatic toggling
+                      });
+                      state.open ? bsCollapse.show() : bsCollapse.hide();
+                  }
+              });
+          }
+      });
+      function setCookie(name, value, days) {
+          var expires = "";
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days*24*60*60*1000));
+              expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+      }
+      
+      function getCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0;i < ca.length;i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+          }
+          return null;
+      }
+      </script>
 
-        .navbar-brand {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            height: 120px; /* Set height to give space for centering */
-        }
-
-        .navbar-brand img {
-            width: 120px; /* Adjust size as needed */
-            height: auto;
-        }
-
-    </style>
-    <title>{% block title %}F5XC MCN Practical Lab{% endblock %}</title>
 </head>
 <body>
-<div id="sidebar"> 
-    <a class="navbar-brand" href="/"> <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> </a> 
-    <div class="list-group">
-         <div class="list-group-item disabled"> <i class='fab fa-home' style='font-size:24px'></i><strong> Home </strong></div>
-         <a href="/" class="list-group-item list-group-item-action">Overview</a>
-         <a href="/arch" class="list-group-item list-group-item-action">Architecture</a>
-         <div class="list-group-item disabled"> <i class='fab fa-app-store-ios' style='font-size:24px'></i><strong> App Connect </strong></div>
-         <a href="/lb" class="list-group-item list-group-item-action">Load Balancer</a>
-         <a href="/header" class="list-group-item list-group-item-action">Header Manipulation</a> 
-         <a href="/rl" class="list-group-item list-group-item-action">Rate Limiting</a> 
-         <div class="list-group-item disabled"><i class='fas fa-network-wired' style='font-size:24px'></i><strong> Network Connect </strong></div>
-         <a href="/s2s" class="list-group-item list-group-item-action">Site to Site</a> 
-         <a href="/np" class="list-group-item list-group-item-action">Network Policy</a>
-    </div> 
-</div>
-    <div id="main">
-        {% block content %}
-        {% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-auto bg-light sidebar" id="sidebar">
+
+            <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                    <img src="/static/logo.png" width="100" height="auto" alt="Logo">
+                  <span class="fs-5 fw-semibold">MCN Practical</span>
+                </a>
+                <ul class="list-unstyled ps-0">
+                  <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                      Home
+                    </button>
+                    <div class="collapse" id="home-collapse">
+                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/" class="link-dark rounded">Overview</a></li>
+                        <li><a href="/start" class="link-dark rounded">Getting Started</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#appconnect-collapse" aria-expanded="false">
+                      App Connect
+                    </button>
+                    <div class="collapse show" id="appconnect-collapse">
+                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/lb" class="link-dark rounded">Load Balancing</a></li>
+                        <li><a href="/path" class="link-dark rounded">Path Routing</a></li>
+                        <li><a href="/header" class="link-dark rounded">Header Manipulation</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#netconnect-collapse" aria-expanded="false">
+                      Network Connect
+                    </button>
+                    <div class="collapse show" id="netconnect-collapse">
+                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/vnet" class="link-dark rounded">Virtual Networks</a></li>
+                        <li><a href="/netpolicy" class="link-dark rounded">Network Policy</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="border-top my-3"></li>
+                  <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#status-collapse" aria-expanded="false">
+                      Status
+                    </button>
+                    <div class="collapse" id="status-collapse">
+                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-dark rounded">CE State</a></li>
+                        <li><a href="#" class="link-dark rounded">Scoreboard</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+        </div>
+        
+        <!-- Main Content -->
+        <main class="col">
+            {% block content %}
+            {% endblock %}
+        </main>
     </div>
+</div>
+
 </body>
 </html>
+
