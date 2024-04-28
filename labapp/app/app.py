@@ -7,16 +7,14 @@ import requests
 import markdown
 import validators
 import os
-from dotenv import load_dotenv
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-app.config['site'] =  os.getenv('SITE', None)
+app.config['udf'] =  os.getenv('UDF', False)
 info = None
-if app.config['site']:
+if app.config['udf']:
     info = get_ce_info()
 app.config['ce_info'] = info
-app.config['ce_info'] = None
 app.config['base_url'] = "lab-mcn.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
@@ -62,7 +60,7 @@ def setup():
             return response
     return render_template('setup.html', base_url=app.config['base_url'])
 
-@app.route('/ce_state')
+@app.route('/_ce_state')
 @cache.cached(timeout=30)
 def ce_state():
     data = get_ce_state(app.config['ce_info'])

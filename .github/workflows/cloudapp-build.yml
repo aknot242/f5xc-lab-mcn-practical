@@ -1,4 +1,4 @@
-name: lab-build
+name: CloudApp Build
 
 on:
   workflow_dispatch:
@@ -7,18 +7,18 @@ on:
       - 'dev'
       - 'main'
     paths:
-      - labapp/**
+      - cloudapp/**
     tags:
       - 'v*'
   pull_request:
     branches:
       - 'dev'
     paths:
-      - labapp/**
+      - cloudapp/**
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/labapp
-  CONTEXT: labapp
+  IMAGE_NAME: ${{ github.repository }}/cloudapp
+  CONTEXT: cloudapp
 jobs:
   docker:
     runs-on: ubuntu-latest
