@@ -8,6 +8,7 @@
             "s3transfer",
             "concurrent",
             "azure",
+            "azure_function",
             "static",
             "deploy_reqs.txt"
         ],
