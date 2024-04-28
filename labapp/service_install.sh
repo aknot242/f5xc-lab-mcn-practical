@@ -22,7 +22,7 @@ CONTAINER=mcn-practical-labapp
 # Create the systemd service file
 sudo bash -c "cat > /etc/systemd/system/$SERVICE <<EOF
 [Unit]
-Description=Orijen UDF Service
+Description=MCN Practical Lab App
 Requires=docker.service
 After=docker.service
 

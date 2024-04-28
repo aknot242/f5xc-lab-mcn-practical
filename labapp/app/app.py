@@ -7,7 +7,6 @@ import requests
 import markdown
 import validators
 import os
-from dotenv import load_dotenv
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
