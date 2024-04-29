@@ -8,6 +8,7 @@
 
 Modern applications, and some classic ones, are often comprised of disparate services spread across sites. 
 MCN solutions must be able to make routing decisions based on characterstics of an HTTP request.
+F5 XC App Connect is a distributed L7 proxy that provide intelligent routing, visibility, and strategic points of control.
 
 <div style="height:25px"></div>
 
@@ -62,11 +63,11 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_path1', 'result1');
+    makeHttpRequest('requestBtn1', '/_route1', 'result1');
 });
 </script>
 
-<div style="height:25px"></div>
+<div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
 ### **Exercise 2: Header Routing**
 
@@ -116,12 +117,10 @@ X-MCN-lab: azure
 <div id="result2" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    makeHttpRequest('requestBtn2', '/_path2', 'result2');
+    makeHttpRequest('requestBtn2', '/_route2', 'result2');
 });
 </script>
 
+<div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-
-Once you've completed both exercises, move on to the <a href="/header" class="alert-link">header manipulation</a> exercise.
-
-<div style="height:100px"></div>
+Once you've completed the exercises, move on to the <a href="/header" class="alert-link">header manipulation</a> exercise.

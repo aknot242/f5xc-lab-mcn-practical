@@ -44,6 +44,20 @@ def eph_ns() -> str:
     eph_ns = request.cookies.get('eph_ns', None)
     return eph_ns
 
+def cloudapp_fetch(url, timeout, prop, value, headers = {}):
+    """
+    Fetch data from URL
+    Validate prop and value in the JSON response.
+    """
+    response = requests.get(url, timeout=timeout, headers=headers)
+    response.raise_for_status() 
+    
+    data = response.json() ##Clean this
+    if data.get(prop) != value:
+        raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
+    return data
+
+
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
@@ -108,12 +122,6 @@ def ce_state():
     data = get_ce_state(app.config['ce_info'])
     return data
 
-@app.route('/_ce_info')
-@cache.cached(timeout=30)
-def ce_info():
-    """temp for status build"""
-    return jsonify(app.config['ce_info'])
-
 @app.route('/lb')
 def lb():
     """lb page"""
@@ -152,18 +160,15 @@ def header():
 
 @app.route('/_lb1')
 def lb_aws():
-    """AWS LB test"""
+    """Azure LB test"""
     try:
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/raw"
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
-        if response.json()['request_env'] != "AWS":
-            raise LabException("Invalid request environment.")
-        return jsonify(status='success', data=response.json())
-    except (LabException, requests.RequestException) as e:
+        data = cloudapp_fetch(url, 5, 'request_env', 'AWS')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
     
 @app.route('/_lb2')
@@ -174,13 +179,51 @@ def lb_azure():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/raw"
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
-        if response.json()['request_env'] != "Azure":
-            raise LabException("Invalid request environment.")
-        return jsonify(status='success', data=response.json())
-    except (LabException, requests.RequestException) as e:
+        data = cloudapp_fetch(url, 5, 'request_env', 'Azure')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_route1')
+def route1():
+    """First Route Test"""
+    try:
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        aws_url = f"https://{ns}.{base_url}/aws/raw"
+        azure_url = f"https://{ns}.{base_url}/azure/raw"
+        aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS')
+        azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure')
+        data = {
+            "aws": aws_data,
+            "azure": azure_data
+        }
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_route2')
+def route1():
+    """First Route Test"""
+    try:
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        aws_url = f"https://{ns}.{base_url}/aws/raw"
+        azure_url = f"https://{ns}.{base_url}/azure/raw"
+        aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS', headers={"X-MCN-lab": "aws"})
+        azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure', headers={"X-MCN-lab": "azure"})
+        data = {
+            "aws": aws_data,
+            "azure": azure_data
+        }
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
         
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=False)
