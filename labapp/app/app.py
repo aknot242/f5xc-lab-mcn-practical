@@ -100,7 +100,7 @@ def arch():
         udf=app.config['UDF']
     )
 
-@app.route('/_ce_state')
+@app.route('/_ce_status')
 @cache.cached(timeout=30)
 def ce_state():
     """get ce state (internal route)"""
