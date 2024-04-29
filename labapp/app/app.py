@@ -7,7 +7,6 @@ from flask import Flask, render_template, jsonify, request, redirect, make_respo
 from flask_caching import Cache
 import requests
 import markdown
-import validators
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
@@ -124,6 +123,8 @@ def lb_aws():
         url = f"https://{ns}.{app.config['base_url']}/raw"
         print(url)
         response = requests.get(url, timeout=5)
+        print(response.text)
+        print(response.json())
         response.raise_for_status()
         if response.json()['request_env'] != "AWS":
             raise Exception("Invalid request env.")
