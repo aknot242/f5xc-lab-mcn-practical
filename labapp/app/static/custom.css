@@ -9,6 +9,10 @@ html, body {
   flex-grow: 1; /* Allows the container to take up all available space */
 }
 
+.row {
+  height: 100%;
+}
+
 main {
   display: flex;
   flex-direction: column;
