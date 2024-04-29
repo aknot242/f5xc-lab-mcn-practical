@@ -142,8 +142,8 @@
                       })
                       .then(data => {
                           if (!data.err) {
-                              document.getElementById('siteName').textContent = `Site Name: ${data.site_name}`;
-                              document.getElementById('siteState').textContent = `State: ${data.state}`;
+                              document.getElementById('siteName').textContent = data.site_name;
+                              document.getElementById('siteState').textContent = data.state;
                               document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "good.png" : "bad.png";
 
                               // Update cookies
@@ -169,8 +169,8 @@
                 let cachedState = getCookie('stateCache');
 
                 if (cachedSiteName && cachedState) {
-                    document.getElementById('siteName').textContent = `Site Name: ${cachedSiteName}`;
-                    document.getElementById('siteState').textContent = `State: ${cachedState}`;
+                    document.getElementById('siteName').textContent = cachedSiteName;
+                    document.getElementById('siteState').textContent = cachedState;
                     document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
                 } else {
                     fetchAndUpdateStatus();
@@ -181,9 +181,9 @@
 
               </script>
               <div class="status-box align-items-center bg-light p-2 text-center">
-                <p><strong id="siteName">Loading...</strong></p>
+                <p id="siteName">Loading...</p>
                 <img id="statusImage" src="/static/bad.png" alt="Status" style="width:50px; height:auto;">
-                <p><strong id="siteState"></strong></p>
+                <p id="siteState"></p>
             </div>
             {% endif %}
 
