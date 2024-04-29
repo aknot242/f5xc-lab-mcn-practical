@@ -29,7 +29,6 @@ def render_md(file: str) -> str:
         content = md.read()
     html = markdown.markdown(
         content,
-        #extensions=['markdown.extensions.attr_list','markdown.extensions.codehilite','markdown.extensions.fenced_code']
         extensions=['markdown.extensions.attr_list','markdown.extensions.fenced_code']
         )
     return html
@@ -41,21 +40,31 @@ def validate_eph_ns(input_name):
 
 def eph_ns() -> str:
     """check if ephemeral namespace is set"""
-    eph_ns = request.cookies.get('eph_ns', None)
-    return eph_ns
+    this_eph_ns = request.cookies.get('eph_ns', None)
+    return this_eph_ns
 
 def cloudapp_fetch(url, timeout, prop, value, headers = {}):
     """
     Fetch data from URL
-    Validate prop and value in the JSON response.
+    Validate prop and value in the JSON response
     """
     response = requests.get(url, timeout=timeout, headers=headers)
-    response.raise_for_status() 
-    
-    data = response.json() ##Clean this
+    response.raise_for_status()
+    data = response.json()
     if data.get(prop) != value:
         raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
+    clean_headers = cloudapp_headers(response.headers, 
+        [ "Host", "User-Agent", "X-Forwarded-For","X-Forwarded-Port","X-Forwarded-Proto"]
+    )
+    data['req_headers'] = clean_headers
     return data
+
+def cloudapp_headers(headers, req_headers):
+    """
+    Filter resp headers
+    Return specified subset
+    """
+    return {key: value for key, value in headers.items() if key.lower() in req_headers}
 
 
 @app.errorhandler(404)
@@ -84,16 +93,15 @@ def setup():
     if request.method == 'POST':
         action = request.form['action']
         if action == 'save':
-            eph_ns = request.form['eph_ns'].strip()
-            print(eph_ns)
-            if not validate_eph_ns(eph_ns):
+            this_eph_ns = request.form['eph_ns'].strip()
+            if not validate_eph_ns(this_eph_ns):
                 flash("Invalid ephemeral NS.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
-            response.set_cookie('eph_ns', eph_ns, max_age=60*60*24)
+            response.set_cookie('eph_ns', this_eph_ns, max_age=60*60*24)
             flash("Ephemeral NS successfully set.", "success")
             return response
-        elif action == 'clear':
+        if action == 'clear':
             response = make_response(redirect('/setup'))
             response.set_cookie('eph_ns', '', expires=0)
             flash("Ephemeral NS cleared.", "info")

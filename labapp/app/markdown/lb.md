@@ -16,7 +16,7 @@ More complicated configurations (underlay networking, security services, observa
 ### **Exercise 1: AWS Cloud App**
 
 For the initial exercise, make the cloud application running in AWS available to the UDF environment. 
-Build an origin pool and load balancer based on the following criteria:
+Build an origin pool and load balancer based on the exercise requirements.
 
 <ul class="list-group">
   <li class="list-group-item">
