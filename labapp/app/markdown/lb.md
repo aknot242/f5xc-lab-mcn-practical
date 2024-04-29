@@ -59,7 +59,7 @@ Build an origin pool and load balancer based on the following criteria:
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_lb1', 'result1'); // Now passing 'result1' as the result div ID
+    makeHttpRequest('requestBtn1', '/_lb1', 'result1');
 });
 </script>
 
@@ -133,23 +133,9 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
 </div>
 <div id="result2" class="mt-3"></div>
 <script>
-    document.getElementById('requestBtn2').addEventListener('click', async () => {
-        const resultDiv = document.getElementById('result2');
-        try {
-            const response = await axios.get('/_lb2');
-            if(response.data.status === 'success') {
-                const prettyJson = JSON.stringify(response.data.data, null, 4);
-                resultDiv.innerHTML = `<pre class="alert alert-success"><b>Success:</b><br><code>${prettyJson}</code></pre>`;
-            } else {
-                const errJson = JSON.stringify(response.data.error, null, 4);
-                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
-            }
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-        } catch (error) {
-            resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-        }
-    });
+document.getElementById('requestBtn2').addEventListener('click', () => {
+    makeHttpRequest('requestBtn2', '/_lb2', 'result2');
+});
 </script>
 
 <div style="height:25px"></div>
