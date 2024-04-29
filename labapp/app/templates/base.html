@@ -132,54 +132,41 @@
             {% if udf %}
             <script>
               document.addEventListener('DOMContentLoaded', function() {
-                  function fetchAndUpdateStatus() {
-                      // Get cached values
-                      let cachedSiteName = getCookie('siteNameCache');
-                      let cachedState = getCookie('stateCache');
-              
-                      // Update the page with cached values if they exist
-                      if (cachedSiteName && cachedState) {
-                          document.getElementById('siteName').textContent = cachedSiteName;
-                          document.getElementById('siteState').textContent = cachedState;
-                      } else {
-                          // Fetch from server if no valid cache exists
-                          fetch('/_ce_status')
-                              .then(response => {
-                                  if (!response.ok) {
-                                      throw new Error('Network response was not ok');
-                                  }
-                                  return response.json();
-                              })
-                              .then(data => {
-                                  if (!data.err) {
-                                      document.getElementById('siteName').textContent = cachedSiteName;
-                                      document.getElementById('siteState').textContent = cachedState;
-                                      // Cache the site name and state in cookies for 1 day
-                                      setCookie('siteNameCache', data.site_name, 1);
-                                      setCookie('stateCache', data.state, 1);
-                                  } else {
-                                      // Handle potential errors in data retrieval
-                                      document.getElementById('statusText').textContent = 'Error fetching status';
-                                  }
-                              })
-                              .catch(error => {
-                                  console.error('There was a problem with the fetch operation:', error);
-                                  document.getElementById('siteName').textContent = `Error`;
-                                  document.getElementById('siteState').textContent = `Error`;
-                              });
-                      }
-                  }
-              
-                  // Initial fetch on page load
-                  fetchAndUpdateStatus();
-              
-                  // Re-fetch every 20 seconds
-                  setInterval(() => {
-                      // Expire the cookie explicitly by setting days to 0
-                      setCookie('siteNameCache', '', 0);
-                      setCookie('stateCache', '', 0);
-                      fetchAndUpdateStatus();
-                  }, 20000);
+              function fetchAndUpdateStatus() {
+                fetch('/_ce_status')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.err) {
+                            document.getElementById('statusText').textContent = `Site Name: ${data.site_name}, State: ${data.state}`;
+
+                            // Expire the old cookies just before setting new ones
+                            setCookie('siteNameCache', '', 0);
+                            setCookie('stateCache', '', 0);
+
+                            // Set new cookies
+                            setCookie('siteNameCache', data.site_name, 1);
+                            setCookie('stateCache', data.state, 1);
+                        } else {
+                            // Handle potential errors in data retrieval
+                            document.getElementById('statusText').textContent = 'Error fetching status';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        document.getElementById('statusText').textContent = 'Error';
+                    });
+            }
+
+            // Initial fetch on page load
+            fetchAndUpdateStatus();
+
+            // Re-fetch every 20 seconds
+            setInterval(fetchAndUpdateStatus, 20000);
               });
               </script>
               
