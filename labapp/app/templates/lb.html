@@ -2,57 +2,18 @@
 
 {% block title %}MCN Practical: Load Balancer{% endblock %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div class="mt-3">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
 {% block content %}
 <div class="markdown-body">
     {{ content|safe }}
 </div>
-
-
-<h2>Test AWS Load Balancer</h2>
-<div class="left-aligned-button-container">
-    <button id="requestBtn1" class="btn btn-primary">Make HTTP Request</button>
-</div>
-<div id="result1" class="mt-3"></div>
-<script>
-document.getElementById('requestBtn1').addEventListener('click', async () => {
-    const resultDiv = document.getElementById('result1');
-    try {
-        const response = await axios.get('/appCon-aws');
-        if(response.data.status === 'success') {
-            const prettyJson = JSON.stringify(response.data.data, null, 4);
-            resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
-        } else {
-            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
-        }
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-    } catch (error) {
-        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-    }
-});
-</script>
-
-<h2>Test Azure Load Balancer</h2>
-<div class="left-aligned-button-container">
-    <button id="requestBtn2" class="btn btn-primary">Make HTTP Request</button>
-</div>
-<div id="result2" class="mt-3"></div>
-<script>
-    document.getElementById('requestBtn2').addEventListener('click', async () => {
-        const resultDiv = document.getElementById('result2');
-        try {
-            const response = await axios.get('/appCon-azure');
-            if(response.data.status === 'success') {
-                const prettyJson = JSON.stringify(response.data.data, null, 4);
-                resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
-            } else {
-                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
-            }
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-        } catch (error) {
-            resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
-        }
-    });
-</script>
 {% endblock %}

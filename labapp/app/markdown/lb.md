@@ -1,30 +1,170 @@
-# Load Balancer
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none">
+    <img src="/static/load-balancing.png" width="300px" height="auto" alt="intro">
+</div>
 
-This is a sample page to demonstrate Markdown integration.
+# **Load Balancing**
 
-## Features
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-- **Easy to write**: Markdown is straightforward.
-- **Flexible**: Easily convert to HTML.
-- **Portable**: Use Markdown files across different platforms.
+Load balancing is the cornerstone of XC's App Connect functionality.
+L7 MCN requires discovering services at one site and making those services available at some other site.
+That's accomplished by configuring origin pools and load balancers. 
+More complicated configurations (underlay networking, security services, observability, etc.) are built on these primitives.
 
-## Code Test
+<div style="height:25px"></div>
 
-```
-POST /task?id=1 HTTP/1.1
-Host: example.org
-Content-Type: application/json; charset=utf-8
-Content-Length: 137
+### **Exercise 1: AWS Cloud App**
 
-{
-  "status": "ok",
-  "extended": true,
-  "results": [
-    {"value": 0, "type": "int64"},
-    {"value": 1.0e+3, "type": "decimal"}
-  ]
-}
-```
+For the initial exercise, make the cloud application running in AWS available to the UDF environment. 
+Build an origin pool and load balancer based on the following criteria:
 
-Enjoy using Markdown!
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    The URL for the cloud app hosted in AWS is <a href="https://aws-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>  
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    The cloud app is only reachable from the "student-awsnet" site.
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    The cloud app is TLS enabled.
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    Use the wildcard cert provided in the shared NS, "mcn-lab-wildcard", to enable TLS on the LB.
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    The load balancer should only be advertised from your CE in UDF. Do not advertise this service on the Internet.
+  </label>
+</div>
+
+
+<div style="height:25px"></div>
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn1" class="btn btn-primary">Test Load Balancer</button>
+</div>
+<div id="result1" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn1').addEventListener('click', async () => {
+    const resultDiv = document.getElementById('result1');
+    try {
+        const response = await axios.get('/_lb_aws');
+        if(response.data.status === 'success') {
+            const prettyJson = JSON.stringify(response.data.data, null, 4);
+            resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
+        } else {
+            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
+        }
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
+    }
+});
+</script>
+
+<div style="height:25px"></div>
+
+Since this is the first exercise, here are some hints (if you need them).
+
+<p>
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Load Balancer Hint</a>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Origin Pool Hint</button>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Origin Server Hint</button>
+</p>
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+      <div class="">
+        <img src="/static/load-balancer1.png" width="800px" height="auto" alt="temp">
+        <img src="/static/load-balancer2.png" width="800px" height="auto" alt="temp">
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="">
+        <img src="/static/origin-pool.png" width="800px" height="auto" alt="temp">
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample3">
+      <div class="">
+        <img src="/static/origin-server.png" width="800px" height="auto" alt="temp">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:25px"></div>
+
+### **Exercise 2: Azure Cloud App**
+
+For the second exercise, make the cloud application running in Azure available to the UDF environment.
+Create a new origin pool for the Azure cloud app. Reuse your load balancer. 
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    The URL for the cloud app hosted in Azure is <a href="https://azure-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>  
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    The cloud app is only reachable from the "student-azurenet" site.
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckCDefault">
+    The cloud app is TLS enabled.
+  </label>
+</div>
+
+<div style="height:25px"></div>
+
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn2" class="btn btn-primary">Test Load Balancer</button>
+</div>
+<div id="result2" class="mt-3"></div>
+<script>
+    document.getElementById('requestBtn2').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('result2');
+        try {
+            const response = await axios.get('/_lb_azure');
+            if(response.data.status === 'success') {
+                const prettyJson = JSON.stringify(response.data.data, null, 4);
+                resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
+            } else {
+                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
+            }
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
+        }
+    });
+</script>
+
+<div style="height:25px"></div>
+
+Once you've completed both exercises, move on to the <a href="/path" class="alert-link">path based routing</a> exercise.
+
+<div style="height:25px"></div>
 

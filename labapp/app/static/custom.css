@@ -19,6 +19,10 @@ main {
   overflow-y: auto;
 }
 
+.markdown-body {
+  padding: 50px;
+}
+
 .err {
   display: flex;
   justify-content: center; /* Centers horizontally */
