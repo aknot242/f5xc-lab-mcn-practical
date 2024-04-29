@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# Update apt
-sudo DEBIAN_FRONTEND=noninteractive apt-get update --yes
-
 # Check if Docker is installed, install it if it's not
 if ! command -v pip &> /dev/null
 then
-    echo "Docker could not be found, installing..."
+    # Update apt
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update --yes
+    echo "pip could not be found, installing..."
     sudo apt-get install -y python3-pip
 fi
 
@@ -26,19 +25,19 @@ mkdir -p $APPDIR
 cat <<EOF >$SCRIPTDIR/start_app.sh
 #!/bin/bash
 
-
-if [ ! -d "$APPDIR/..git" ]; then
+if [ ! -d "$APPDIR/.git" ]; then
     git clone -b $BRANCH $REPO_URL $APPDIR
 else
-    # Discard any local changes (including untracked files)
     cd $APPDIR
+    # Ensure that the local repository is tracking the correct remote and branch
+    git remote set-url origin $REPO_URL
+    git fetch --all
+    # Reset to the specified branch forcefully
     git checkout $BRANCH
     git reset --hard origin/$BRANCH
     git clean -fdx
-    # Pull the latest code from the specified branch
     git pull origin $BRANCH
 fi
-
 
 # Install required Python packages
 cd $APPDIR/labapp/app 
