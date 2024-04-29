@@ -59,19 +59,22 @@ Build an origin pool and load balancer based on the following criteria:
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', async () => {
+    const button = document.getElementById('requestBtn1');
     const resultDiv = document.getElementById('result1');
+    button.disabled = true;
     try {
         const response = await axios.get('/_lb1');
-        if(response.data.status === 'success') {
+        if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<pre class="alert alert-success"><b>Success:</b><br><code>${prettyJson}</code></pre>`;
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
         }
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
     } catch (error) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+    } finally {
+        button.disabled = false;
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
     }
 });
