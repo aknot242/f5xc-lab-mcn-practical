@@ -142,7 +142,8 @@
                     })
                     .then(data => {
                         if (!data.err) {
-                            document.getElementById('statusText').textContent = `Site Name: ${data.site_name}, State: ${data.state}`;
+                            document.getElementById('siteName').textContent = data.site_name;
+                            document.getElementById('siteState').textContent = data.state;
 
                             // Expire the old cookies just before setting new ones
                             setCookie('siteNameCache', '', 0);
@@ -153,12 +154,14 @@
                             setCookie('stateCache', data.state, 1);
                         } else {
                             // Handle potential errors in data retrieval
-                            document.getElementById('statusText').textContent = 'Error fetching status';
+                            document.getElementById('siteName').textContent = "";
+                            document.getElementById('siteState').textContent = "";
                         }
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation:', error);
-                        document.getElementById('statusText').textContent = 'Error';
+                        document.getElementById('siteName').textContent = "";
+                        document.getElementById('siteState').textContent = "";
                     });
             }
 
