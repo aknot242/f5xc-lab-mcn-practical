@@ -1,16 +1,10 @@
-html, body {
-  height: 100%; /* Set the minimum height to 100% of the viewport */
-  margin: 0;   /* Remove default margin */
-  display: flex;
-  flex-direction: column;
+
+body {
+  min-height: -webkit-fill-available;
 }
 
-.container-fluid {
-  flex-grow: 1; /* Allows the container to take up all available space */
-}
-
-.row {
-  height: 100%;
+html {
+  height: -webkit-fill-available;
 }
 
 main {
@@ -22,6 +16,10 @@ main {
   max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
+}
+
+.row {
+  height: 100%;
 }
 
 .status-box {
