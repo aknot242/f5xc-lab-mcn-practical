@@ -19,6 +19,10 @@ main {
   overflow-y: auto;
 }
 
+.status-box {
+  margin-top: auto; /* Pushes itself to the bottom */
+}
+
 .markdown-body {
   padding: 50px;
 }

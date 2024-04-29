@@ -64,7 +64,7 @@ document.getElementById('requestBtn1').addEventListener('click', async () => {
         const response = await axios.get('/_lb1');
         if(response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
-            resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
+            resultDiv.innerHTML = `<pre class="alert alert-success"><b>Success:</b><br><code>${prettyJson}</code></pre>`;
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;

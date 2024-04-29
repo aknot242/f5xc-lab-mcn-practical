@@ -74,7 +74,6 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-auto bg-light sidebar" id="sidebar">
-
             <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
                 <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
                     <img src="/static/logo.png" width="100" height="auto" alt="Logo">
@@ -129,8 +128,18 @@
                     </div>
                   </li>
                 </ul>
-              </div>
+
+
+                {% if cluster-info %}
+                  <div class="status-box bg-light p-2">
+                    <p>Status: <strong>Active</strong></p>
+                  </div>
+                {% endif %}
+
+
+
         </div>
+    </div>
         
         <!-- Main Content -->
         <main class="col">
