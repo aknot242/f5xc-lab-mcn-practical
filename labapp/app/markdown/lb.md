@@ -61,12 +61,13 @@ Build an origin pool and load balancer based on the following criteria:
 document.getElementById('requestBtn1').addEventListener('click', async () => {
     const resultDiv = document.getElementById('result1');
     try {
-        const response = await axios.get('/_lb_aws');
+        const response = await axios.get('/_lb1');
         if(response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
         } else {
-            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
+            const errJson = JSON.stringify(response.data.error, null, 4);
+            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
         }
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
     } catch (error) {
@@ -147,7 +148,7 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
     document.getElementById('requestBtn2').addEventListener('click', async () => {
         const resultDiv = document.getElementById('result2');
         try {
-            const response = await axios.get('/_lb_azure');
+            const response = await axios.get('/_lb2');
             if(response.data.status === 'success') {
                 const prettyJson = JSON.stringify(response.data.data, null, 4);
                 resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;

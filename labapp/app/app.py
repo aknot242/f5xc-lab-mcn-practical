@@ -20,10 +20,13 @@ app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
 app.secret_key = "blahblahblah"
 
+class LabException(Exception):
+    """lab exception"""
+
 def render_md(file: str) -> str:
     """render markdown w/ common extentions"""
-    with open(file, "r") as file:
-        content = file.read()
+    with open(file, "r", encoding="utf-8") as md:
+        content = md.read()
     html = markdown.markdown(
         content,
         extensions=['markdown.extensions.attr_list','markdown.extensions.codehilite','markdown.extensions.fenced_code']
@@ -113,33 +116,36 @@ def header():
     html = render_md("markdown/header.md")
     return render_template('exercise_standard.html', title="MCN Practical: Headers", content=html, ns=ns)
 
-@app.route('/_lb_aws')
+@app.route('/_lb1')
 def lb_aws():
     """AWS LB test"""
     try:
         ns = eph_ns()
         if not ns:
-            raise Exception("Ephemeral NS not set.")
+            raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/raw"
-        print(url)
         response = requests.get(url, timeout=5)
-        print(response.text)
-        print(response.json())
         response.raise_for_status()
         if response.json()['request_env'] != "AWS":
-            raise Exception("Invalid request env.")
+            raise LabException("Invalid request environment.")
         return jsonify(status='success', data=response.json())
-    except Exception as e:
+    except (LabException, requests.RequestException) as e:
         return jsonify(status='fail', error=str(e))
     
-@app.route('/_lb_azure')
+@app.route('/_lb2')
 def lb_azure():
     """Azure LB test"""
     try:
-        response = requests.get('https://ifconfig1.io/all.json')
-        response.raise_for_status() 
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        url = f"https://{ns}.{app.config['base_url']}/raw"
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        if response.json()['request_env'] != "Azure":
+            raise LabException("Invalid request environment.")
         return jsonify(status='success', data=response.json())
-    except requests.RequestException as e:
+    except (LabException, requests.RequestException) as e:
         return jsonify(status='fail', error=str(e))
         
 if __name__ == '__main__':

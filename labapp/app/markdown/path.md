@@ -20,7 +20,7 @@ HERE
     document.getElementById('requestBtn2').addEventListener('click', async () => {
         const resultDiv = document.getElementById('result2');
         try {
-            const response = await axios.get('/_lb_azure');
+            const response = await axios.get('/_path1');
             if(response.data.status === 'success') {
                 const prettyJson = JSON.stringify(response.data.data, null, 4);
                 resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
