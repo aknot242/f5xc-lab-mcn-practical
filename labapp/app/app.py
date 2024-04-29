@@ -95,6 +95,12 @@ def ce_state():
     data = get_ce_state(app.config['ce_info'])
     return data
 
+@app.route('/_ce_info')
+@cache.cached(timeout=30)
+def ce_info():
+    """temp for status build"""
+    return jsonify(app.config['ce_info'])
+
 @app.route('/lb')
 def lb():
     """lb page"""
