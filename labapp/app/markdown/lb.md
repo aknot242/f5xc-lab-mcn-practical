@@ -81,6 +81,7 @@ document.getElementById('requestBtn1').addEventListener('click', async () => {
 
 Since this is the first exercise, here are some hints (if you need them).
 
+<div id="hints">
 <p>
   <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Load Balancer Hint</a>
   <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Origin Pool Hint</button>
@@ -88,7 +89,7 @@ Since this is the first exercise, here are some hints (if you need them).
 </p>
 <div class="row">
   <div class="col">
-    <div class="collapse multi-collapse data-bs-parent" id="multiCollapseExample1">
+    <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
       <div class="">
         <img src="/static/load-balancer1.png" width="800px" height="auto" alt="temp">
         <img src="/static/load-balancer2.png" width="800px" height="auto" alt="temp">
@@ -96,19 +97,20 @@ Since this is the first exercise, here are some hints (if you need them).
     </div>
   </div>
   <div class="col">
-    <div class="collapse multi-collapse data-bs-parent" id="multiCollapseExample2">
+    <div class="collapse multi-collapse" id="multiCollapseExample2" data-bs-parent="#hints">
       <div class="">
         <img src="/static/origin-pool.png" width="800px" height="auto" alt="temp">
       </div>
     </div>
   </div>
   <div class="col">
-    <div class="collapse multi-collapse data-bs-parent" id="multiCollapseExample3">
+    <div class="collapse multi-collapse" id="multiCollapseExample3" data-bs-parent="#hints">
       <div class="">
         <img src="/static/origin-server.png" width="800px" height="auto" alt="temp">
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <div style="height:25px"></div>
