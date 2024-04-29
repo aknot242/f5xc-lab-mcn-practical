@@ -153,7 +153,8 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
                 const prettyJson = JSON.stringify(response.data.data, null, 4);
                 resultDiv.innerHTML = `<pre class="alert alert-success"><code>${prettyJson}</code></pre>`;
             } else {
-                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed</b></div>`;
+                const errJson = JSON.stringify(response.data.error, null, 4);
+                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
             }
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Smooth scroll to the resultDiv
         } catch (error) {
