@@ -205,7 +205,7 @@ def route1():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/_route2')
-def route1():
+def route2():
     """First Route Test"""
     try:
         ns = eph_ns()
