@@ -20,33 +20,33 @@ Build an origin pool and load balancer based on the following criteria:
 
 
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckDefault">
     The URL for the cloud app hosted in AWS is <a href="https://aws-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>  
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
     The cloud app is only reachable from the "student-awsnet" site.
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
     The cloud app is TLS enabled.
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
     Use the wildcard cert provided in the shared NS, "mcn-lab-wildcard", to enable TLS on the LB.
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
-    The load balancer should only be advertised from your CE in UDF. Do not advertise this service on the Internet.
+    The load balancer should only be advertised from your CE in UDF. <b>Do not advertise this service on the Internet.</b>
   </label>
 </div>
 
@@ -118,19 +118,19 @@ For the second exercise, make the cloud application running in Azure available t
 Create a new origin pool for the Azure cloud app. Reuse your load balancer. 
 
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckDefault">
     The URL for the cloud app hosted in Azure is <a href="https://azure-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>  
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
     The cloud app is only reachable from the "student-azurenet" site.
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
   <label class="form-check-label" for="flexCheckCDefault">
     The cloud app is TLS enabled.
   </label>
