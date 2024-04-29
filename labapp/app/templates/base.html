@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}F5XC MCN Practical Lab{% endblock %}</title>
+    <title>{% block title %}{{ title }}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
@@ -128,17 +128,15 @@
                     </div>
                   </li>
                 </ul>
-
-
-                {% if cluster-info %}
-                  <div class="status-box bg-light p-2">
-                    <p>Status: <strong>Active</strong></p>
-                  </div>
-                {% endif %}
-
-
-
         </div>
+
+        {% if udf %}
+        <div class="status-box bg-light p-2">
+          <p>Status: <strong>Active</strong></p>
+        </div>
+      {% endif %}
+
+      
     </div>
         
         <!-- Main Content -->

@@ -10,11 +10,11 @@ import markdown
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-app.config['udf'] =  os.getenv('UDF', None)
-info = None
-if app.config['udf']:
-    info = get_ce_info()
-app.config['ce_info'] = info
+app.config['ce_info'] = None
+app.config['UDF'] = None
+if os.getenv('UDF', None):
+    app.config['ce_info'] = get_ce_info()
+    app.config['UDF'] = True
 app.config['base_url'] = "mcn-lab.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
@@ -57,7 +57,11 @@ def return_err(err):
 def index():
     """index page"""
     html = render_md("markdown/overview.md")
-    return render_template('overview.html', content=html)
+    return render_template('standard.html',
+        title="MCN Practical: Overview",
+        content=html, 
+        udf=app.config['UDF'] 
+    )
 
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
@@ -80,13 +84,21 @@ def setup():
             flash("Ephemeral NS cleared.", "info")
             return response
     html = render_md("markdown/setup.md")
-    return render_template('setup.html', content=html)
+    return render_template('setup.html',
+        title="MCN Practical: Setup",
+        content=html,
+        udf=app.config['UDF']
+    )
 
 @app.route('/arch')
 def arch():
     """arch page"""
     html = render_md("markdown/arch.md")
-    return render_template('standard.html', content=html, title="MCN Practical: Architecture")
+    return render_template('standard.html',
+        title="MCN Practical: Architecture",
+        content=html,
+        udf=app.config['UDF']
+    )
 
 @app.route('/_ce_state')
 @cache.cached(timeout=30)
@@ -106,21 +118,36 @@ def lb():
     """lb page"""
     ns = eph_ns()
     html = render_md("markdown/lb.md")
-    return render_template('exercise_standard.html', title="MCN Practical: LB", content=html, ns=ns)
+    return render_template('exercise_standard.html',
+        title="MCN Practical: LB",
+        content=html,
+        ns=ns,
+        udf=app.config['UDF']
+    )
 
 @app.route('/path')
 def path():
     """path page"""
     ns = eph_ns()
     html = render_md("markdown/path.md")
-    return render_template('exercise_standard.html', title="MCN Practical: Path Routing", content=html, ns=ns)
+    return render_template('exercise_standard.html',
+        title="MCN Practical: Path Routing",
+        content=html, 
+        ns=ns,
+        udf=app.config['UDF']
+    )
 
 @app.route('/header')
 def header():
     """header page"""
     ns = eph_ns()
     html = render_md("markdown/header.md")
-    return render_template('exercise_standard.html', title="MCN Practical: Headers", content=html, ns=ns)
+    return render_template('exercise_standard.html',
+        title="MCN Practical: Headers",
+        content=html, 
+        ns=ns,
+        udf=app.config['UDF']
+    )
 
 @app.route('/_lb1')
 def lb_aws():
