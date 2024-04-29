@@ -1,4 +1,5 @@
-FROM python:3.10.14-slim
+#FROM python:3.10.14-slim
+FROM python:3.11-alpine3.18
 LABEL org.opencontainers.image.description MCN Practical Lab App
 
 ENV PYTHONUNBUFFERED=1
