@@ -91,22 +91,22 @@ Since this is the first exercise, here are some hints (if you need them).
   <div class="col">
     <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
       <div class="">
-        <img src="/static/load-balancer1.png" width="800px" height="auto" alt="temp">
-        <img src="/static/load-balancer2.png" width="800px" height="auto" alt="temp">
+        <img src="/static/load-balancer1.png" alt="temp">
+        <img src="/static/load-balancer2.png" alt="temp">
       </div>
     </div>
   </div>
   <div class="col">
     <div class="collapse multi-collapse" id="multiCollapseExample2" data-bs-parent="#hints">
       <div class="">
-        <img src="/static/origin-pool.png" width="800px" height="auto" alt="temp">
+        <img src="/static/origin-pool.png" alt="temp">
       </div>
     </div>
   </div>
   <div class="col">
     <div class="collapse multi-collapse" id="multiCollapseExample3" data-bs-parent="#hints">
       <div class="">
-        <img src="/static/origin-server.png" width="800px" height="auto" alt="temp">
+        <img src="/static/origin-server.png" alt="temp">
       </div>
     </div>
   </div>
