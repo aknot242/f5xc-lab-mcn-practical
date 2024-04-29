@@ -7,14 +7,6 @@ html {
   height: -webkit-fill-available;
 }
 
-.multi-collapse img {
-  display: block; /* Make images block level for better control */
-  margin-left: 0; /* Aligns images to the left */
-  width: 100%; /* Optional: makes image responsive to the column width */
-  max-width: 1000px;
-  height: auto; /* Maintains aspect ratio */
-}
-
 main {
   display: flex;
   flex-direction: column;
