@@ -129,14 +129,6 @@
                   </li>
                 </ul>
         </div>
-
-        {% if udf %}
-        <div class="status-box bg-light p-2">
-          <p>Status: <strong>Active</strong></p>
-        </div>
-      {% endif %}
-
-      
     </div>
         
         <!-- Main Content -->
@@ -145,6 +137,13 @@
             {% endblock %}
         </main>
     </div>
+
+    {% if udf %}
+    <div class="status-box bg-light p-2">
+      <p>Status: <strong>Active</strong></p>
+    </div>
+    {% endif %}
+    
 </div>
 
 </body>
