@@ -61,7 +61,7 @@ def headers_cleaner(headers):
     """
     Remove headers that contain specific substrings.
     """
-    unwanted_substrings = ['x-envoy', 'x-cloudfront', 'cloudfront-', 'X-k8se'] 
+    unwanted_substrings = ['x-envoy', 'cloudfront', 'x-k8se'] 
     filtered_headers = {
         key: value for key, value in headers.items()
         if not any(substring in key.lower() for substring in unwanted_substrings)
