@@ -135,7 +135,8 @@ def get_ce_state(ce_info: dict) -> dict:
             ce_state = response.json()['state']
             return {
                 "err": False,
-                "state": ce_state
+                "state": ce_state,
+                "site_name": ce_info['site_name']
             }
         else:
             raise Exception(e)

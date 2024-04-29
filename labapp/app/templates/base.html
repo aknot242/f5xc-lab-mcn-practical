@@ -66,6 +66,7 @@
           }
           return null;
       }
+      
       </script>
 
 </head>
@@ -128,6 +129,35 @@
                     </div>
                   </li>
                 </ul>
+
+            {% if udf %}
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  function fetchAndUpdateStatus() {
+                      fetch('/_ce_status')
+                          .then(response => {
+                              if (!response.ok) {
+                                  throw new Error('Network response was not ok');
+                              }
+                              return response.json();
+                          })
+                          .then(data => {
+                              document.getElementById('statusText').textContent = data.status;  // adjust depending on actual JSON structure
+                          })
+                          .catch(error => {
+                              console.error('There was a problem with the fetch operation:', error);
+                              document.getElementById('statusText').textContent = 'Error';  // error handling
+                          });
+                  }
+                  fetchAndUpdateStatus();
+                  setInterval(fetchAndUpdateStatus, 10000);
+              });
+              </script>
+              <div class="status-box align-items-center bg-light p-2">
+                <<p>Status: <strong id="statusText">Loading...</strong></p>
+              </div>
+            {% endif %}
+
         </div>
     </div>
         
@@ -137,13 +167,6 @@
             {% endblock %}
         </main>
     </div>
-
-    {% if udf %}
-    <div class="status-box bg-light p-2">
-      <p>Status: <strong>Active</strong></p>
-    </div>
-    {% endif %}
-    
 </div>
 
 </body>
