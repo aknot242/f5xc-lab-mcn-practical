@@ -53,19 +53,20 @@ def cloudapp_fetch(url, timeout, prop, value, headers = {}):
     data = response.json()
     if data.get(prop) != value:
         raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
-    clean_headers = cloudapp_headers(data['request_headers'], 
-        [ "Host", "User-Agent", "X-Forwarded-For","X-Forwarded-Port","X-Forwarded-Proto"]
-    )
-    data['reqquest_headers'] = clean_headers
+    clean_headers = headers_cleaner(data['request_headers'])
+    data['request_headers'] = clean_headers
     return data
 
-def cloudapp_headers(headers, required_headers):
+def headers_cleaner(headers):
     """
-    Filter resp headers
-    Return specified subset
+    Remove headers that contain specific substrings.
     """
-    return {key: value for key, value in headers.items() if key.lower() in required_headers}
-
+    unwanted_substrings = ['x-envoy', 'x-cloudfront', 'X-k8se'] 
+    filtered_headers = {
+        key: value for key, value in headers.items()
+        if not any(substring in key.lower() for substring in unwanted_substrings)
+    }
+    return filtered_headers
 
 @app.errorhandler(404)
 @app.errorhandler(500)
