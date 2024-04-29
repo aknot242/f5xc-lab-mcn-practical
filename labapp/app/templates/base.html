@@ -132,51 +132,59 @@
             {% if udf %}
             <script>
               document.addEventListener('DOMContentLoaded', function() {
-              function fetchAndUpdateStatus() {
-                fetch('/_ce_status')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (!data.err) {
-                            document.getElementById('siteName').textContent = data.site_name;
-                            document.getElementById('siteState').textContent = data.state;
+                function fetchAndUpdateStatus() {
+                  fetch('/_ce_status')
+                      .then(response => {
+                          if (!response.ok) {
+                              throw new Error('Network response was not ok');
+                          }
+                          return response.json();
+                      })
+                      .then(data => {
+                          if (!data.err) {
+                              document.getElementById('siteName').textContent = `Site Name: ${data.site_name}`;
+                              document.getElementById('siteState').textContent = `State: ${data.state}`;
+                              document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "good.png" : "bad.png";
 
-                            // Expire the old cookies just before setting new ones
-                            setCookie('siteNameCache', '', 0);
-                            setCookie('stateCache', '', 0);
-
-                            // Set new cookies
-                            setCookie('siteNameCache', data.site_name, 1);
-                            setCookie('stateCache', data.state, 1);
-                        } else {
-                            // Handle potential errors in data retrieval
-                            document.getElementById('siteName').textContent = "";
-                            document.getElementById('siteState').textContent = "";
-                        }
-                    })
-                    .catch(error => {
-                        console.error('There was a problem with the fetch operation:', error);
-                        document.getElementById('siteName').textContent = "";
-                        document.getElementById('siteState').textContent = "";
-                    });
-            }
-
-            // Initial fetch on page load
-            fetchAndUpdateStatus();
-
-            // Re-fetch every 20 seconds
-            setInterval(fetchAndUpdateStatus, 20000);
+                              // Update cookies
+                              setCookie('siteNameCache', data.site_name, 1);
+                              setCookie('stateCache', data.state, 1);
+                          } else {
+                              document.getElementById('siteName').textContent = 'Error fetching data';
+                              document.getElementById('siteState').textContent = '';
+                              document.getElementById('statusImage').src = "bad.png";
+                          }
+                      })
+                      .catch(error => {
+                          console.error('There was a problem with the fetch operation:', error);
+                          document.getElementById('siteName').textContent = 'Error';
+                          document.getElementById('siteState').textContent = '';
+                          document.getElementById('statusImage').src = "bad.png";
+                      });
+                }
               });
+
+              document.addEventListener('DOMContentLoaded', function() {
+                let cachedSiteName = getCookie('siteNameCache');
+                let cachedState = getCookie('stateCache');
+
+                if (cachedSiteName && cachedState) {
+                    document.getElementById('siteName').textContent = `Site Name: ${cachedSiteName}`;
+                    document.getElementById('siteState').textContent = `State: ${cachedState}`;
+                    document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+                } else {
+                    fetchAndUpdateStatus();
+                }
+
+                setInterval(fetchAndUpdateStatus, 20000);
+            });
+
               </script>
-              
-              <div class="status-box align-items-center bg-light p-2">
-                <p class="align-items-center"><strong id="siteName"></strong></p>
-                <p class="align-items-center"><strong id="siteState"></strong></p>
-              </div>
+              <div class="status-box align-items-center bg-light p-2 text-center">
+                <p><strong id="siteName">Loading...</strong></p>
+                <img id="statusImage" src="/static/bad.png" alt="Status" style="width:50px; height:auto;">
+                <p><strong id="siteState"></strong></p>
+            </div>
             {% endif %}
 
         </div>

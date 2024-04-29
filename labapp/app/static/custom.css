@@ -20,8 +20,13 @@ main {
 }
 
 .status-box {
-  margin-top: auto; /* Pushes itself to the bottom */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
 }
+
 
 .markdown-body {
   padding: 50px;
