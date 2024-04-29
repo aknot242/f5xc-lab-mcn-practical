@@ -39,4 +39,4 @@ HERE
 
 Once you've completed both exercises, move on to the <a href="/header" class="alert-link">header manipulation</a> exercise.
 
-<div style="height:25px"></div>
+<div style="height:100px"></div>
