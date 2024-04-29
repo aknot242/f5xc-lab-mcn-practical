@@ -53,10 +53,10 @@ def cloudapp_fetch(url, timeout, prop, value, headers = {}):
     data = response.json()
     if data.get(prop) != value:
         raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
-    clean_headers = cloudapp_headers(response.headers, 
+    clean_headers = cloudapp_headers(data['request_headers'], 
         [ "Host", "User-Agent", "X-Forwarded-For","X-Forwarded-Port","X-Forwarded-Proto"]
     )
-    data['req_headers'] = clean_headers
+    data['reqquest_headers'] = clean_headers
     return data
 
 def cloudapp_headers(headers, required_headers):
