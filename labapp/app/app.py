@@ -10,7 +10,7 @@ import markdown
 from ce import get_ce_info, get_ce_state
 
 app = Flask(__name__)
-app.config['udf'] =  os.getenv('UDF', False)
+app.config['udf'] =  os.getenv('UDF', None)
 info = None
 if app.config['udf']:
     info = get_ce_info()
@@ -141,6 +141,6 @@ def lb_azure():
         return jsonify(status='success', data=response.json())
     except requests.RequestException as e:
         return jsonify(status='fail', error=str(e))
-
+        
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5001, debug=False)
