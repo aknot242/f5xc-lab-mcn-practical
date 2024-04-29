@@ -139,7 +139,8 @@
               
                       // Update the page with cached values if they exist
                       if (cachedSiteName && cachedState) {
-                          document.getElementById('statusText').textContent = `Site Name: ${cachedSiteName}, State: ${cachedState}`;
+                          document.getElementById('siteName').textContent = `${cachedSiteName}`;
+                          document.getElementById('siteState').textContent = `${cachedState}`;
                       } else {
                           // Fetch from server if no valid cache exists
                           fetch('/_ce_status')
@@ -151,7 +152,8 @@
                               })
                               .then(data => {
                                   if (!data.err) {
-                                      document.getElementById('statusText').textContent = `Site Name: ${data.site_name}, State: ${data.state}`;
+                                      document.getElementById('siteName').textContent = `${cachedSiteName}`;
+                                      document.getElementById('siteState').textContent = `${cachedState}`;
                                       // Cache the site name and state in cookies for 1 day
                                       setCookie('siteNameCache', data.site_name, 1);
                                       setCookie('stateCache', data.state, 1);
@@ -162,7 +164,8 @@
                               })
                               .catch(error => {
                                   console.error('There was a problem with the fetch operation:', error);
-                                  document.getElementById('statusText').textContent = 'Error';
+                                  document.getElementById('siteName').textContent = `Error`;
+                                  document.getElementById('siteState').textContent = `Error`;
                               });
                       }
                   }
@@ -181,7 +184,8 @@
               </script>
               
               <div class="status-box align-items-center bg-light p-2">
-                <p>Status: <strong id="siteName">Loading...</strong></p>
+                <p><strong id="siteName"></strong></p>
+                <p><strong id="siteState"></strong></p>
               </div>
             {% endif %}
 
