@@ -139,8 +139,8 @@
               
                       // Update the page with cached values if they exist
                       if (cachedSiteName && cachedState) {
-                          document.getElementById('siteName').textContent = `${cachedSiteName}`;
-                          document.getElementById('siteState').textContent = `${cachedState}`;
+                          document.getElementById('siteName').textContent = cachedSiteName;
+                          document.getElementById('siteState').textContent = cachedState;
                       } else {
                           // Fetch from server if no valid cache exists
                           fetch('/_ce_status')
@@ -152,8 +152,8 @@
                               })
                               .then(data => {
                                   if (!data.err) {
-                                      document.getElementById('siteName').textContent = `${cachedSiteName}`;
-                                      document.getElementById('siteState').textContent = `${cachedState}`;
+                                      document.getElementById('siteName').textContent = cachedSiteName;
+                                      document.getElementById('siteState').textContent = cachedState;
                                       // Cache the site name and state in cookies for 1 day
                                       setCookie('siteNameCache', data.site_name, 1);
                                       setCookie('stateCache', data.state, 1);
