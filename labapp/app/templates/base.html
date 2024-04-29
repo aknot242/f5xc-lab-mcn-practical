@@ -143,23 +143,23 @@
                       .then(data => {
                           if (!data.err) {
                               document.getElementById('siteName').textContent = data.site_name;
-                              document.getElementById('siteState').textContent = data.state;
-                              document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "good.png" : "bad.png";
+                              //document.getElementById('siteState').textContent = data.state;
+                              document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
 
                               // Update cookies
                               setCookie('siteNameCache', data.site_name, 1);
                               setCookie('stateCache', data.state, 1);
                           } else {
                               document.getElementById('siteName').textContent = 'Error fetching data';
-                              document.getElementById('siteState').textContent = '';
-                              document.getElementById('statusImage').src = "bad.png";
+                              //document.getElementById('siteState').textContent = '';
+                              document.getElementById('statusImage').src = "/static/bad.png";
                           }
                       })
                       .catch(error => {
                           console.error('There was a problem with the fetch operation:', error);
                           document.getElementById('siteName').textContent = 'Error';
-                          document.getElementById('siteState').textContent = '';
-                          document.getElementById('statusImage').src = "bad.png";
+                          //document.getElementById('siteState').textContent = '';
+                          document.getElementById('statusImage').src = "/static/bad.png";
                       });
                 }
               });
@@ -170,7 +170,7 @@
 
                 if (cachedSiteName && cachedState) {
                     document.getElementById('siteName').textContent = cachedSiteName;
-                    document.getElementById('siteState').textContent = cachedState;
+                    //document.getElementById('siteState').textContent = cachedState;
                     document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
                 } else {
                     fetchAndUpdateStatus();
@@ -182,8 +182,7 @@
               </script>
               <div class="status-box align-items-center bg-light p-2 text-center">
                 <p id="siteName">Loading...</p>
-                <img id="statusImage" src="/static/bad.png" alt="Status" style="width:50px; height:auto;">
-                <p id="siteState"></p>
+                <img id="statusImage" src="/static/bad.png" alt="Status" style="width:25px; height:auto;">
             </div>
             {% endif %}
 
