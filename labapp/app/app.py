@@ -59,12 +59,12 @@ def cloudapp_fetch(url, timeout, prop, value, headers = {}):
     data['req_headers'] = clean_headers
     return data
 
-def cloudapp_headers(headers, req_headers):
+def cloudapp_headers(headers, required_headers):
     """
     Filter resp headers
     Return specified subset
     """
-    return {key: value for key, value in headers.items() if key.lower() in req_headers}
+    return {key: value for key, value in headers.items() if key.lower() in required_headers}
 
 
 @app.errorhandler(404)
