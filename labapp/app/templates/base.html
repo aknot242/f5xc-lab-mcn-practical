@@ -133,10 +133,15 @@
             <script>
               document.addEventListener('DOMContentLoaded', function() {
                   function fetchAndUpdateStatus() {
-                      let cachedStatus = getCookie('statusCache');
-                      if (cachedStatus) {
-                          document.getElementById('siteName').textContent = cachedStatus['site_name'];
+                      // Get cached values
+                      let cachedSiteName = getCookie('siteNameCache');
+                      let cachedState = getCookie('stateCache');
+              
+                      // Update the page with cached values if they exist
+                      if (cachedSiteName && cachedState) {
+                          document.getElementById('statusText').textContent = `Site Name: ${cachedSiteName}, State: ${cachedState}`;
                       } else {
+                          // Fetch from server if no valid cache exists
                           fetch('/_ce_status')
                               .then(response => {
                                   if (!response.ok) {
@@ -145,9 +150,15 @@
                                   return response.json();
                               })
                               .then(data => {
-                                  document.getElementById('siteName').textContent = data['site_name]'];
-                                  // Cache the status in a cookie for 1 day
-                                  setCookie('statusCache', data.site_name, 1);
+                                  if (!data.err) {
+                                      document.getElementById('statusText').textContent = `Site Name: ${data.site_name}, State: ${data.state}`;
+                                      // Cache the site name and state in cookies for 1 day
+                                      setCookie('siteNameCache', data.site_name, 1);
+                                      setCookie('stateCache', data.state, 1);
+                                  } else {
+                                      // Handle potential errors in data retrieval
+                                      document.getElementById('statusText').textContent = 'Error fetching status';
+                                  }
                               })
                               .catch(error => {
                                   console.error('There was a problem with the fetch operation:', error);
@@ -155,13 +166,20 @@
                               });
                       }
                   }
+              
+                  // Initial fetch on page load
                   fetchAndUpdateStatus();
+              
+                  // Re-fetch every 20 seconds
                   setInterval(() => {
-                      setCookie('statusCache', '', 0);
+                      // Expire the cookie explicitly by setting days to 0
+                      setCookie('siteNameCache', '', 0);
+                      setCookie('stateCache', '', 0);
                       fetchAndUpdateStatus();
-                  }, 10000);
+                  }, 20000);
               });
               </script>
+              
               <div class="status-box align-items-center bg-light p-2">
                 <p>Status: <strong id="siteName">Loading...</strong></p>
               </div>
