@@ -55,7 +55,6 @@
           }
           document.cookie = name + "=" + (value || "")  + expires + "; path=/";
       }
-      
       function getCookie(name) {
           var nameEQ = name + "=";
           var ca = document.cookie.split(';');
@@ -134,23 +133,33 @@
             <script>
               document.addEventListener('DOMContentLoaded', function() {
                   function fetchAndUpdateStatus() {
-                      fetch('/_ce_status')
-                          .then(response => {
-                              if (!response.ok) {
-                                  throw new Error('Network response was not ok');
-                              }
-                              return response.json();
-                          })
-                          .then(data => {
-                              document.getElementById('statusText').textContent = data.status;  // adjust depending on actual JSON structure
-                          })
-                          .catch(error => {
-                              console.error('There was a problem with the fetch operation:', error);
-                              document.getElementById('statusText').textContent = 'Error';  // error handling
-                          });
+                      let cachedStatus = getCookie('statusCache');
+                      if (cachedStatus) {
+                          document.getElementById('statusText').textContent = cachedStatus;
+                      } else {
+                          fetch('/_ce_status')
+                              .then(response => {
+                                  if (!response.ok) {
+                                      throw new Error('Network response was not ok');
+                                  }
+                                  return response.json();
+                              })
+                              .then(data => {
+                                  document.getElementById('statusText').textContent = data.status;
+                                  // Cache the status in a cookie for 1 day
+                                  setCookie('statusCache', data.status, 1);
+                              })
+                              .catch(error => {
+                                  console.error('There was a problem with the fetch operation:', error);
+                                  document.getElementById('statusText').textContent = 'Error';
+                              });
+                      }
                   }
                   fetchAndUpdateStatus();
-                  setInterval(fetchAndUpdateStatus, 10000);
+                  setInterval(() => {
+                      setCookie('statusCache', '', 0);
+                      fetchAndUpdateStatus();
+                  }, 10000);
               });
               </script>
               <div class="status-box align-items-center bg-light p-2">
