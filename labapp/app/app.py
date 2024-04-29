@@ -29,7 +29,8 @@ def render_md(file: str) -> str:
         content = md.read()
     html = markdown.markdown(
         content,
-        extensions=['markdown.extensions.attr_list','markdown.extensions.codehilite','markdown.extensions.fenced_code']
+        #extensions=['markdown.extensions.attr_list','markdown.extensions.codehilite','markdown.extensions.fenced_code']
+        extensions=['markdown.extensions.attr_list','markdown.extensions.fenced_code']
         )
     return html
 
@@ -125,14 +126,14 @@ def lb():
         udf=app.config['UDF']
     )
 
-@app.route('/path')
+@app.route('/route')
 def path():
-    """path page"""
+    """routing page"""
     ns = eph_ns()
-    html = render_md("markdown/path.md")
+    html = render_md("markdown/route.md")
     return render_template('exercise_standard.html',
-        title="MCN Practical: Path Routing",
-        content=html, 
+        title="MCN Practical: HTTP Routing",
+        content=html,
         ns=ns,
         udf=app.config['UDF']
     )
