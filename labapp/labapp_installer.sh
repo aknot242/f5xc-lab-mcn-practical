@@ -26,11 +26,14 @@ mkdir -p "$APPDIR" "$SCRIPTDIR"
 cat <<EOF >"$SCRIPTDIR/start_app.sh"
 #!/bin/bash
 
-# Ensure the directory exists and pull or clone repo
-if [ ! -d "\$APPDIR/.git" ]; then
-    git clone --branch $BRANCH $REPO_URL "$APPDIR"
+# Navigate to the app directory
+cd "$APPDIR"
+
+# Check if the directory is a git repository and if not, clone it
+if [ ! -d ".git" ]; then
+    git clone --branch $BRANCH $REPO_URL .
 else
-    cd "$APPDIR"
+    # Reset repository to match the remote repository
     git remote set-url origin $REPO_URL
     git fetch --prune
     git checkout $BRANCH
@@ -42,7 +45,7 @@ fi
 pip3 install -r requirements.txt
 
 # Start the Gunicorn server
-gunicorn --workers 4 --bind 0.0.0.0:1337 app:app
+export UDF="true" && gunicorn --workers 4 --chdir labapp/app --bind 0.0.0.0:1337 app:app
 EOF
 
 chmod +x "$SCRIPTDIR/start_app.sh"
