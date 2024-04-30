@@ -42,7 +42,7 @@ Build an origin pool and load balancer based on the exercise requirements.
 #### **Test Criteria**
 
 ```http
-GET https://eph-ns.mcn-lab.f5demos.com/raw HTTP/1.1
+GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
@@ -125,7 +125,7 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
 #### **Test Criteria**
 
 ```http
-GET https://eph-ns.mcn-lab.f5demos.com/raw HTTP/1.1
+GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
