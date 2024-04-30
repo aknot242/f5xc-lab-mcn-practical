@@ -14,7 +14,7 @@ F5 XC App Connect is a distributed L7 proxy that provide intelligent routing, vi
 
 ### **Exercise 1: Path Routing**
 
-Build routing rules and configure your load balancer to route traffic between the two cloud apps based on HTTP the request url.
+Build routing rules and configure your load balancer to route traffic between the two cloud apps based on the request url.
 
 <ul class="list-group">
   <li class="list-group-item">
@@ -23,11 +23,11 @@ Build routing rules and configure your load balancer to route traffic between th
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
-  Route requests to <u>https://<i>ephemeral-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u> to the AWS cloud app. 
+  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u>" to the AWS cloud app. 
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
-  Route requests to <u>https://<i>ephemeral-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u> to the Azure cloud app. 
+  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u>" to the Azure cloud app. 
   </li>
 </ul>
 

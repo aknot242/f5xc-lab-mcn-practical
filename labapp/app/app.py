@@ -161,7 +161,7 @@ def header():
     ns = eph_ns()
     html = render_md("markdown/manipulation.md")
     return render_template('exercise_standard.html',
-        title="MCN Practical: Headers",
+        title="MCN Practical: Manipulation",
         content=html, 
         ns=ns,
         udf=app.config['UDF']
