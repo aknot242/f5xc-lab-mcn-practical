@@ -175,7 +175,7 @@ def lb_aws():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(url, 5, 'request_env', 'AWS')
+        data = cloudapp_fetch(url, 5, 'env', 'AWS')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -188,7 +188,7 @@ def lb_azure():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(url, 5, 'request_env', 'Azure')
+        data = cloudapp_fetch(url, 5, 'env', 'Azure')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -203,8 +203,8 @@ def route1():
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/aws/raw"
         azure_url = f"https://{ns}.{base_url}/azure/raw"
-        aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS')
-        azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure')
+        aws_data = cloudapp_fetch(aws_url, 5, 'env', 'AWS')
+        azure_data = cloudapp_fetch(azure_url, 5, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
@@ -221,8 +221,8 @@ def route2():
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
-        aws_url = f"https://{ns}.{base_url}/raw"
-        azure_url = f"https://{ns}.{base_url}/raw"
+        aws_url = f"https://{ns}.{base_url}/"
+        azure_url = f"https://{ns}.{base_url}/"
         aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS', headers={"X-MCN-lab": "aws"})
         azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure', headers={"X-MCN-lab": "azure"})
         data = {
