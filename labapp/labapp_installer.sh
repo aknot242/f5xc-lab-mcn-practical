@@ -1,57 +1,54 @@
 #!/bin/bash
 
-# Check if Docker is installed, install it if it's not
-if ! command -v pip &> /dev/null
-then
-    # Update apt
-    sudo DEBIAN_FRONTEND=noninteractive apt-get update --yes
-    echo "pip could not be found, installing..."
-    sudo apt-get install -y python3-pip
+# Ensure the script is run with root privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    exit
+fi
+
+# Check for Python3 pip and install if it's missing
+if ! command -v pip3 &> /dev/null; then
+    echo "pip3 could not be found, updating repositories and installing..."
+    sudo apt-get update --quiet
+    sudo apt-get install --quiet --yes python3-pip
 fi
 
 # Variable Declarations
-IMAGE=ghcr.io/f5devcentral/f5xc-lab-mcn-practical/labapp:latest
-SERVICE=mcn-practical-labapp.service
-APPDIR=/opt/mcn-practical-labapp/app
-SCRIPTDIR=/opt/mcn-practical-labapp/script
-REPO_URL=https://github.com/f5devcentral/f5xc-lab-mcn-practical.git
-BRANCH=dev
+REPO_URL="https://github.com/f5devcentral/f5xc-lab-mcn-practical.git"
+BRANCH="main"
+APPDIR="/opt/mcn-practical-labapp/app"
+SCRIPTDIR="/opt/mcn-practical-labapp/scripts"
 
-# Create directories
-mkdir -p $SCRIPTDIR
-mkdir -p $APPDIR
+# Create necessary directories
+mkdir -p "$APPDIR" "$SCRIPTDIR"
 
-# Create the start_labapp.sh script
-cat <<EOF >$SCRIPTDIR/start_app.sh
+# Create the start script
+cat <<EOF >"$SCRIPTDIR/start_app.sh"
 #!/bin/bash
 
-if [ ! -d "$APPDIR/.git" ]; then
-    git clone -b $BRANCH $REPO_URL $APPDIR
+# Ensure the directory exists and pull or clone repo
+if [ ! -d "\$APPDIR/.git" ]; then
+    git clone --branch $BRANCH $REPO_URL "$APPDIR"
 else
-    cd $APPDIR
-    # Ensure that the local repository is tracking the correct remote and branch
+    cd "$APPDIR"
     git remote set-url origin $REPO_URL
-    git fetch --all
-    # Reset to the specified branch forcefully
+    git fetch --prune
     git checkout $BRANCH
-    git reset --hard origin/$BRANCH
+    git reset --hard "origin/$BRANCH"
     git clean -fdx
-    git pull origin $BRANCH
 fi
 
 # Install required Python packages
-cd $APPDIR/labapp/app 
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Start the Gunicorn server
 gunicorn --workers 4 --bind 0.0.0.0:1337 app:app
 EOF
 
-# Make the script executable
-chmod +x $SCRIPTDIR/start_app.sh
+chmod +x "$SCRIPTDIR/start_app.sh"
 
 # Create systemd service file
-cat <<EOF >/etc/systemd/system/$SERVICE
+cat <<EOF >"/etc/systemd/system/mcn-practical-labapp.service"
 [Unit]
 Description=MCN Practical Lab App
 After=network.target
@@ -60,14 +57,15 @@ After=network.target
 WorkingDirectory=$APPDIR
 ExecStart=/bin/bash $SCRIPTDIR/start_app.sh
 Restart=always
+Type=simple
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# Reload systemd, enable and start the service
+# Reload systemd to recognize new service, enable it
 systemctl daemon-reload
-systemctl enable $SERVICE
-systemctl start $SERVICE
+systemctl enable mcn-practical-labapp.service
+systemctl start mcn-practical-labapp.service
 
-echo "$SERVICE has been installed and started as a systemd service."
+echo "mcn-practical-labapp.service has been installed."
