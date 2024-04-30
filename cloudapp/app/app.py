@@ -49,6 +49,7 @@ def create_app():
         return jsonify(response)
 
     @app.route('/<env>/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/<env>/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def env_echo(env):
         if env.lower() == app.config['site'].lower():
             return echo()
