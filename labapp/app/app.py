@@ -155,11 +155,11 @@ def path():
         udf=app.config['UDF']
     )
 
-@app.route('/header')
+@app.route('/manipulation')
 def header():
     """header page"""
     ns = eph_ns()
-    html = render_md("markdown/header.md")
+    html = render_md("markdown/manipulation.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: Headers",
         content=html, 
@@ -235,4 +235,4 @@ def route2():
         
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=False)
+    app.run(host='127.0.0.1', port=5001, debug=False)

@@ -6,7 +6,7 @@
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Log in to the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/) and open any namespaced tile (Multi-Cloud App Connect, Distributed Apps, etc.). Your ephemeral NS name is a randomly generated concatenation of _adjective_-_animal_ in the navigation bar towards the top.
+Log in to the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/) and open any namespaced tile (Multi-Cloud App Connect, Distributed Apps, etc.). Your ephemeral namespace is a randomly generated concatenation of _adjective_-_animal_ in the navigation bar towards the top.
 
 <img src="/static/eph-ns.png" width="500px" height="auto" alt="eph-ns"/>
 
