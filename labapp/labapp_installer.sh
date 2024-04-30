@@ -42,7 +42,7 @@ else
 fi
 
 # Install required Python packages
-pip3 install -r requirements.txt
+pip3 install -r labapp/app/requirements.txt
 
 # Start the Gunicorn server
 export UDF="true" && gunicorn --workers 4 --chdir labapp/app --bind 0.0.0.0:1337 app:app
