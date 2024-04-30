@@ -174,7 +174,7 @@ def lb_aws():
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
-        url = f"https://{ns}.{app.config['base_url']}/raw"
+        url = f"https://{ns}.{app.config['base_url']}"
         data = cloudapp_fetch(url, 5, 'request_env', 'AWS')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
@@ -187,7 +187,7 @@ def lb_azure():
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
-        url = f"https://{ns}.{app.config['base_url']}/raw"
+        url = f"https://{ns}.{app.config['base_url']}"
         data = cloudapp_fetch(url, 5, 'request_env', 'Azure')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
