@@ -69,6 +69,5 @@ EOF
 # Reload systemd to recognize new service, enable it
 systemctl daemon-reload
 systemctl enable mcn-practical-labapp.service
-systemctl start mcn-practical-labapp.service
 
 echo "mcn-practical-labapp.service has been installed."
