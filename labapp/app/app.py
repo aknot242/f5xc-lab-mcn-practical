@@ -223,8 +223,8 @@ def route2():
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/"
         azure_url = f"https://{ns}.{base_url}/"
-        aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS', headers={"X-MCN-lab": "aws"})
-        azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure', headers={"X-MCN-lab": "azure"})
+        aws_data = cloudapp_fetch(aws_url, 5, 'env', 'AWS', headers={"X-MCN-lab": "aws"})
+        azure_data = cloudapp_fetch(azure_url, 5, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
         data = {
             "aws": aws_data,
             "azure": azure_data
