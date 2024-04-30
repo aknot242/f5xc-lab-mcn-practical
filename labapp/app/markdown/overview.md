@@ -19,7 +19,7 @@ When your UDF deployment launched, two automated processes started - Customer Ed
 ## **Customer Edge**
 
 The CE in your UDF deployment is being registered with the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/).
-CEs on first launch update software and, often, thier OS. This can be very time consuming.
+CEs on first launch update software and, often, their OS. This can be very time consuming.
 This process will take 15-20 min from when the CE is booted.
 You can still get started on some preliminary tasks while waiting. 
 
