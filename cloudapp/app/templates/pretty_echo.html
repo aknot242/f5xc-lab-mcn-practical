@@ -50,6 +50,12 @@
             </div>
         </div>
         <div class="card mt-3">
+            <div class="card-header">Info</div>
+            <div class="card-body json-output">
+                <pre><code class="json">{{ info | to_pretty_json }}</code></pre>
+            </div>
+        </div>
+        <div class="card mt-3">
             <div class="card-header">Headers</div>
             <div class="card-body json-output">
                 <pre><code class="json">{{ request_headers | to_pretty_json }}</code></pre>

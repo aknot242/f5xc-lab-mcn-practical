@@ -21,7 +21,8 @@ def create_app():
             'error': err.description
         }
 
-    @app.route('/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def echo():
         """
         Echo the request headers and data
@@ -35,20 +36,26 @@ def create_app():
                 print(e)
         response = {
             'request_headers': headers,
-            'request_env': app.config['site']
+            'env': app.config['site'],
+            'info': {
+                'method': request.method,
+                'url': request.url,
+                'path': request.path,
+                'full_path': request.full_path
+            }
         }
         if data:
             response['request_data'] = data
         return jsonify(response)
 
-    @app.route('/<env>/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/<env>/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def env_echo(env):
         if env.lower() == app.config['site'].lower():
             return echo()
         return jsonify({'error': 'Invalid environment'})
 
-    @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
-    @app.route('/echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/pretty', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/pretty_echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def echo_html():
         """ Same as /raw, just prettier"""
         headers = dict(request.headers)
@@ -62,7 +69,13 @@ def create_app():
                 data = request.form.to_dict()
             except Exception:
                 pass
-        return render_template('pretty_echo.html', request_env=app.config['site'], request_headers=headers, request_data=data)
+        info = {
+            'method': request.method,
+            'url': request.url,
+            'path': request.path,
+            'full_path': request.full_path
+            }
+        return render_template('pretty_echo.html', request_env=app.config['site'], info=info, request_headers=headers, request_data=data)
     
     return app
 
