@@ -22,7 +22,7 @@ def create_app():
         }
 
     @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
-    @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    @app.route('/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def echo():
         """
         Echo the request headers and data
