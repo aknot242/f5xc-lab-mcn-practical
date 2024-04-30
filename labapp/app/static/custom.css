@@ -1,6 +1,5 @@
 
 body {
-  min-height: 100vh;
   min-height: -webkit-fill-available;
 }
 
@@ -18,6 +17,19 @@ main {
   overflow-x: auto;
   overflow-y: auto;
 }
+
+.row {
+  height: 100%;
+}
+
+.status-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}
+
 
 .markdown-body {
   padding: 50px;

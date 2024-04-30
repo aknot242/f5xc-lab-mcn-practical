@@ -1,4 +1,5 @@
-FROM python:3.10.14-slim
+#FROM python:3.10.14-slim
+FROM python:3.11-alpine3.18
 LABEL org.opencontainers.image.description MCN Practical Lab App
 
 ENV PYTHONUNBUFFERED=1
@@ -6,8 +7,5 @@ WORKDIR /app
 COPY app .
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 5000
-ENV FLASK_APP app.py
-ENV FLASK_RUN_HOST 0.0.0.0
-
-CMD ["flask", "run"]
+EXPOSE 8080
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]

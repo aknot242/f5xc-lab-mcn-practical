@@ -11,10 +11,30 @@
         "profile_name": "default",
         "project_name": "cloudapp",
         "runtime": "python3.11",
-        "s3_bucket": "mcn-prac-cloudapp",
+        "s3_bucket": "mcn-prac-cloudapp-dev",
         "aws_region": "us-east-1",
         "environment_variables": {
             "SITE": "AWS"
         }
+    },
+    "prod": {
+        "app_function": "app.app",
+        "exclude": [
+            "boto3",
+            "dateutil",
+            "botocore",
+            "s3transfer",
+            "concurrent"
+        ],
+        "profile_name": "default",
+        "project_name": "cloudapp",
+        "runtime": "python3.11",
+        "s3_bucket": "mcn-prac-cloudapp-prod",
+        "aws_region": "us-east-1",
+        "environment_variables": {
+            "SITE": "AWS"
+        },
+        "certificate_arn": "arn:aws:acm:us-east-1:317124676658:certificate/6149d976-8908-46f9-aa4a-e518b1dc16aa",
+        "domain": "aws-mcn-practical.f5demos.com"
     }
 }

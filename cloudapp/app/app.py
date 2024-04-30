@@ -13,6 +13,14 @@ def create_app():
     def to_pretty_json(value):
         return json.dumps(value, sort_keys=True, indent=4)
 
+    @app.errorhandler(401)
+    @app.errorhandler(404)
+    @app.errorhandler(500)
+    def return_err(err):
+        return {
+            'error': err.description
+        }
+
     @app.route('/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     def echo():
         """
@@ -32,6 +40,12 @@ def create_app():
         if data:
             response['request_data'] = data
         return jsonify(response)
+
+    @app.route('/<env>/raw', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    def env_echo(env):
+        if env.lower() == app.config['site'].lower():
+            return echo()
+        return jsonify({'error': 'Invalid environment'})
 
     @app.route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
     @app.route('/echo', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
