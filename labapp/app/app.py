@@ -221,8 +221,8 @@ def route2():
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
-        aws_url = f"https://{ns}.{base_url}/aws/raw"
-        azure_url = f"https://{ns}.{base_url}/azure/raw"
+        aws_url = f"https://{ns}.{base_url}/raw"
+        azure_url = f"https://{ns}.{base_url}/raw"
         aws_data = cloudapp_fetch(aws_url, 5, 'request_env', 'AWS', headers={"X-MCN-lab": "aws"})
         azure_data = cloudapp_fetch(azure_url, 5, 'request_env', 'Azure', headers={"X-MCN-lab": "azure"})
         data = {
