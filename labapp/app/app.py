@@ -248,7 +248,7 @@ def ex_test():
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://foo.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 5, 'info', 'bar')
+        data = cloudapp_fetch2(s, url, 5, 'info', 'bar')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
