@@ -7,16 +7,22 @@
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
 
-So far we've built an object handling load balancing, routing, and content manipulation across multiple sites.
-XC refers to these as "load balancers" but it's really the holistic representation of a service whose components live across a distributed network.
-Our object is a simplified representation that does not include WAAP, API Protection, or service policies.
-XC is incredibly flexible in defining where that object is advertised.
+The configuration built so far handles load balancing, routing, and content manipulation.
+XC refers to this object as a "load balancer" -- but it's really the holistic representation of an application whose service endpoints live across the distributed network.
+The object is simple -- it doesn't yet include configuration for WAAP, API protection, or a service policy.
+
+What seperate XC from traditional ADCs is the flexibility of defining <strong>where the object is advertised</strong>.
 
 <div style="height:25px"></div>
 
 ### **Exercise 1: Advertise Policy**
 
--- advertise from the Virtual Site
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Configure the load balancer to be advertised on the virtual site <strong>shared/mcn-practical-udf-sites</strong>. 
+  </li>
+</ul>
 
 <div style="height:25px"></div>
 
@@ -27,7 +33,9 @@ GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
-  "env": "azure",
+  "info": {
+    "path": "/"
+  }
   ...
 }
 ```
@@ -38,17 +46,30 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_manip1', 'result');
+    makeHttpRequest('requestBtn1', '/_port1', 'result');
 });
 </script>
 
+
+<div id="hints">
+<p>
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Why did that work?</a>
+</p>
+<div class="row">
+      <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
+      <img src="/static/vsite2.png" width="600px" height="auto" alt="temp">
+      <img src="/static/vsite.png" width="900px" height="auto" alt="temp">
+    </div>
+</div>
+</div>
+
 <div style="height:25px"></div>
 
-### **Exercise 2: Find a Friend (Optional)**
+### **Exercise 2: Find a Friend**
 
-Test a friend's site. Look at the headers from the previous exercises.
+Do you have a friend working on the lab?
+Ask them their ephemeral namespace and test that their load balancer is being advertised from your site.
 
-We need an input button for the friend's LB. I can keep my funny name LB around for this as well. 
 
 <div style="height:25px"></div>
 
@@ -59,7 +80,9 @@ GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
-  "env": "azure",
+  "info": {
+    "path": "/"
+  }
   ...
 }
 ```
@@ -76,7 +99,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Nice 🚀! If you've completed all the exercises so far, you have a good foundation for how App Connect addresses common L7 MCN scenarios.
-In subsequent labs, we'll explore security and observabilty concepts that build on MCN functionality.
-Head over to the <a href="/vnet" class="alert-link">Network Connect</a> exercise.
+🚀 Nice 🚀! 
+</br>
+
 

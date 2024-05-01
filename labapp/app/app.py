@@ -62,6 +62,7 @@ def cloudapp_fetch(session, url, timeout, prop, value, headers = {}):
 def headers_cleaner(headers):
     """
     Remove headers that contain specific substrings.
+    Use this to make responses look nicer.
     """
     unwanted_substrings = ['x-envoy', 'cloudfront', 'x-k8se'] 
     filtered_headers = {
@@ -179,7 +180,7 @@ def port():
 
 @app.route('/vnet')
 def vnet():
-    """reference page"""
+    """vnet page"""
     ns = eph_ns()
     html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
@@ -190,7 +191,7 @@ def vnet():
 
 @app.route('/netpolicy')
 def netp():
-    """reference page"""
+    """netpolicy page"""
     ns = eph_ns()
     html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
@@ -226,6 +227,7 @@ def ex_test():
     """Example test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://foo.{app.config['base_url']}/"
         data = cloudapp_fetch(s, url, 5, 'info', 'bar')
         return jsonify(status='success', data=data)
@@ -237,6 +239,7 @@ def ex_test2():
     """Example test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://bar.{app.config['base_url']}/"
         data = cloudapp_fetch(s, url, 5, 'info', 'foo')
         return jsonify(status='success', data=data)
@@ -249,6 +252,7 @@ def lb_aws():
     """Azure LB test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
@@ -263,6 +267,7 @@ def lb_azure():
     """Azure LB test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
@@ -277,6 +282,7 @@ def route1():
     """First Route Test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
@@ -298,6 +304,7 @@ def route2():
     """First Route Test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
@@ -321,11 +328,30 @@ def manip1():
     """First Manip Test"""
     try:
         s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/aws/raw"
+        r_data = cloudapp_fetch(s, url, 5, 'info', {"method": "GET", "path": "/raw"})
+        return jsonify(status='success', data=r_data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_manip2')
+def manip2():
+    """First Manip Test"""
+    try:
+        s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        url = f"https://{ns}.{base_url}/"
+
+
         r_data = cloudapp_fetch(s, url, 5, 'info', {"method": "GET", "path": "/raw"})
         return jsonify(status='success', data=r_data)
     except (LabException, requests.RequestException, ValueError) as e:

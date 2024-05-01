@@ -162,19 +162,17 @@ Host: eph-ns.mcn-lab.f5demos.com
 ```
 
 <div class="left-aligned-button-container">
-    <button id="requestBtn2" class="btn btn-primary">Test Load Balancer</button>
+    <button id="requestBtn3" class="btn btn-primary">Test Load Balancer</button>
 </div>
-<div id="result2" class="mt-3"></div>
+<div id="result3" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    makeHttpRequest('requestBtn2', '/_manip2', 'result2');
+    makeHttpRequest('requestBtn2', '/_manip3', 'result3');
 });
 </script>
 
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Nice 🚀! If you've completed all the exercises so far, you have a good foundation for how App Connect addresses common L7 MCN scenarios.
-In subsequent labs, we'll explore security and observabilty concepts that build on MCN functionality.
-Head over to the <a href="/vnet" class="alert-link">Network Connect</a> exercise.
+Finish off App Connect with an exercise on load balancer <strong><a href="/portability" class="alert-link">portability</a></strong>.
 
