@@ -51,7 +51,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_manip1', 'result');
+    makeHttpRequest('requestBtn1', '/_manip1', 'result1');
 });
 </script>
 
