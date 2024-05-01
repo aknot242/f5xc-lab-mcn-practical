@@ -17,84 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link href="/static/custom.css" rel="stylesheet">
 
-    <script>
-      function setCookie(name, value, days) {
-          var expires = "";
-          if (days) {
-              var date = new Date();
-              date.setTime(date.getTime() + (days*24*60*60*1000));
-              expires = "; expires=" + date.toUTCString();
-          }
-          document.cookie = name + "=" + (value || "") + expires + "; path=/";
-      }
-      function getCookie(name) {
-          var nameEQ = name + "=";
-          var ca = document.cookie.split(';');
-          for(var i=0; i < ca.length; i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1,c.length);
-              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-          }
-          return null;
-      }
-      async function makeHttpRequest(buttonId, requestUrl, resultDivId) {
-        const button = document.getElementById(buttonId);
-        const resultDiv = document.getElementById(resultDivId);
-        button.disabled = true;
-        try {
-            const response = await axios.get(requestUrl);
-            if (response.data.status === 'success') {
-                const prettyJson = JSON.stringify(response.data.data, null, 4);
-                resultDiv.innerHTML = `<pre class="alert alert-success"><b>Success:</b><br><code>${prettyJson}</code></pre>`;
-            } else {
-                const errJson = JSON.stringify(response.data.error, null, 4);
-                resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
-            }
-        } catch (error) {
-            resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        } finally {
-            button.disabled = false;
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-      }
-      document.addEventListener('DOMContentLoaded', function() {
-          function updateCollapsibleStates() {
-              setTimeout(() => {
-                  let states = [];
-                  document.querySelectorAll('.collapse').forEach((collapse) => {
-                      states.push({
-                          id: collapse.id,
-                          open: collapse.classList.contains('show')
-                      });
-                  });
-                  setCookie('navStates', JSON.stringify(states), 1);
-              }, 500); // Consider verifying if 350ms is adequate to wait for the animation to finish.
-          }
-
-          // Event listeners for toggle buttons
-          document.querySelectorAll('.btn-toggle').forEach(button => {
-              button.addEventListener('click', function() {
-                  updateCollapsibleStates();
-              });
-          });
-          // Initialize states from cookie
-          const states = getCookie('navStates');
-          if (states) {
-              const accordionStates = JSON.parse(states);
-              accordionStates.forEach(state => {
-                  let element = document.getElementById(state.id);
-                  if (element) {
-                      let bsCollapse = new bootstrap.Collapse(element, {
-                          toggle: false
-                      });
-                      state.open ? bsCollapse.show() : bsCollapse.hide();
-                  }
-              });
-          }
-          // Ensure states are captured initially
-          updateCollapsibleStates();
-      });
-      </script>
+    <script src="/static/helpers.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -149,64 +72,24 @@
                     </button>
                     <div class="collapse" id="status-collapse">
                       <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-dark rounded">Reference</a></li>
-                        <li><a href="#" class="link-dark rounded">Scoreboard</a></li>
+                        <li><a href="/ref" class="link-dark rounded">Reference</a></li>
+                        <li><a href="/score" class="link-dark rounded">Scoreboard</a></li>
                       </ul>
                     </div>
                   </li>
                 </ul>
-              {% if config['UDF'] %}
-                <script>
-                  function fetchAndUpdateStatus() {
-                    fetch('/_ce_status')
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (!data.err) {
-                                document.getElementById('siteName').textContent = data.site_name;
-                                document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
-  
-                                // Update cookies
-                                setCookie('siteNameCache', data.site_name, 1);
-                                setCookie('stateCache', data.state, 1);
-                            } else {
-                                document.getElementById('siteName').textContent = 'CE info unavailable';
-                                document.getElementById('statusImage').src = "/static/bad.png";
-                            }
-                        })
-                        .catch(error => {
-                            console.error('There was a problem with the fetch operation:', error);
-                            document.getElementById('siteName').textContent = 'Error';
-                            document.getElementById('statusImage').src = "/static/bad.png";
-                        });
-                  }
-                  document.addEventListener('DOMContentLoaded', function() {
-                    let cachedSiteName = getCookie('siteNameCache');
-                    let cachedState = getCookie('stateCache');
-    
-                    if (cachedSiteName && cachedState) {
-                        document.getElementById('siteName').textContent = cachedSiteName;
-                        document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
-                    } else {
-                        fetchAndUpdateStatus();
-                    }
-    
-                    setInterval(fetchAndUpdateStatus, 20000);
-                });
-    
-                </script>
-                <div class="status-box align-items-center bg-light p-2 text-center">
-                    <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
-                    <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
-                </div>
-              {% endif %}
-
         </div>
-    </div>
+        <script>
+          $(function () {
+            $('#sidebar').on('shown.bs.collapse', function (e) {
+                saveActiveAccordionPanel('accordion-activePanel', e);
+            })        
+          });
+          restoreAccordionPanel('accordion-activePanel', '#sidebar');
+        </script>
+    
+    
+      </div>
         
         <!-- Main Content -->
         <main class="col">
@@ -217,5 +100,55 @@
 </div>
 
 </body>
+
+{% if config['UDF'] %}
+<script>
+    function fetchAndUpdateStatus() {
+      fetch('/_ce_status')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+              if (!data.err) {
+                  document.getElementById('siteName').textContent = data.site_name;
+                  document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+
+                  // Update cookies
+                  setCookie('siteNameCache', data.site_name, 1);
+                  setCookie('stateCache', data.state, 1);
+              } else {
+                  document.getElementById('siteName').textContent = 'CE info unavailable';
+                  document.getElementById('statusImage').src = "/static/bad.png";
+              }
+          })
+          .catch(error => {
+              console.error('There was a problem with the fetch operation:', error);
+              document.getElementById('siteName').textContent = 'Error';
+              document.getElementById('statusImage').src = "/static/bad.png";
+          });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      let cachedSiteName = getCookie('siteNameCache');
+      let cachedState = getCookie('stateCache');
+
+      if (cachedSiteName && cachedState) {
+          document.getElementById('siteName').textContent = cachedSiteName;
+          document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+      } else {
+          fetchAndUpdateStatus();
+      }
+
+      setInterval(fetchAndUpdateStatus, 20000);
+  });
+
+  </script>
+  <div class="status-box align-items-center bg-light p-2 text-center">
+      <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
+      <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
+  </div>
+  {% endif %}
 </html>
 

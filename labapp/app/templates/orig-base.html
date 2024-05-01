@@ -57,6 +57,43 @@
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
       }
+      document.addEventListener('DOMContentLoaded', function() {
+          function updateCollapsibleStates() {
+              setTimeout(() => {
+                  let states = [];
+                  document.querySelectorAll('.collapse').forEach((collapse) => {
+                      states.push({
+                          id: collapse.id,
+                          open: collapse.classList.contains('show')
+                      });
+                  });
+                  setCookie('navStates', JSON.stringify(states), 1);
+              }, 500); // Consider verifying if 350ms is adequate to wait for the animation to finish.
+          }
+
+          // Event listeners for toggle buttons
+          document.querySelectorAll('.btn-toggle').forEach(button => {
+              button.addEventListener('click', function() {
+                  updateCollapsibleStates();
+              });
+          });
+          // Initialize states from cookie
+          const states = getCookie('navStates');
+          if (states) {
+              const accordionStates = JSON.parse(states);
+              accordionStates.forEach(state => {
+                  let element = document.getElementById(state.id);
+                  if (element) {
+                      let bsCollapse = new bootstrap.Collapse(element, {
+                          toggle: false
+                      });
+                      state.open ? bsCollapse.show() : bsCollapse.hide();
+                  }
+              });
+          }
+          // Ensure states are captured initially
+          updateCollapsibleStates();
+      });
       </script>
 </head>
 <body>
@@ -118,7 +155,7 @@
                     </div>
                   </li>
                 </ul>
-              {% if udf %}
+              {% if config['UDF'] %}
                 <script>
                   function fetchAndUpdateStatus() {
                     fetch('/_ce_status')
@@ -163,7 +200,7 @@
     
                 </script>
                 <div class="status-box align-items-center bg-light p-2 text-center">
-                    <p><strong id="siteName">Loading...</strong></p>
+                    <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
                     <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
                 </div>
               {% endif %}

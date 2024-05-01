@@ -153,11 +153,44 @@ def path():
 
 @app.route('/manipulation')
 def header():
-    """header page"""
+    """manipulation page"""
     ns = eph_ns()
     html = render_md("markdown/manipulation.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: Manipulation",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/portability')
+def port():
+    """portability page"""
+    ns = eph_ns()
+    html = render_md("markdown/portability.md")
+    return render_template('exercise_standard.html',
+        title="MCN Practical: Portability",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/ref')
+def ref():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/score')
+def score():
+    """scoreboard page"""
+    ns = eph_ns()
+    html = render_md("markdown/score.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Scoreboard",
         content=html, 
         ns=ns
     )
