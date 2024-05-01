@@ -8,7 +8,7 @@
 
 Since web traffic has been traversing proxies, engineers have needed to alter HTTP content for increased observability ([XFF](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For)), performance ([cache-control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)), or other reasons ([JWT](https://en.wikipedia.org/wiki/JSON_Web_Token)). 
 "Proxy Pass" functionality has been part of web servers since the early Apache days.
-Adding, removing, or altering HTTP Headers is tablestakes for ADCs, CDNs, and software-based load balancers.
+Adding, removing, and altering Headers are tablestakes for ADCs, CDNs, and software-based load balancers.
 F5 XC App Connect enables this functionality granularly on routes or broadly on the load balancer.
 
 
@@ -21,10 +21,10 @@ Configure a path <strong>prefix rewrite</strong> to remove part of the request p
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Keep your routing rules from the previous exercise in place. 
+  Keep your configuration from the previous exercise in place. 
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com<strong>/aws/raw</strong></u>" need to arrive at the origin with a path of "<strong>/raw</strong></u>"
   </li>
 </ul>
@@ -63,16 +63,12 @@ Since questions on this functionality are often asked on [F5 DevCentral](https:/
   <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Rewrite Hint</button>
 </p>
 <div class="row">
-
-  <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
-    <div class="">
+      <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
       <img src="/static/rewrite1.png" width="800px" height="auto" alt="temp">
     </div>
-  </div>
-
   <div class="collapse multi-collapse" id="multiCollapseExample2" data-bs-parent="#hints">
     <div class="">
-      <img src="/static/rewrite2.png" width="800px" height="auto" alt="temp">
+      <img src="/static/rewrite2.png" width="500px" height="auto" alt="temp">
     </div>
   </div>
 </div>

@@ -49,9 +49,8 @@ For testing, you can access an endpoint of each cloud app from your browser.
 <img src="/static/aws.png" height="100px" width="auto" class="rounded"/>
 </a>
 <a href="https://azure-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
-<img src="/static/azure.png" height="100px" width="auto" class="rounded"/>
-</a>
-</p>
+<img src="/static/azure.png" height="100px" width="auto"  class="rounded"/>
+</a></p>
 
 
 
