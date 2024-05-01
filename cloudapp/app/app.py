@@ -39,9 +39,7 @@ def create_app():
             'env': app.config['site'],
             'info': {
                 'method': request.method,
-                'url': request.url,
-                'path': request.path,
-                'full_path': request.full_path
+                'path': request.path
             }
         }
         if data:
