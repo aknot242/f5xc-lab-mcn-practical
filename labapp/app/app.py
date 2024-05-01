@@ -59,6 +59,25 @@ def cloudapp_fetch(session, url, timeout, prop, value, headers = {}):
         return data
     return data
 
+def cloudapp_fetch2(session, url, timeout, prop, key, value):
+    """
+    Fetch data from URL
+    Validate if a specific key-value pair is present in the dictionary located at `prop` in the JSON response
+    """
+    response = session.get(url, timeout=timeout)
+    response.raise_for_status()
+    data = response.json()
+
+    prop_data = data.get(prop, {})
+    if not isinstance(prop_data, dict) or prop_data.get(key) != value:
+        raise ValueError(f"Expected {key}: {value} in {prop}, but got {key}: {prop_data.get(key)}")
+
+    if data.get("request_headers"):
+        clean_headers = headers_cleaner(data['request_headers'])
+        data['request_headers'] = clean_headers
+
+    return data
+
 def headers_cleaner(headers):
     """
     Remove headers that contain specific substrings.
