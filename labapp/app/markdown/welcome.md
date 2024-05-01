@@ -32,7 +32,7 @@ The **site name** is needed when configuring the load balancer advertise policy.
 
 ### **Account Provisioning**
 
-Check the email used to launch your UDF deployment for a "welcome" or password reset email to the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/).
+Check the email used to launch your UDF deployment for a "welcome" or password reset email to the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
 Update your password and log into the tenant.
 
 <p float="left">
@@ -50,16 +50,16 @@ Here's a few things you can do while waiting for the CE to be registered and pro
 
 <ul class="list-group">
   <li class="list-group-item">
-    <i class="bi bi-envelope-exclamation"></i>&nbsp; &nbsp;
-    Check for the tenant "welcome" email.
-  </li>
-  <li class="list-group-item">
     <i class="bi bi-book"></i>&nbsp; &nbsp;
     Read the lab <strong><a href="/overview">overview</a></strong>.
   </li>
   <li class="list-group-item">
     <i class="bi bi-gear"></i>&nbsp; &nbsp;
     Configure lab <strong><a href="/settings">settings</a></strong> after logging into the tenant.
+  </li>
+  <li class="list-group-item">
+    <i class="bi bi-envelope-exclamation"></i>&nbsp; &nbsp;
+    Check for the tenant "welcome" email.
   </li>
   <li class="list-group-item">
     <i class="bi bi-cup-hot"></i></i>&nbsp; &nbsp;
@@ -70,6 +70,6 @@ Here's a few things you can do while waiting for the CE to be registered and pro
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Welcome to the lab! Next, read an <strong><a href="/overview" class="alert-link">overview</a></strong> that explains the lab environment, tools, and exercises.
+Welcome to the lab! Next, read an <strong><a href="/overview">overview</a></strong> that explains the lab environment, tools, and exercises.
 
 

@@ -20,11 +20,11 @@ Configure a path <strong>prefix rewrite</strong> to remove part of the request p
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Keep your routing rules from the previous exercise in place. 
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com<strong>/aws/raw</strong></u>" need to arrive at the origin with a path of "<strong>/raw</strong></u>"
   </li>
 </ul>

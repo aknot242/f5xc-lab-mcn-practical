@@ -18,15 +18,15 @@ Build routing rules and configure your load balancer to route traffic between th
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Reuse the origin pools from the previous exercise
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u>" to the AWS cloud app. 
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u>" to the Azure cloud app. 
   </li>
 </ul>
@@ -76,11 +76,11 @@ Build rules to route traffic between the two cloud apps based on an arbitrary HT
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests with an "<strong>X-MCN-Lab: aws</strong>" header to the AWS cloud app.
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests with an "<strong>X-MCN-Lab: azure</strong>" header to the Azure cloud app.
   </li>
 </ul>

@@ -20,19 +20,19 @@ Build an origin pool and load balancer based on the exercise requirements.
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The URL for the cloud app hosted in AWS is <a href="https://aws-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>
   </li>
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   The cloud app is only reachable from the <strong>student-awsnet</strong> site.
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     Use the wildcard cert provided in the shared NS, <strong>mcn-lab-wildcard</strong>, to enable TLS on the LB. 
   </li>
 </ul>
@@ -107,15 +107,15 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
       The URL for the cloud app hosted in Azure is <a href="https://azure-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a> 
   </li>
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is only reachable from the <strong>student-azurenet</strong> site.
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
   </li>
 </ul>
@@ -146,5 +146,5 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Once you've completed both exercises, move on to the <a href="/route" class="alert-link">http routing</a> exercise.
+After completing both exercises, move on to the <strong><a href="/route" class="alert-link">routing</a></strong> exercise.
 
