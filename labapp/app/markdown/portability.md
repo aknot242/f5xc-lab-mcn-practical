@@ -1,5 +1,5 @@
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none">
-    <img src="/static/manip.png" width="300px" height="auto" alt="intro">
+    <img src="/static/portable.png" width="300px" height="auto" alt="intro">
 </div>
 
 # **Portability**
