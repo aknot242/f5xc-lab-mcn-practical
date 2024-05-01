@@ -45,33 +45,47 @@ Remember while working through the lab, unless otherwise noted, the tests are di
 
 ## **Lab Exercises**
 
-To complete the lab exercises, you will interact with a load balancer advertised from the Customer Edge in your UDF site from the [lab app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/labapp).
+To complete the lab exercises, you will interact with a load balancer advertised from the Customer Edge in your UDF site.
+All requests will be made from this lab application.
 
-Test button
 
+#### **Test Criteria**
 
+Exercises will specify thier success criteria.
 
 ```http
-GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
-Host: eph-ns.mcn-lab.f5demos.com
+GET https://foo.f5demos.com/ HTTP/1.1
 
 {
-  "env": "Azure",
-  "info": {
-    "method": "GET",
-    "path": "/",
-    "url": "https://eph-ns.mcn-lab.f5demos.com"
-  },
-  "request_headers": {
-    "Host": "https://eph-ns.mcn-lab.f5demos.com",
-    "User-Agent": "curl/8.4.0",
-    "X-Request-Id": "9cff4a3d-29e1-458e-b62e-3192e8398e14"
-  }
+  "info": "bar"
 }
 ```
 
+In this example, the exercise's test will make a request to <strong>https://foo.f5demos.com</strong>.
+The test will succeed if the response contains the ``JSON`` response ``{ "info": "bar" }``.
 
-``curl`` and ``jq`` are provided on the UDF "Runner" instance. 
+Here's an example test to try.
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn1" class="btn btn-primary">Example Test</button>
+</div>
+<div id="result1" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn1').addEventListener('click', () => {
+    makeHttpRequest('requestBtn1', '/_test', 'result1');
+});
+</script>
+
+#### **Other Tools**
+
+``curl`` and ``jq`` are provided on the UDF "Runner" instance.
+
+<img src="/static/curl.png" width="400px" height="auto" alt="curl">
+
+
+Note that responses displayed in exercise tests are truncated for readibility.
+
+
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 

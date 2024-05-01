@@ -195,6 +195,27 @@ def score():
         ns=ns
     )
 
+@app.route('/_test1')
+def ex_test():
+    """Example test"""
+    try:
+        url = f"https://foo.{app.config['base_url']}/"
+        data = cloudapp_fetch(url, 5, 'info', 'bar')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+
+@app.route('/_test2')
+def ex_test():
+    """Example test"""
+    try:
+        url = f"https://bar.{app.config['base_url']}/"
+        data = cloudapp_fetch(url, 5, 'info', 'foo')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+
+    
 @app.route('/_lb1')
 def lb_aws():
     """Azure LB test"""

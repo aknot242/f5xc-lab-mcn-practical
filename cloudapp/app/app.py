@@ -78,6 +78,10 @@ def create_app():
             }
         return render_template('pretty_echo.html', request_env=app.config['site'], info=info, request_headers=headers, request_data=data)
     
+    @app.route('/foo/', methods=['GET'])
+    def ex_test():
+        return jsonify({'info': 'bar'})
+    
     return app
 
 app = create_app()
