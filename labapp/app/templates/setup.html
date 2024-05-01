@@ -5,8 +5,9 @@
 {% block content %}
     <div class="markdown-body">
         {{ content|safe }}
+    </div>
 
-        <div>
+    <div class="">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="mt-3">
@@ -14,11 +15,13 @@
                         <div class="alert alert-{{ category }}">{{ message }}</div>
                     {% endfor %}
                 </div>
+                <div>
+                When ready, start the <strong><a href="/lb" >exercises</a></strong>.
+                </div>
             {% endif %}
         {% endwith %}
-        </div>
-        
     </div>
+
 {% endblock %}
 
 

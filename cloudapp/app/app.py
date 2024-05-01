@@ -39,9 +39,7 @@ def create_app():
             'env': app.config['site'],
             'info': {
                 'method': request.method,
-                'url': request.url,
-                'path': request.path,
-                'full_path': request.full_path
+                'path': request.path
             }
         }
         if data:
@@ -77,6 +75,10 @@ def create_app():
             'full_path': request.full_path
             }
         return render_template('pretty_echo.html', request_env=app.config['site'], info=info, request_headers=headers, request_data=data)
+    
+    @app.route('/foo/', methods=['GET'])
+    def ex_test():
+        return jsonify({'info': 'bar'})
     
     return app
 

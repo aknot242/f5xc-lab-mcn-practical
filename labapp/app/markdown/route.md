@@ -14,20 +14,20 @@ F5 XC App Connect is a distributed L7 proxy that provide intelligent routing, vi
 
 ### **Exercise 1: Path Routing**
 
-Build routing rules and configure your load balancer to route traffic between the two cloud apps based on HTTP the request url.
+Build routing rules and configure your load balancer to route traffic between the two cloud apps based on the request url.
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/origin-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Reuse the origin pools from the previous exercise
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
-  Route requests to <u>https://<i>ephemeral-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u> to the AWS cloud app. 
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u>" to the AWS cloud app. 
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
-  Route requests to <u>https://<i>ephemeral-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u> to the Azure cloud app. 
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u>" to the Azure cloud app. 
   </li>
 </ul>
 
@@ -76,11 +76,11 @@ Build rules to route traffic between the two cloud apps based on an arbitrary HT
 
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests with an "<strong>X-MCN-Lab: aws</strong>" header to the AWS cloud app.
   </li>
   <li class="list-group-item">
-  <img src="/static/lb-icon.png" width="auto" height="25px"> &nbsp; &nbsp;
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
   Route requests with an "<strong>X-MCN-Lab: azure</strong>" header to the Azure cloud app.
   </li>
 </ul>
@@ -123,4 +123,4 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Once you've completed the exercises, move on to the <a href="/header" class="alert-link">header manipulation</a> exercise.
+Once you've completed the exercises, move on to the <strong><a href="/manipulation" class="alert-link">manipulation</a></strong> exercise.

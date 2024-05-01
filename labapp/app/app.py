@@ -43,18 +43,20 @@ def eph_ns() -> str:
     this_eph_ns = request.cookies.get('eph_ns', None)
     return this_eph_ns
 
-def cloudapp_fetch(url, timeout, prop, value, headers = {}):
+def cloudapp_fetch(session, url, timeout, prop, value, headers = {}):
     """
     Fetch data from URL
     Validate prop and value in the JSON response
     """
-    response = requests.get(url, timeout=timeout, headers=headers)
+    response = session.get(url, timeout=timeout)
     response.raise_for_status()
     data = response.json()
     if data.get(prop) != value:
         raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
-    clean_headers = headers_cleaner(data['request_headers'])
-    data['request_headers'] = clean_headers
+    if data.get("request_headers"):
+        clean_headers = headers_cleaner(data['request_headers'])
+        data['request_headers'] = clean_headers
+        return data
     return data
 
 def headers_cleaner(headers):
@@ -81,16 +83,25 @@ def return_err(err):
 @app.route('/')
 def index():
     """index page"""
-    html = render_md("markdown/overview.md")
+    html = render_md("markdown/welcome.md")
     return render_template('standard.html',
         title="MCN Practical: Overview",
-        content=html, 
-        udf=app.config['UDF'] 
+        content=html
+    )
+
+@app.route('/overview')
+def arch():
+    """arch page"""
+    html = render_md("markdown/overview.md")
+    return render_template('standard.html',
+        title="MCN Practical: Architecture",
+        content=html
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
     """setup page"""
+    ns = eph_ns()
     if request.method == 'POST':
         action = request.form['action']
         if action == 'save':
@@ -100,7 +111,7 @@ def setup():
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
             response.set_cookie('eph_ns', this_eph_ns, max_age=60*60*24)
-            flash("Ephemeral NS successfully set.", "success")
+            flash('Ephemeral NS successfully set.', "success")
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
@@ -111,17 +122,7 @@ def setup():
     return render_template('setup.html',
         title="MCN Practical: Setup",
         content=html,
-        udf=app.config['UDF']
-    )
-
-@app.route('/arch')
-def arch():
-    """arch page"""
-    html = render_md("markdown/arch.md")
-    return render_template('standard.html',
-        title="MCN Practical: Architecture",
-        content=html,
-        udf=app.config['UDF']
+        ns=ns
     )
 
 @app.route('/_ce_status')
@@ -139,8 +140,7 @@ def lb():
     return render_template('exercise_standard.html',
         title="MCN Practical: LB",
         content=html,
-        ns=ns,
-        udf=app.config['UDF']
+        ns=ns
     )
 
 @app.route('/route')
@@ -152,30 +152,108 @@ def path():
         title="MCN Practical: HTTP Routing",
         content=html,
         ns=ns,
-        udf=app.config['UDF']
+
     )
 
-@app.route('/header')
+@app.route('/manipulation')
 def header():
-    """header page"""
+    """manipulation page"""
     ns = eph_ns()
-    html = render_md("markdown/header.md")
+    html = render_md("markdown/manipulation.md")
     return render_template('exercise_standard.html',
-        title="MCN Practical: Headers",
+        title="MCN Practical: Manipulation",
         content=html, 
-        ns=ns,
-        udf=app.config['UDF']
+        ns=ns
     )
 
+@app.route('/portability')
+def port():
+    """portability page"""
+    ns = eph_ns()
+    html = render_md("markdown/portability.md")
+    return render_template('exercise_standard.html',
+        title="MCN Practical: Portability",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/vnet')
+def vnet():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/netpolicy')
+def netp():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/ref')
+def ref():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/score')
+def score():
+    """scoreboard page"""
+    ns = eph_ns()
+    html = render_md("markdown/score.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Scoreboard",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/_test1')
+def ex_test():
+    """Example test"""
+    try:
+        s = requests.Session()
+        url = f"https://foo.{app.config['base_url']}/"
+        data = cloudapp_fetch(s, url, 5, 'info', 'bar')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+
+@app.route('/_test2')
+def ex_test2():
+    """Example test"""
+    try:
+        s = requests.Session()
+        url = f"https://bar.{app.config['base_url']}/"
+        data = cloudapp_fetch(s, url, 5, 'info', 'foo')
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+
+    
 @app.route('/_lb1')
 def lb_aws():
     """Azure LB test"""
     try:
+        s = requests.Session()
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(url, 5, 'env', 'AWS')
+        data = cloudapp_fetch(s, url, 5, 'env', 'AWS')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -184,11 +262,12 @@ def lb_aws():
 def lb_azure():
     """Azure LB test"""
     try:
+        s = requests.Session()
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(url, 5, 'env', 'Azure')
+        data = cloudapp_fetch(s, url, 5, 'env', 'Azure')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -197,14 +276,15 @@ def lb_azure():
 def route1():
     """First Route Test"""
     try:
+        s = requests.Session()
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/aws/raw"
         azure_url = f"https://{ns}.{base_url}/azure/raw"
-        aws_data = cloudapp_fetch(aws_url, 5, 'env', 'AWS')
-        azure_data = cloudapp_fetch(azure_url, 5, 'env', 'Azure')
+        aws_data = cloudapp_fetch(s, aws_url, 5, 'env', 'AWS')
+        azure_data = cloudapp_fetch(s, azure_url, 5, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
@@ -217,19 +297,37 @@ def route1():
 def route2():
     """First Route Test"""
     try:
+        s = requests.Session()
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/"
         azure_url = f"https://{ns}.{base_url}/"
-        aws_data = cloudapp_fetch(aws_url, 5, 'env', 'AWS', headers={"X-MCN-lab": "aws"})
-        azure_data = cloudapp_fetch(azure_url, 5, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
+        s.headers["X-MCN-lab"] = "aws"
+        aws_data = cloudapp_fetch(s, aws_url, 5, 'env', 'AWS')
+        s.headers["X-MCN-lab"] = "azure"
+        azure_data = cloudapp_fetch(s, azure_url, 5, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
         data = {
             "aws": aws_data,
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_manip1')
+def manip1():
+    """First Manip Test"""
+    try:
+        s = requests.Session()
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        url = f"https://{ns}.{base_url}/aws/raw"
+        r_data = cloudapp_fetch(s, url, 5, 'info', '{"path": "/"}')
+        return jsonify(status='success', data=r_data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
         
