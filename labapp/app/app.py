@@ -326,7 +326,7 @@ def manip1():
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/aws/raw"
-        r_data = cloudapp_fetch(s, url, 5, 'info', '{"path": "/"}')
+        r_data = cloudapp_fetch(s, url, 5, 'info', {"method": "GET", "path": "/raw"})
         return jsonify(status='success', data=r_data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
