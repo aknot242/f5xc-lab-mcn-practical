@@ -81,11 +81,21 @@ def return_err(err):
 @app.route('/')
 def index():
     """index page"""
-    html = render_md("markdown/overview.md")
+    html = render_md("markdown/welcome.md")
     return render_template('standard.html',
         title="MCN Practical: Overview",
         content=html, 
         udf=app.config['UDF'] 
+    )
+
+@app.route('/overview')
+def arch():
+    """arch page"""
+    html = render_md("markdown/overview.md")
+    return render_template('standard.html',
+        title="MCN Practical: Architecture",
+        content=html,
+        udf=app.config['UDF']
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
@@ -110,16 +120,6 @@ def setup():
     html = render_md("markdown/setup.md")
     return render_template('setup.html',
         title="MCN Practical: Setup",
-        content=html,
-        udf=app.config['UDF']
-    )
-
-@app.route('/arch')
-def arch():
-    """arch page"""
-    html = render_md("markdown/arch.md")
-    return render_template('standard.html',
-        title="MCN Practical: Architecture",
         content=html,
         udf=app.config['UDF']
     )

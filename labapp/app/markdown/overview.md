@@ -1,51 +1,63 @@
-<div style="height:25px"></div>
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none">
-    <img src="/static/practical.png" width="700px" height="auto" alt="intro">
+    <img src="/static/arch.png" width="300px" height="auto" alt="arch">
 </div>
 
-This lab is a "practical" training activity.
-Each exercise will ask you to **configure** F5 Distributed Cloud ("XC") objects to reinforce core XC Multi-Cloud Networking ("MCN") concepts. 
-Once configured, you'll be asked to **test** your configuration using this web application.
+# **Overview**
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
-<div style="height:25px"></div>
 
-# **Getting Started**
-
-When your UDF deployment launched, two automated processes started - Customer Edge ("CE") registration and account provisioning in the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/).
+The lab environment, it's apps, and method of interaction are intentionally simple in an attempt to streamline...
 
 <div style="height:25px"></div>
 
-## **Customer Edge**
+## **Architecture**
 
-The CE in your UDF deployment is being registered with the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/).
-CEs on first launch update software and, often, their OS. This can be very time consuming.
-This process will take 15-20 min from when the CE is booted.
-You can still get started on some preliminary tasks while waiting. 
-
-<img src="/static/ce.png" height="200px" width="auth"/>
-
-**Note on status in nav and status page.**
+The lab environment contains three distributed sites meshed using the F5 Distributed Cloud Global Network.
 
 <div style="height:25px"></div>
 
-## **Account Provisioning**
-
-Check the email used to launch your UDF deployment for a "welcome" or password reset email to the [lab tenant](https://f5-xc-lab-mcn.console.ves.volterra.io/).
-Update your password and log into the tenant.
-
-<p float="left">
-<a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">
-<img src="/static/email.png" height="300px" width="auth"/>
-<img src="/static/password.png" height="300px" width="auth"/>
-</a>
-</p>
-
-<div class="alert alert-danger" role="alert">
-After you've logged in to the tenant you <strong>must</strong> visit the <a href="/setup" class="alert-link">setup page</a> before starting the exercises.
-</div>
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/mcnp-aws.png" width="auto" height="30px"> &nbsp; &nbsp;
+    <strong>student-awsnet</strong> in Amazon Web Services
+  </li>
+  <li class="list-group-item">
+  <img src="/static/mcnp-azure.png" width="auto" height="30px"> &nbsp; &nbsp;
+  <strong>student-azurenet</strong> in Microsoft Azure
+  </li>
+  <li class="list-group-item">
+  <img src="/static/mcnp-udf.png" width="auto" height="30px"> &nbsp; &nbsp;&nbsp;
+  <strong>Lab CE</strong> in UDF 
+  </li>
+</ul>
 
 <div style="height:25px"></div>
+
+<img src="/static/mcn-prac-arch-base.png" width="auto" height="600px" alt="Arch diagram">
+
+## **Cloud App**
+
+An instance of the [cloud app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp) is hosted in each cloud site.
+The [cloud app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp) is a simple application that echoes back an HTTP request.
+Remember while working through the lab, unless otherwise noted, the tests are displaying the headers and info **from the request received by the app**.
+
+
+## **Lab Exercises**
+
+To complete the lab exercises, you will interact with a load balancer advertised from the Customer Edge in your UDF site in this [lab app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/labapp).
+
+Curl on the UDF Runner
+
+criteria with symbols
+
+code block
+
+test
+
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+Next, visit the <strong><a href="/setup" >setup page</a></strong> before starting the exercises.
+
 
 
 
