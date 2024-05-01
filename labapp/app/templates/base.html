@@ -76,6 +76,62 @@
                       </ul>
                     </div>
                   </li>
+
+                  {% if config['UDF'] %}
+                  <script>
+                      function fetchAndUpdateStatus() {
+                        fetch('/_ce_status')
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data.err) {
+                                    document.getElementById('siteName').textContent = data.site_name;
+                                    document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+                  
+                                    // Update cookies
+                                    setCookie('siteNameCache', data.site_name, 1);
+                                    setCookie('stateCache', data.state, 1);
+                                } else {
+                                    document.getElementById('siteName').textContent = 'CE info unavailable';
+                                    document.getElementById('statusImage').src = "/static/bad.png";
+                                }
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the fetch operation:', error);
+                                document.getElementById('siteName').textContent = 'Error';
+                                document.getElementById('statusImage').src = "/static/bad.png";
+                            });
+                      }
+                      document.addEventListener('DOMContentLoaded', function() {
+                        let cachedSiteName = getCookie('siteNameCache');
+                        let cachedState = getCookie('stateCache');
+                  
+                        if (cachedSiteName && cachedState) {
+                            document.getElementById('siteName').textContent = cachedSiteName;
+                            document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+                        } else {
+                            fetchAndUpdateStatus();
+                        }
+                  
+                        setInterval(fetchAndUpdateStatus, 20000);
+                    });
+                    </script>
+                    <li class="border-top my-3"></li>
+                    <li class="mb-1">
+                      <div class="status-box align-items-center bg-light p-2 text-center">
+                          <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
+                          <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
+                      </div>
+                    </li>
+
+
+                    {% endif %}
+
+
                 </ul>
         </div>  
       </div>
@@ -89,55 +145,5 @@
 </div>
 
 </body>
-
-{% if config['UDF'] %}
-<script>
-    function fetchAndUpdateStatus() {
-      fetch('/_ce_status')
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              if (!data.err) {
-                  document.getElementById('siteName').textContent = data.site_name;
-                  document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
-
-                  // Update cookies
-                  setCookie('siteNameCache', data.site_name, 1);
-                  setCookie('stateCache', data.state, 1);
-              } else {
-                  document.getElementById('siteName').textContent = 'CE info unavailable';
-                  document.getElementById('statusImage').src = "/static/bad.png";
-              }
-          })
-          .catch(error => {
-              console.error('There was a problem with the fetch operation:', error);
-              document.getElementById('siteName').textContent = 'Error';
-              document.getElementById('statusImage').src = "/static/bad.png";
-          });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      let cachedSiteName = getCookie('siteNameCache');
-      let cachedState = getCookie('stateCache');
-
-      if (cachedSiteName && cachedState) {
-          document.getElementById('siteName').textContent = cachedSiteName;
-          document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
-      } else {
-          fetchAndUpdateStatus();
-      }
-
-      setInterval(fetchAndUpdateStatus, 20000);
-  });
-
-  </script>
-  <div class="status-box align-items-center bg-light p-2 text-center">
-      <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
-      <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
-  </div>
-  {% endif %}
 </html>
 
