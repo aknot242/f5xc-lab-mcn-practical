@@ -84,8 +84,7 @@ def index():
     html = render_md("markdown/welcome.md")
     return render_template('standard.html',
         title="MCN Practical: Overview",
-        content=html, 
-        udf=app.config['UDF'] 
+        content=html
     )
 
 @app.route('/overview')
@@ -94,8 +93,7 @@ def arch():
     html = render_md("markdown/overview.md")
     return render_template('standard.html',
         title="MCN Practical: Architecture",
-        content=html,
-        udf=app.config['UDF']
+        content=html
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
@@ -120,8 +118,7 @@ def setup():
     html = render_md("markdown/setup.md")
     return render_template('setup.html',
         title="MCN Practical: Setup",
-        content=html,
-        udf=app.config['UDF']
+        content=html
     )
 
 @app.route('/_ce_status')
@@ -139,8 +136,7 @@ def lb():
     return render_template('exercise_standard.html',
         title="MCN Practical: LB",
         content=html,
-        ns=ns,
-        udf=app.config['UDF']
+        ns=ns
     )
 
 @app.route('/route')
@@ -152,7 +148,7 @@ def path():
         title="MCN Practical: HTTP Routing",
         content=html,
         ns=ns,
-        udf=app.config['UDF']
+
     )
 
 @app.route('/manipulation')
@@ -163,8 +159,7 @@ def header():
     return render_template('exercise_standard.html',
         title="MCN Practical: Manipulation",
         content=html, 
-        ns=ns,
-        udf=app.config['UDF']
+        ns=ns
     )
 
 @app.route('/_lb1')
@@ -230,6 +225,20 @@ def route2():
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_manip1')
+def manip1():
+    """First Manip Test"""
+    try:
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        url = f"https://{ns}.{base_url}/"
+        r_data = cloudapp_fetch(url, 5, 'info[path]', '/')
+        return jsonify(status='success', data=r_data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
         
