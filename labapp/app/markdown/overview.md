@@ -6,7 +6,8 @@
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-The lab environment, it's apps, and method of interaction are intentionally simple in an attempt to streamline...
+The lab environment, the application endpoints, and how you interact with the load balancer have been simplified in an effort to focus on concepts.
+Understanding the environment, it's topology, and the rudimentary functionality of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> will help in completing the exercises.
 
 <div style="height:25px"></div>
 
@@ -37,21 +38,38 @@ The lab environment contains three distributed sites meshed using the F5 Distrib
 
 ## **Cloud App**
 
-An instance of the [cloud app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp) is hosted in each cloud site.
-The [cloud app](https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp) is a simple application that echoes back an HTTP request.
-Remember while working through the lab, unless otherwise noted, the tests are displaying the headers and info **from the request received by the app**.
+An instance of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> is hosted in each remote cloud environment.
+The cloud app is a simple application that echoes back an HTTP request.
+While working through the lab, unless otherwise noted, the test results are displaying the headers and info **from the request received by the app**.
+
+For testing, you can access an endpoint of each cloud app from your browser.
+
+<p float="left">
+<a href="https://aws-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+<img src="/static/aws.png" height="100px" width="auto" class="rounded"/>
+</a>
+<a href="https://azure-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+<img src="/static/azure.png" height="100px" width="auto" class="rounded"/>
+</a>
+</p>
+
+
 
 <div style="height:25px"></div>
 
 ## **Lab Exercises**
 
-To complete the lab exercises, you will interact with a load balancer advertised from the Customer Edge in your UDF site.
-All requests will be made from this lab application.
+Lab exercises will ask you to create configuration in the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+To complete a lab exercise, you will run a test against the load balancer advertised from the Customer Edge in your UDF site.
+Tests are integrated in this lab app.
 
+<div style="height:25px"></div>
 
 #### **Test Criteria**
 
-Exercises will specify thier success criteria.
+Exercises will specify thier success criteria along with the test.
+
+Here are some examples to try. 
 
 ```http
 GET https://foo.f5demos.com/ HTTP/1.1
@@ -61,31 +79,58 @@ GET https://foo.f5demos.com/ HTTP/1.1
 }
 ```
 
-In this example, the exercise's test will make a request to <strong>https://foo.f5demos.com</strong>.
-The test will succeed if the response contains the ``JSON`` response ``{ "info": "bar" }``.
-
-Here's an example test to try.
-
 <div class="left-aligned-button-container">
-    <button id="requestBtn1" class="btn btn-primary">Example Test</button>
+    <button id="requestBtn1" class="btn btn-primary">👍 Test</button>
 </div>
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_test', 'result1');
+    makeHttpRequest('requestBtn1', '/_test1', 'result1');
 });
 </script>
+
+The test made a request to <strong>https://foo.f5demos.com</strong>.
+The test succeeded because the response contained the ``JSON`` string ``{ "info": "bar" }``.
+
+<div style="height:25px"></div>
+
+```http
+GET https://bar.f5demos.com/ HTTP/1.1
+
+{
+  "info": "foo"
+}
+```
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn2" class="btn btn-primary">👎 Test</button>
+</div>
+<div id="result2" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn2').addEventListener('click', () => {
+    makeHttpRequest('requestBtn2', '/_test2', 'result2');
+});
+</script>
+
+The test made a request to <strong>https://bar.f5demos.com</strong>.
+The test failed because the response did not contain the ``JSON`` string ``{ "info": "bar" }``.
+
+
+<div style="height:25px"></div>
 
 #### **Other Tools**
 
 ``curl`` and ``jq`` are provided on the UDF "Runner" instance.
 
-<img src="/static/curl.png" width="400px" height="auto" alt="curl">
+```shell
+ubuntu@ubuntu:~$ curl -s https://foo.mcn-lab.f5demos.com/ | jq
+{
+  "info": "bar"
+}
+```
 
 
 Note that responses displayed in exercise tests are truncated for readibility.
-
-
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 

@@ -53,8 +53,10 @@ def cloudapp_fetch(url, timeout, prop, value, headers = {}):
     data = response.json()
     if data.get(prop) != value:
         raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
-    clean_headers = headers_cleaner(data['request_headers'])
-    data['request_headers'] = clean_headers
+    if data.get("request_headers"):
+        clean_headers = headers_cleaner(data['request_headers'])
+        data['request_headers'] = clean_headers
+        return data
     return data
 
 def headers_cleaner(headers):
@@ -206,7 +208,7 @@ def ex_test():
         return jsonify(status='fail', error=str(e))
 
 @app.route('/_test2')
-def ex_test():
+def ex_test2():
     """Example test"""
     try:
         url = f"https://bar.{app.config['base_url']}/"

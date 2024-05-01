@@ -36,6 +36,6 @@ async function makeHttpRequest(buttonId, requestUrl, resultDivId) {
       resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
   } finally {
       button.disabled = false;
-      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
