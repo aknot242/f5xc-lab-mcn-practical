@@ -39,19 +39,3 @@ async function makeHttpRequest(buttonId, requestUrl, resultDivId) {
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 }
-
-function restoreAccordionPanel(storageKey, accordionId) {
-    var activeItem = localStorage.getItem(storageKey);
-    if (activeItem) {
-        //remove default collapse settings
-        $(accordionId + " .panel-collapse").removeClass('in');
-
-        //show the account_last visible group
-        $("#" + activeItem).addClass("in");
-    }
-}
-
-function saveActiveAccordionPanel(storageKey, e) {
-    localStorage.setItem(storageKey, e.target.id);
-}
-
