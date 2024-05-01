@@ -123,4 +123,4 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Once you've completed the exercises, move on to the <a href="/header" class="alert-link">header manipulation</a> exercise.
+Once you've completed the exercises, move on to the <strong><a href="/manipulation" class="alert-link">manipulation</a></strong> exercise.

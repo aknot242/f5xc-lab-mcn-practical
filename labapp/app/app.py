@@ -177,6 +177,28 @@ def port():
         ns=ns
     )
 
+@app.route('/vnet')
+def vnet():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
+@app.route('/netpolicy')
+def netp():
+    """reference page"""
+    ns = eph_ns()
+    html = render_md("markdown/reference.md")
+    return render_template('coming-soon.html',
+        title="MCN Practical: Reference",
+        content=html, 
+        ns=ns
+    )
+
 @app.route('/ref')
 def ref():
     """reference page"""

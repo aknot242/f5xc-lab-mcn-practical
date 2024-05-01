@@ -28,11 +28,11 @@ Build an origin pool and load balancer based on the exercise requirements.
   The cloud app is only reachable from the <strong>student-awsnet</strong> site.
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     Use the wildcard cert provided in the shared NS, <strong>mcn-lab-wildcard</strong>, to enable TLS on the LB. 
   </li>
 </ul>
@@ -115,7 +115,7 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
     The cloud app is only reachable from the <strong>student-azurenet</strong> site.
   </li>
   <li class="list-group-item">
-  <img src="/static/tls-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
   </li>
 </ul>
