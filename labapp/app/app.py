@@ -339,8 +339,8 @@ def manip3():
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
-        aws_url = f"https://{ns}.{base_url}/aws"
-        azure_url = f"https://{ns}.{base_url}/azure"
+        aws_url = f"https://{ns}.{base_url}/aws/"
+        azure_url = f"https://{ns}.{base_url}/azure/"
         aws_headers = { "x-mcn-dest-site": "student-awsnet" }
         azure_headers = { "x-mcn-dest-site": "student-azurenet" }
         aws_data = cloudapp_res_headers(s, aws_url, 7, aws_headers)

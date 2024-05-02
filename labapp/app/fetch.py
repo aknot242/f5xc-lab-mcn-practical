@@ -57,5 +57,5 @@ def cloudapp_res_headers(session, url, timeout, headers):
     for header in headers:
         head_value = data.get(header)
         if not head_value:
-            raise ValueError(f"Header {header} not found request headers.")
+            raise ValueError(f"Header {header} not found response headers from {url}.")
     return data
