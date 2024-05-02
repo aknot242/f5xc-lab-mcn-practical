@@ -106,7 +106,7 @@ Host: eph-ns.mcn-lab.f5demos.com
   ...
   "request_headers": {
     "x-mcn-namespace": "wiggly-yellowtail",
-    "X-mcn-src-Site": "cluster-xxxxxxxx",
+    "x-mcn-src-site": "cluster-xxxxxxxx",
   },
   ...
 }

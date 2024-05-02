@@ -8,7 +8,7 @@ from flask_caching import Cache
 import requests
 import markdown
 from ce import get_ce_info, get_ce_state
-from fetch import cloudapp_fetch
+from fetch import cloudapp_fetch, cloudapp_req_headers, cloudapp_res_headers
 
 app = Flask(__name__)
 app.config['ce_info'] = None
@@ -295,7 +295,7 @@ def route2():
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    
+
 @app.route('/_manip1')
 def manip1():
     """First Manip Test"""
@@ -313,8 +313,8 @@ def manip1():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/_manip2')
-def manip2():
-    """First Manip Test"""
+def manip1():
+    """Second Manip Test"""
     try:
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
@@ -323,10 +323,33 @@ def manip2():
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/"
-
-
-        r_data = cloudapp_fetch(s, url, 5, 'info', {"method": "GET", "path": "/raw"})
+        t_headers = {"x-mcn-namespace": ns,"x-mcn-src-site": app.config["ce_info"]["site_name"]}
+        r_data = cloudapp_req_headers(s, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+    
+@app.route('/_manip3')
+def manip2():
+    """Third Manip Test"""
+    try:
+        s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
+        ns = eph_ns()
+        if not ns:
+            raise LabException("Ephemeral NS not set")
+        base_url = app.config['base_url']
+        aws_url = f"https://{ns}.{base_url}/aws"
+        azure_url = f"https://{ns}.{base_url}/aws"
+        aws_headers = {"x-mcn-dest-site": "student-awsnet"}
+        azure_headers = {"x-mcn-dest-site": "student-azurenet"}
+        aws_data = cloudapp_res_headers(s, aws_url, 7, aws_headers)
+        azure_data = cloudapp_res_headers(s, azure_url, 7, azure_headers)
+        data = {
+            "aws": aws_data,
+            "azure": azure_data
+        }
+        return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
         

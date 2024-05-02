@@ -27,25 +27,31 @@ def cloudapp_fetch(session, url, timeout, prop, value):
         return data
     return data
 
-def cloudapp_fetch_new(session, url, timeout, prop, key, value):
+def cloudapp_req_headers(session, url, timeout, headers):
     """
     Fetch data from URL
-    Validate if a specific key-value pair is present in the dictionary located at `prop` in the JSON response
     """
     response = session.get(url, timeout=timeout)
     response.raise_for_status()
-
-    print(response.text)
     data = response.json()
-
     print(data)
+    for header in headers:
+        if header.lower() not in data['request_headers']:
+            raise ValueError(f"Header {header} not found request headers.")
+    clean_headers = headers_cleaner(data['request_headers'])
+    data['request_headers'] = clean_headers
+    return data
 
-    prop_data = data.get(prop, {})
-    if not isinstance(prop_data, dict) or prop_data.get(key) != value:
-        raise ValueError(f"Expected {key}: {value} in {prop}, but got {dict}")
-
-    if data.get("request_headers"):
-        clean_headers = headers_cleaner(data['request_headers'])
-        data['request_headers'] = clean_headers
-
+def cloudapp_res_headers(session, url, timeout, headers):
+    """
+    Fetch data from URL
+    Check for response header
+    """
+    response = session.get(url, timeout=timeout)
+    response.raise_for_status()
+    data = response.headers
+    for header in headers:
+        head_value = data.get(header.key(), None)
+        if not head_value:
+            raise ValueError(f"Header {header} not found request headers.")
     return data
