@@ -27,10 +27,10 @@ async function makeHttpRequest(buttonId, requestUrl, resultDivId) {
       const response = await axios.get(requestUrl);
       if (response.data.status === 'success') {
           const prettyJson = JSON.stringify(response.data.data, null, 4);
-          resultDiv.innerHTML = `<pre class="alert alert-success"><b>Success:</b><br><code>${prettyJson}</code></pre>`;
+          resultDiv.innerHTML = `<div class="alert alert-success"><b>Request succeeded:</b><br><code>${prettyJson}</code></div>`;
       } else {
           const errJson = JSON.stringify(response.data.error, null, 4);
-          resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b>&nbsp;&nbsp;<code>${errJson}</code></div>`;
+          resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br<code>${errJson}</code></div>`;
       }
   } catch (error) {
       resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
