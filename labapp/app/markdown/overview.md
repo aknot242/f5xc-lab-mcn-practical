@@ -6,7 +6,7 @@
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-The lab environment, the application endpoints, and how you interact with the load balancer have been simplified in an effort to focus on concepts.
+The lab environment, the service endpoints, and how you interact with the load balancer have been simplified in an effort to focus on concepts.
 Understanding the environment, it's topology, and the rudimentary functionality of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> will help in completing the exercises.
 
 <div style="height:25px"></div>
@@ -15,19 +15,17 @@ Understanding the environment, it's topology, and the rudimentary functionality 
 
 The lab environment contains three distributed sites meshed using the F5 Distributed Cloud Global Network.
 
-<div style="height:25px"></div>
-
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/mcnp-aws.png" width="auto" height="30px"> &nbsp;&nbsp;
+  <img src="/static/aws.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
     <strong>student-awsnet</strong> in Amazon Web Services
   </li>
   <li class="list-group-item">
-  <img src="/static/mcnp-azure.png" width="auto" height="30px"> &nbsp;&nbsp;&nbsp;
+  <img src="/static/azure.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
   <strong>student-azurenet</strong> in Microsoft Azure
   </li>
   <li class="list-group-item">
-  <img src="/static/mcnp-udf.png" width="auto" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/static/mcnp-udf.png" width="40px" height="auto"> &nbsp;&nbsp;&nbsp;
   <strong>Lab CE</strong> in UDF 
   </li>
 </ul>
@@ -40,7 +38,7 @@ The lab environment contains three distributed sites meshed using the F5 Distrib
 
 An instance of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> is hosted in each remote cloud environment.
 The cloud app is a simple application that echoes back an HTTP request.
-While working through the lab, unless otherwise noted, the test results are displaying the headers and info **from the request received by the app**.
+While working through the lab, unless otherwise noted, test results display headers and info **from the request received by the app**.
 
 For testing, you can access an endpoint of each cloud app from your browser.
 
@@ -52,21 +50,37 @@ For testing, you can access an endpoint of each cloud app from your browser.
 <img src="/static/azure.png" height="100px" width="auto"  class="rounded"/>
 </a></p>
 
-
-
 <div style="height:25px"></div>
 
 ## **Lab Exercises**
 
 Lab exercises will ask you to create configuration in the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
-To complete a lab exercise, you will run a test against the load balancer advertised from the Customer Edge in your UDF site.
-Tests are integrated in this lab app.
+Exercise requirements are listed in a table along with an object type indicator. 
+
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    <strong>Load Balancer</strong>
+  </li>
+  <li class="list-group-item">
+  <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    <strong>Origin Pool</strong>
+  </li>
+  <li class="list-group-item">
+  <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    <strong>Route</strong> 
+  </li>
+</ul>
 
 <div style="height:25px"></div>
 
 #### **Test Criteria**
 
-Exercises will specify thier success criteria along with the test.
+To complete lab exercises, you will run tests against the load balancer advertised from the Customer Edge in your UDF site.
+You will build this load balancer in the <strong><a href="/lb">first exercise</a></strong>.
+All tests will be run from this lab app.
+
+Each test will specify success criteria immediately before to the <button id="null" class="btn btn-primary disabled">Test Load Balancer</button> button.
 
 Here are some examples to try. 
 
@@ -131,13 +145,25 @@ ubuntu@ubuntu:~$ curl -s https://foo.mcn-lab.f5demos.com/ | jq
   "info": "bar"
 }
 ```
+<div class="alert alert-secondary" role="alert">
+  Responses displayed in exercise tests are truncated for readibility.
+</div>
 
+<div style="height:25px"></div>
 
-Note that responses displayed in exercise tests are truncated for readibility.
+## **Issues**
+
+Use the lab repository <i class="bi bi-github"> </i><strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/" target="_blank">issue tracker</a></strong> to report bugs, typos, or lab enhancements.
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Next, visit the <strong><a href="/setup" >setup page</a></strong> before starting the exercises.
+<nav aria-label="labapp nav">
+  <ul class="pagination justify-content-end">
+    <li class="page-item">
+      <a class="page-link" href="/setup">Setup <i class="bi bi-arrow-right-circle-fill"></i></a>
+    </li>
+  </ul>
+</nav>
 
 
 

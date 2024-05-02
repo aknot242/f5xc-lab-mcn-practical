@@ -56,6 +56,7 @@ def return_err(err):
 
 @app.after_request
 def cache_control(response):
+    """cache control"""
     if request.path.startswith("/static/") and request.path.endswith(".png"):
         response.headers['Cache-Control'] = 'public, max-age=3600'
     return response
@@ -87,16 +88,16 @@ def setup():
         if action == 'save':
             this_eph_ns = request.form['eph_ns'].strip()
             if not validate_eph_ns(this_eph_ns):
-                flash("Invalid ephemeral NS.", "danger")
+                flash("Invalid ephemeral namespace.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
             response.set_cookie('eph_ns', this_eph_ns, max_age=60*60*24)
-            flash('Ephemeral NS successfully set.', "success")
+            flash('Ephemeral namespace successfully set.', "success")
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
             response.set_cookie('eph_ns', '', expires=0)
-            flash("Ephemeral NS cleared.", "info")
+            flash("Ephemeral namespace cleared.", "info")
             return response
     html = render_md("markdown/setup.md")
     return render_template('setup.html',
@@ -358,10 +359,10 @@ def manip3():
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    
+
 @app.route('/_port1')
 def port1():
-    """Azure LB test"""
+    """Friend test"""
     try:
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
@@ -369,6 +370,21 @@ def port1():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/"
+        data = cloudapp_fetch(s, url, 7, 'info', {"method": "GET", "path": "/"})
+        return jsonify(status='success', data=data)
+    except (LabException, requests.RequestException, ValueError) as e:
+        return jsonify(status='fail', error=str(e))
+        
+@app.route('/_port2', methods=['POST'])
+def port2():
+    """Friend test"""
+    try:
+        s = requests.Session()
+        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
+        data = request.get_json()
+        print(data)
+        eph_ns = data['userInput']
+        url = f"https://{eph_ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(s, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:

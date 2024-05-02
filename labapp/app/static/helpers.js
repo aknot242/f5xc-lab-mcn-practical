@@ -39,3 +39,26 @@ async function makeHttpRequest(buttonId, requestUrl, resultDivId) {
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
+
+async function makePostRequest(buttonId, requestUrl, resultDivId, inputDataId) {
+    const button = document.getElementById(buttonId);
+    const resultDiv = document.getElementById(resultDivId);
+    const inputData = document.getElementById(inputDataId).value;
+    button.disabled = true;
+
+    try {
+        const response = await axios.post(requestUrl, { userInput: inputData });
+        if (response.data.status === 'success') {
+            const prettyJson = JSON.stringify(response.data.data, null, 4);
+            resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre><code class="hljs">${prettyJson}</code></pre></div>`;
+        } else {
+            const errJson = JSON.stringify(response.data.error, null, 4);
+            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre><code class="hljs">${errJson}</code></pre></div>`;
+        }
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+    } finally {
+        button.disabled = false;
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}

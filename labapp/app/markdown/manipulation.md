@@ -6,11 +6,10 @@
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Since web traffic has been traversing proxies, engineers have needed to alter HTTP content for increased observability ([XFF](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For)), performance ([cache-control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)), or other reasons ([JWT](https://en.wikipedia.org/wiki/JSON_Web_Token)). 
+Since web traffic has been traversing proxies, engineers have needed to alter HTTP content for increased observability (<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For">XFF</a>), performance (<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control</a>), or core functionality (<a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JWT</a>).
 "Proxy Pass" functionality has been part of web servers since the early Apache days.
 Adding, removing, and altering Headers are tablestakes for ADCs, CDNs, and software-based load balancers.
 F5 XC App Connect enables this functionality granularly on routes or broadly on the load balancer.
-
 
 <div style="height:25px"></div>
 
@@ -55,7 +54,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 });
 </script>
 
-Since questions on this functionality are often asked on <strong><a href="https://community.f5.com/" target="_blank">F5 DevCentral</a></strong>, a hint might be warranted. 
+Questions on this functionality are often asked on <strong><a href="https://community.f5.com/" target="_blank">F5 DevCentral</a></strong>. Here's a hint. 
 
 <div id="hints">
 <p>
@@ -86,11 +85,11 @@ Use the <strong><a href="https://docs.cloud.f5.com/docs/how-to/advanced-security
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Insert a request header named <strong>X-MCN-src-site</strong> to identifies the UDF CE to the origin. <u>Do not use a static value</u>. 
+  Insert a request header named <strong>X-MCN-src-site</strong> to identify the UDF CE to the origin. <u>Do not use a static value</u>. 
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Insert a request header named <strong>X-MCN-namespace</strong> to identifies the ephemeral namespace to the origin. <u>Do not use a static value</u>. 
+  Insert a request header named <strong>X-MCN-namespace</strong> to identify the ephemeral namespace to the origin. <u>Do not use a static value</u>. 
   </li>
 </ul>
 
@@ -139,9 +138,9 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 #### **Test Criteria**
 
-<div style="height:25px"></div>
-
-<strong><u>This test will evaluate response headers.</u></strong>
+<div class="alert alert-secondary" role="alert">
+  This test evaluates response headers.
+</div>
 
 ```http
 GET https://eph-ns.mcn-lab.f5demos.com/aws HTTP/1.1
@@ -174,5 +173,11 @@ document.getElementById('requestBtn3').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Finish off App Connect with an exercise on load balancer <strong><a href="/portability" class="alert-link">portability</a></strong>.
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/portability">Portability <i class="bi bi-arrow-right-circle-fill"></i></a>
+      </li>
+    </ul>
+  </nav>
 
