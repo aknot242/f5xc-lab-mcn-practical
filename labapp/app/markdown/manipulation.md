@@ -157,7 +157,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 ```
 
 <div class="alert alert-secondary" role="alert">
-  This test evaluates response headers.
+  <strong>This test evaluates response headers.</strong>
 </div>
 
 <div class="left-aligned-button-container">

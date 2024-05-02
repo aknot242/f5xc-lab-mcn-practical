@@ -212,8 +212,10 @@ def ex_test():
         url = f"https://foo.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"foo": True})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_test2')
 def ex_test2():
@@ -222,8 +224,10 @@ def ex_test2():
         url = f"https://bar.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"bar": True})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
     
 @app.route('/_lb1')
@@ -236,8 +240,10 @@ def lb_aws():
         url = f"https://{ns}.{app.config['base_url']}"
         data = cloudapp_fetch(session, url, 7, 'env', 'AWS')
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
    
 @app.route('/_lb2')
 def lb_azure():
@@ -276,8 +282,10 @@ def route1():
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_route2')
 def route2():
@@ -298,8 +306,10 @@ def route2():
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_manip1')
 def manip1():
@@ -312,8 +322,10 @@ def manip1():
         url = f"https://{ns}.{base_url}/aws/raw"
         r_data = cloudapp_fetch(session, url, 5, 'info', {"method": "GET", "path": "/raw"})
         return jsonify(status='success', data=r_data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_manip2')
 def manip2():
@@ -327,8 +339,10 @@ def manip2():
         t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": app.config["ce_info"]["site_name"]}
         r_data = cloudapp_req_headers(session, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_manip3')
 def manip3():
@@ -349,8 +363,10 @@ def manip3():
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_port1')
 def port1():
@@ -362,8 +378,10 @@ def port1():
         url = f"https://{ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
         
 @app.route('/_port2', methods=['POST'])
 def port2():
@@ -375,8 +393,10 @@ def port2():
         url = f"https://{eph_ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
         
 
 if __name__ == '__main__':

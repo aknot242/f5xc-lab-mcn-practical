@@ -143,7 +143,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 ```
 
 <div class="alert alert-secondary" role="alert">
-  This test will make up to 5 requests.
+  <strong>This test will make up to 5 requests.</strong>
 </div>
 
 <div class="left-aligned-button-container">
