@@ -115,7 +115,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 <nav aria-label="labapp nav">
     <ul class="pagination justify-content-end">
       <li class="page-item">
-        <a class="page-link" href="/score">Scoreboard <i class="bi bi-sign-stop-fill"></i></a>
+        <a class="page-link" href="/score">Scoreboard <i class="bi bi-arrow-right-circle-fill"></i></a>
       </li>
     </ul>
   </nav>
