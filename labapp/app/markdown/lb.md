@@ -50,7 +50,7 @@ GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
-  "env": "aws",
+  "env": "AWS",
   ...
 }
 ```
@@ -137,7 +137,7 @@ GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
-  "env": "azure",
+  "env": "Azure",
   ...
 }
 ```
