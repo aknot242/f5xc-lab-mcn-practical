@@ -67,7 +67,9 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 
 ### **Exercise 2: Find a Friend**
 
-Do you have a friend working on the lab? Find thier <strong>ephemeral namespace</strong> (or use the one provided).
+Do you have a friend working on the lab?
+Have they updated their advertise policy to use the virtual site?
+Find thier <strong>ephemeral namespace</strong> (or use the one provided).
 
 <ul class="list-group">
   <li class="list-group-item">

@@ -7,8 +7,8 @@
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
 Load balancing is the cornerstone of XC's App Connect functionality.
-L7 MCN requires discovering services at one site and making those services available at some other site.
-That's accomplished by configuring origin pools and load balancers. 
+L7 MCN requires discovering services at one site and making those services available to another.
+XC implements this functionality with <strong>origin pools</strong> and <strong>load balancers</strong>. 
 More complicated configurations (underlay networking, security services, observability, etc.) are built on these primitives.
 
 <div style="height:25px"></div>
@@ -21,7 +21,7 @@ Build an origin pool and load balancer based on the exercise requirements.
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-    The URL for the cloud app hosted in AWS is <a href="https://aws-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a>
+    The URL for the cloud app hosted in AWS is <strong>https://aws-cloud-app.mcn-lab.f5demos.com</strong>
   </li>
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
@@ -112,7 +112,7 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-      The URL for the cloud app hosted in Azure is <a href="https://azure-cloud-app.mcn-lab.f5demos.com">https://aws-cloud-app.mcn-lab.f5demos.com</a> 
+      The URL for the cloud app hosted in Azure is <strong>https://azure-cloud-app.mcn-lab.f5demos.com</strong>
   </li>
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
@@ -121,6 +121,10 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
+  </li>
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    Keep the AWS Origin Pool in place. 
   </li>
 </ul>
 
@@ -137,6 +141,10 @@ Host: eph-ns.mcn-lab.f5demos.com
   ...
 }
 ```
+
+<div class="alert alert-secondary" role="alert">
+  <strong>This test will make up to 5 requests.</strong>
+</div>
 
 <div class="left-aligned-button-container">
     <button id="requestBtn2" class="btn btn-primary">Test Load Balancer</button>

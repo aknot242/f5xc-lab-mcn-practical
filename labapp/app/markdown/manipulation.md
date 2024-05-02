@@ -130,17 +130,13 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Insert a response header named <strong>X-MCN-dst-site</strong> to determine which cloud CE processed the request. 
+  Insert a response header named <strong>X-MCN-dest-site</strong> to determine which cloud CE processed the request. 
   </li>
 </ul>
 
 <div style="height:25px"></div>
 
 #### **Test Criteria**
-
-<div class="alert alert-secondary" role="alert">
-  This test evaluates response headers.
-</div>
 
 ```http
 GET https://eph-ns.mcn-lab.f5demos.com/aws HTTP/1.1
@@ -159,6 +155,10 @@ Host: eph-ns.mcn-lab.f5demos.com
   "x-mcn-dest-site": "student-azurenet"
 }
 ```
+
+<div class="alert alert-secondary" role="alert">
+  <strong>This test evaluates response headers.</strong>
+</div>
 
 <div class="left-aligned-button-container">
     <button id="requestBtn3" class="btn btn-primary">Test Load Balancer</button>

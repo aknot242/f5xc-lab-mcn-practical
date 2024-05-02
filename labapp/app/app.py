@@ -8,7 +8,7 @@ from flask_caching import Cache
 import requests
 import markdown
 from ce import get_ce_info, get_ce_state
-from fetch import cloudapp_fetch, cloudapp_req_headers, cloudapp_res_headers
+from fetch import get_runner_session, cloudapp_fetch, cloudapp_req_headers, cloudapp_res_headers
 
 app = Flask(__name__)
 app.config['ce_info'] = None
@@ -20,6 +20,9 @@ app.config['base_url'] = "mcn-lab.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
 app.secret_key = "blahblahblah"
+
+session = get_runner_session()
+session.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
 
 class LabException(Exception):
     """lab exception"""
@@ -206,142 +209,145 @@ def score():
 def ex_test():
     """Example test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://foo.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 7, 'info', {"foo": True})
+        data = cloudapp_fetch(session, url, 7, 'info', {"foo": True})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_test2')
 def ex_test2():
     """Example test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://bar.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 7, 'info', {"bar": True})
+        data = cloudapp_fetch(session, url, 7, 'info', {"bar": True})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
     
 @app.route('/_lb1')
 def lb_aws():
     """Azure LB test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(s, url, 7, 'env', 'AWS')
+        data = cloudapp_fetch(session, url, 7, 'env', 'AWS')
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
+   
 @app.route('/_lb2')
 def lb_azure():
     """Azure LB test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(s, url, 7, 'env', 'Azure')
-        return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+        for _ in range(5):
+            try:
+                data = cloudapp_fetch(session, url, 7, 'env', 'Azure')
+                return jsonify(status='success', data=data)
+            except ValueError:
+                pass
+        raise ValueError("Failed to find Azure Origin Pool")
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_route1')
 def route1():
     """First Route Test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/aws/raw"
         azure_url = f"https://{ns}.{base_url}/azure/raw"
-        aws_data = cloudapp_fetch(s, aws_url, 7, 'env', 'AWS')
-        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure')
+        aws_data = cloudapp_fetch(session, aws_url, 7, 'env', 'AWS')
+        azure_data = cloudapp_fetch(session, azure_url, 7, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_route2')
 def route2():
     """First Route Test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/"
         azure_url = f"https://{ns}.{base_url}/"
-        s.headers["X-MCN-lab"] = "aws"
-        aws_data = cloudapp_fetch(s, aws_url, 7, 'env', 'AWS')
-        s.headers["X-MCN-lab"] = "azure"
-        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure')
+        session.headers["X-MCN-lab"] = "aws"
+        aws_data = cloudapp_fetch(session, aws_url, 7, 'env', 'AWS')
+        session.headers["X-MCN-lab"] = "azure"
+        azure_data = cloudapp_fetch(session, azure_url, 7, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_manip1')
 def manip1():
     """First Manip Test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/aws/raw"
-        r_data = cloudapp_fetch(s, url, 5, 'info', {"method": "GET", "path": "/raw"})
+        r_data = cloudapp_fetch(session, url, 5, 'info', {"method": "GET", "path": "/raw"})
         return jsonify(status='success', data=r_data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_manip2')
 def manip2():
     """Second Manip Test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/"
         t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": app.config["ce_info"]["site_name"]}
-        r_data = cloudapp_req_headers(s, url, 7, t_headers)
+        r_data = cloudapp_req_headers(session, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_manip3')
 def manip3():
     """Third Manip Test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
@@ -350,45 +356,47 @@ def manip3():
         azure_url = f"https://{ns}.{base_url}/azure/"
         aws_headers = { "x-mcn-dest-site": "student-awsnet" }
         azure_headers = { "x-mcn-dest-site": "student-azurenet" }
-        aws_data = cloudapp_res_headers(s, aws_url, 7, aws_headers)
-        azure_data = cloudapp_res_headers(s, azure_url, 7, azure_headers)
+        aws_data = cloudapp_res_headers(session, aws_url, 7, aws_headers)
+        azure_data = cloudapp_res_headers(session, azure_url, 7, azure_headers)
         data = {
             "aws": aws_data,
             "azure": azure_data
         }
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
 
 @app.route('/_port1')
 def port1():
     """Friend test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         ns = eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 7, 'info', {"method": "GET", "path": "/"})
+        data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
         
 @app.route('/_port2', methods=['POST'])
 def port2():
     """Friend test"""
     try:
-        s = requests.Session()
-        s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         data = request.get_json()
         print(data)
         eph_ns = data['userInput']
         url = f"https://{eph_ns}.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 7, 'info', {"method": "GET", "path": "/"})
+        data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
         
 
 if __name__ == '__main__':
