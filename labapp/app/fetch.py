@@ -37,7 +37,6 @@ def cloudapp_req_headers(session, url, timeout, headers):
     response.raise_for_status()
     data = response.json()
     req_headers = CaseInsensitiveDict(data['request_headers'])
-    print(data)
     for header in headers:
         head_value = req_headers.get(header)
         if not head_value:
