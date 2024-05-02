@@ -58,7 +58,7 @@ Here's a few things you can do while waiting for the CE to be registered and pro
   </li>
   <li class="list-group-item">
     <i class="bi bi-gear"></i>&nbsp; &nbsp;
-    Configure lab <strong><a href="/settings">settings</a></strong> after logging into the tenant.
+    Configure lab <strong><a href="/setup">setup</a></strong> after logging into the tenant.
   </li>
   <li class="list-group-item">
     <i class="bi bi-cup-hot"></i></i>&nbsp; &nbsp;
