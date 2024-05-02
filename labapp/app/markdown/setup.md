@@ -13,6 +13,8 @@ Log in to the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" t
 
 The ephemeral namespace will be used to derive a unique URL for the load balancer used in the lab exercises.
 
+<strong><i class="bi bi-cookie"></i> Cookies must be allowed for this site.</strong>
+
 <form id="setupForm" action="/setup" method="post">
     <div class="mb-3">
         <label for="ENInput" class="form-label"></label>
