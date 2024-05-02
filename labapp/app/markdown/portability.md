@@ -81,8 +81,8 @@ Do you have a friend working on the lab? Find thier <strong>ephemeral namespace<
 #### **Test Criteria**
 
 ```http
-GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
-Host: eph-ns.mcn-lab.f5demos.com
+GET https://friend-eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
+Host: friend-eph-ns.mcn-lab.f5demos.com
 
 {
   "info": {
