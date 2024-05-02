@@ -359,16 +359,16 @@ def manip3():
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
     
-@app.route('/_port1')
-def port1():
-    """Azure LB test"""
+@app.route('/_port2', methods=['POST'])
+def port2():
+    """Friend test"""
     try:
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
-        ns = eph_ns()
-        if not ns:
-            raise LabException("Ephemeral NS not set")
-        url = f"https://{ns}.{app.config['base_url']}/"
+        data = request.get_json()
+        print(data)
+        eph_ns = data['userInput']
+        url = f"https://{eph_ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(s, url, 7, 'info', {"method": "GET", "path": "/"})
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:

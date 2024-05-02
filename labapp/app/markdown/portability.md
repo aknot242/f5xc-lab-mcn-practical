@@ -87,13 +87,21 @@ Host: eph-ns.mcn-lab.f5demos.com
 }
 ```
 
-<div class="left-aligned-button-container">
-    <button id="requestBtn2" class="btn btn-primary">Test Load Balancer</button>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <input type="text" id="inputText2" class="form-control"
+                  placeholder="Enter your string here" aria-label="User input" value="wiggly-yellowtail">
+                <button id="requestBtn2" class="btn btn-primary" type="button">Test Load Balancer</button>
+            </div>
+        </div>
+    </div>
+    <div id="result2" class="mt-3"></div>
 </div>
-<div id="result2" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    makeHttpRequest('requestBtn2', '/_manip2', 'result2');
+    makePostRequest('requestBtn2', '/_port2', 'result2', 'inputText2');
 });
 </script>
 
