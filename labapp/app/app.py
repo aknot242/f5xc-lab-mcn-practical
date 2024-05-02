@@ -8,6 +8,7 @@ from flask_caching import Cache
 import requests
 import markdown
 from ce import get_ce_info, get_ce_state
+from fetch import cloudapp_fetch
 
 app = Flask(__name__)
 app.config['ce_info'] = None
@@ -42,53 +43,6 @@ def eph_ns() -> str:
     """check if ephemeral namespace is set"""
     this_eph_ns = request.cookies.get('eph_ns', None)
     return this_eph_ns
-
-def cloudapp_fetch(session, url, timeout, prop, value, headers = {}):
-    """
-    Fetch data from URL
-    Validate prop and value in the JSON response
-    """
-    response = session.get(url, timeout=timeout)
-    response.raise_for_status()
-    data = response.json()
-    if data.get(prop) != value:
-        raise ValueError(f"Invalid {prop}: expected {value}, got {data.get(prop)}")
-    if data.get("request_headers"):
-        clean_headers = headers_cleaner(data['request_headers'])
-        data['request_headers'] = clean_headers
-        return data
-    return data
-
-def cloudapp_fetch2(session, url, timeout, prop, key, value):
-    """
-    Fetch data from URL
-    Validate if a specific key-value pair is present in the dictionary located at `prop` in the JSON response
-    """
-    response = session.get(url, timeout=timeout)
-    response.raise_for_status()
-    data = response.json()
-
-    prop_data = data.get(prop, {})
-    if not isinstance(prop_data, dict) or prop_data.get(key) != value:
-        raise ValueError(f"Expected {key}: {value} in {prop}, but got {key}: {prop_data.get(key)}")
-
-    if data.get("request_headers"):
-        clean_headers = headers_cleaner(data['request_headers'])
-        data['request_headers'] = clean_headers
-
-    return data
-
-def headers_cleaner(headers):
-    """
-    Remove headers that contain specific substrings.
-    Use this to make responses look nicer.
-    """
-    unwanted_substrings = ['x-envoy', 'cloudfront', 'x-k8se'] 
-    filtered_headers = {
-        key: value for key, value in headers.items()
-        if not any(substring in key.lower() for substring in unwanted_substrings)
-    }
-    return filtered_headers
 
 @app.errorhandler(404)
 @app.errorhandler(500)
@@ -248,7 +202,7 @@ def ex_test():
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://foo.{app.config['base_url']}/"
-        data = cloudapp_fetch2(s, url, 5, 'info', 'bar')
+        data = cloudapp_fetch(s, url, 7, 'info', {"foo": True})
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -260,7 +214,7 @@ def ex_test2():
         s = requests.Session()
         s.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
         url = f"https://bar.{app.config['base_url']}/"
-        data = cloudapp_fetch(s, url, 5, 'info', 'foo')
+        data = cloudapp_fetch(s, url, 7, 'info', {"bar": True})
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -276,7 +230,7 @@ def lb_aws():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(s, url, 5, 'env', 'AWS')
+        data = cloudapp_fetch(s, url, 7, 'env', 'AWS', None)
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))

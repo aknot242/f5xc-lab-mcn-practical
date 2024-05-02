@@ -74,7 +74,9 @@ Here are some examples to try.
 GET https://foo.f5demos.com/ HTTP/1.1
 
 {
-  "info": "bar"
+  "info": {
+    "foo": True
+  }
 }
 ```
 
@@ -89,7 +91,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 </script>
 
 The test made a request to <strong>https://foo.f5demos.com</strong>.
-The test succeeded because the response contained the ``JSON`` string ``{ "info": "bar" }``.
+The test succeeded because the response contained the ``JSON`` string ``{ "info": { "foo": True }}``.
 
 <div style="height:25px"></div>
 
@@ -97,7 +99,9 @@ The test succeeded because the response contained the ``JSON`` string ``{ "info"
 GET https://bar.f5demos.com/ HTTP/1.1
 
 {
-  "info": "foo"
+  "info": {
+    "bar": True
+  }
 }
 ```
 
@@ -112,7 +116,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 </script>
 
 The test made a request to <strong>https://bar.f5demos.com</strong>.
-The test failed because the response did not contain the ``JSON`` string ``{ "info": "bar" }``.
+The test failed because the response did not contain the ``JSON`` string ``{ "info": { "bar": True}}``.
 
 
 <div style="height:25px"></div>
