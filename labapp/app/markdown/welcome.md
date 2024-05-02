@@ -8,7 +8,7 @@
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
 This lab is a <strong>practical</strong> training activity.
-Each exercise will ask you to <strong>configure</strong> F5 Distributed Cloud ("XC") objects to reinforce core XC Multi-Cloud Networking ("MCN") concepts. 
+Each exercise will ask you to <strong>configure</strong> F5 Distributed Cloud ("XC") objects to reinforce core XC Multi-Cloud Networking ("MCN") App Connect concepts. 
 Once configured, you will <strong>test</strong> the configuration using this web application.
 
 <div style="height:25px"></div>
