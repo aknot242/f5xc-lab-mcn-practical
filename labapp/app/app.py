@@ -56,6 +56,7 @@ def return_err(err):
 
 @app.after_request
 def cache_control(response):
+    """cache control"""
     if request.path.startswith("/static/") and request.path.endswith(".png"):
         response.headers['Cache-Control'] = 'public, max-age=3600'
     return response

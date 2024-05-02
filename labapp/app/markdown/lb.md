@@ -33,7 +33,7 @@ Build an origin pool and load balancer based on the exercise requirements.
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-    The load balancer domain is <strong>{{ ns }}.mcn-lab.f5demos.com</strong>. 
+    The load balancer domain is <strong><i>your-ephemeral-namespace</i>.mcn-lab.f5demos.com</strong>. 
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
