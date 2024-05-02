@@ -80,12 +80,12 @@ To complete lab exercises, you will run tests against the load balancer advertis
 You will build this load balancer in the <strong><a href="/lb">first exercise</a></strong>.
 All tests will be run from this lab app.
 
-Each test will specify success criteria immediately before to the <button id="null" class="btn btn-primary disabled">Test Load Balancer</button> button.
+Each test will specify success criteria immediately before the <button id="null" class="btn btn-primary disabled">Test Load Balancer</button> button.
 
 Here are some examples to try. 
 
 ```http
-GET https://foo.f5demos.com/ HTTP/1.1
+GET https://foo.mcn-lab.f5demos.com/ HTTP/1.1
 
 {
   "info": {
@@ -110,7 +110,7 @@ The test succeeded because the response contained the ``JSON`` string ``{ "info"
 <div style="height:25px"></div>
 
 ```http
-GET https://bar.f5demos.com/ HTTP/1.1
+GET https://bar.mcn-lab.f5demos.com/ HTTP/1.1
 
 {
   "info": {
@@ -137,7 +137,7 @@ The test failed because the response did not contain the ``JSON`` string ``{ "in
 
 #### **Other Tools**
 
-``curl`` and ``jq`` are provided on the UDF "Runner" instance.
+``curl`` and ``jq`` are provided on the UDF <strong>Runner</strong> instance.
 
 ```shell
 ubuntu@ubuntu:~$ curl -s https://foo.mcn-lab.f5demos.com/ | jq
