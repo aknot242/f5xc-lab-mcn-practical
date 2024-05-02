@@ -130,7 +130,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Insert a response header named <strong>X-MCN-dst-site</strong> to determine which cloud CE processed the request. 
+  Insert a response header named <strong>X-MCN-dest-site</strong> to determine which cloud CE processed the request. 
   </li>
 </ul>
 
