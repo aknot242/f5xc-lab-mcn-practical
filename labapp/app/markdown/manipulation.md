@@ -174,5 +174,11 @@ document.getElementById('requestBtn3').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Finish off App Connect with an exercise on load balancer <strong><a href="/portability" class="alert-link">portability</a></strong>.
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/portability">Portability <i class="bi bi-arrow-right-circle-fill"></i></a>
+      </li>
+    </ul>
+  </nav>
 

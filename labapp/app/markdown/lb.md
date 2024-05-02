@@ -1,5 +1,5 @@
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none">
-    <img src="/static/lb.png" width="300px" height="auto" alt="intro">
+    <img src="/static/load-balancing.png" width="300px" height="auto" alt="intro">
 </div>
 
 # **Load Balancing**
@@ -30,6 +30,10 @@ Build an origin pool and load balancer based on the exercise requirements.
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
+  </li>
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    The load balancer domain is <strong>{{ ns }}.mcn-lab.f5demos.com</strong>. 
   </li>
   <li class="list-group-item">
   <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
@@ -146,5 +150,11 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-After completing both exercises, move on to the <strong><a href="/route" class="alert-link">routing</a></strong> exercise.
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/route">Routing <i class="bi bi-arrow-right-circle-fill"></i></a>
+      </li>
+    </ul>
+  </nav>
 

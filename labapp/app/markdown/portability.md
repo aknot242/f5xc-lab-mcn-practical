@@ -46,7 +46,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_port1', 'result');
+    makeHttpRequest('requestBtn1', '/_port1', 'result1');
 });
 </script>
 
@@ -107,4 +107,10 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Congratulations on completing the App Connect exercises. Move on to the first Network Connect exercise on <strong><a href="/vnet">virtual networks</a></strong>.
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/score">Scoreboard <i class="bi bi-sign-stop-fill"></i></a>
+      </li>
+    </ul>
+  </nav>

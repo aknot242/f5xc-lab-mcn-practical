@@ -123,4 +123,10 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Once you've completed the exercises, move on to the <strong><a href="/manipulation">manipulation</a></strong> exercise.
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/manipulation">Manipulation <i class="bi bi-arrow-right-circle-fill"></i></a>
+      </li>
+    </ul>
+  </nav>

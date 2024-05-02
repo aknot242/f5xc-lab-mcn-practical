@@ -7,9 +7,9 @@
 
 <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-This lab is a "practical" training activity.
-Each exercise will ask you to **configure** F5 Distributed Cloud ("XC") objects to reinforce core XC Multi-Cloud Networking ("MCN") concepts. 
-Once configured, you'll be asked to **test** your configuration using this web application.
+This lab is a <strong>practical</strong> training activity.
+Each exercise will ask you to <strong>configure</strong>F5 Distributed Cloud ("XC") objects to reinforce core XC Multi-Cloud Networking ("MCN") concepts. 
+Once configured, you will <strong>test</strong> the configuration using this web application.
 
 <div style="height:25px"></div>
 
@@ -22,18 +22,17 @@ When your UDF deployment launched, two automated processes started - Customer Ed
 ### **Customer Edge**
 
 The CE in the UDF deployment will registered with the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
-CEs on first launch update software and, often, their OS. This can be very time consuming ~20 min from when the CE is booted.
+CEs on first launch update software and, often, their OS. This can take ~20 min from when the CE is booted.
 
-This lab app includes an indicator of the CE's status along with the site name in the navigation pane.
-The **site name** is needed when configuring the load balancer advertise policy.
-
+This lab app includes an indicator of the CE's site name and status in the navigation pane (👀 look to the left).
+The **site name** is needed when configuring the load balancer's <strong>advertise policy</strong>.
 
 <div style="height:25px"></div>
 
 ### **Account Provisioning**
 
-Check the email used to launch your UDF deployment for a "welcome" or password reset email to the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
-Update your password and log into the tenant.
+Check the email used to launch your UDF deployment for a <strong>welcome</strong> or password reset email from the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+Update your password to log into the tenant.
 
 <p float="left">
 <a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">
@@ -59,7 +58,7 @@ Here's a few things you can do while waiting for the CE to be registered and pro
   </li>
   <li class="list-group-item">
     <i class="bi bi-envelope-exclamation"></i>&nbsp; &nbsp;
-    Check for the tenant "welcome" email.
+    Check for the tenant <strong>welcome</strong> email.
   </li>
   <li class="list-group-item">
     <i class="bi bi-cup-hot"></i></i>&nbsp; &nbsp;
@@ -70,6 +69,13 @@ Here's a few things you can do while waiting for the CE to be registered and pro
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Welcome to the lab! Next, read an <strong><a href="/overview">overview</a></strong> that explains the lab environment, tools, and exercises.
+<nav aria-label="labapp nav">
+  <ul class="pagination justify-content-end">
+    <li class="page-item">
+      <a class="page-link" href="/overview">Overview <i class="bi bi-arrow-right-circle-fill"></i></a>
+    </li>
+  </ul>
+</nav>
+
 
 
