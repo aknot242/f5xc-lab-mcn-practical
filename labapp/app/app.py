@@ -247,10 +247,17 @@ def lb_azure():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(session, url, 7, 'env', 'Azure')
-        return jsonify(status='success', data=data)
-    except (LabException, requests.RequestException, ValueError) as e:
+        for _ in range(5):
+            try:
+                data = cloudapp_fetch(session, url, 7, 'env', 'Azure')
+                return jsonify(status='success', data=data)
+            except ValueError:
+                pass
+        raise ValueError("Failed to find Azure Origin Pool")
+    except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
+    except requests.RequestException:
+        return jsonify(status='fail', error="Connection/Request Error")
     
 @app.route('/_route1')
 def route1():
