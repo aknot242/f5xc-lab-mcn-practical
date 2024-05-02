@@ -313,7 +313,7 @@ def manip1():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/_manip2')
-def manip1():
+def manip2():
     """Second Manip Test"""
     try:
         s = requests.Session()
@@ -330,7 +330,7 @@ def manip1():
         return jsonify(status='fail', error=str(e))
     
 @app.route('/_manip3')
-def manip2():
+def manip3():
     """Third Manip Test"""
     try:
         s = requests.Session()
