@@ -54,6 +54,12 @@ def return_err(err):
     }
     return render_template("error.html", err_img=img[err.code])
 
+@app.after_request
+def cache_control(response):
+    if request.path.startswith("/static/") and request.path.endswith(".png"):
+        response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
+
 @app.route('/')
 def index():
     """index page"""
