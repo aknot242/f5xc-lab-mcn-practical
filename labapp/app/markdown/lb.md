@@ -122,11 +122,19 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
     The cloud app is TLS only. 
   </li>
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+    Keep the AWS Origin Pool in place. 
+  </li>
 </ul>
 
 <div style="height:25px"></div>
 
 #### **Test Criteria**
+
+<div class="alert alert-secondary" role="alert">
+  This test will make up to 5 requests.
+</div>
 
 ```http
 GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1

@@ -238,7 +238,7 @@ def lb_aws():
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    
+   
 @app.route('/_lb2')
 def lb_azure():
     """Azure LB test"""
