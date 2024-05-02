@@ -11,7 +11,7 @@ The configuration built so far handles load balancing, routing, and content mani
 XC refers to this object as a "load balancer" -- but it's really the holistic representation of an application whose service endpoints live across the distributed network.
 The object is simple -- it doesn't yet include configuration for WAAP, API protection, or a service policy.
 
-What seperate XC from traditional ADCs is the flexibility of defining <strong>where the object is advertised</strong>.
+What seperates XC from traditional ADCs is flexibility in defining <strong>where a load balancer is advertised</strong>.
 
 <div style="height:25px"></div>
 
@@ -67,9 +67,14 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 
 ### **Exercise 2: Find a Friend**
 
-Do you have a friend working on the lab?
-Ask them their <strong>ephemeral namespace</strong> to test advertisement from the UDF site (or test with the value already populated).
+Do you have a friend working on the lab? Find thier <strong>ephemeral namespace</strong> (or use the one provided).
 
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Test if your friend's load balancer is being advertised to the UDF site.
+  </li>
+</ul>
 
 <div style="height:25px"></div>
 
