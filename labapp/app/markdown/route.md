@@ -8,7 +8,7 @@
 
 Modern applications, and some classic ones, are often comprised of disparate services spread across sites. 
 MCN solutions must be able to make routing decisions based on characterstics of an HTTP request.
-F5 XC App Connect is a distributed L7 proxy that provide intelligent routing, visibility, and strategic points of control.
+F5 XC App Connect is a distributed L7 proxy that provides intelligent routing, visibility, and strategic points of control.
 
 <div style="height:25px"></div>
 
@@ -19,15 +19,15 @@ Build routing rules and configure your load balancer to route traffic between th
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/origin-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Reuse the origin pools from the previous exercise
+  Reuse the origin pools from the previous exercise.
   </li>
   <li class="list-group-item">
   <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>aws</strong></u>" to the AWS cloud app. 
+  Route requests to <strong>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<u>aws*</u></strong> to the AWS cloud app. 
   </li>
   <li class="list-group-item">
   <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Route requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<strong>azure</strong></u>" to the Azure cloud app. 
+  Route requests to <strong>https://<i>eph-ns</i>.mcn-lab.f5demos.com/<u>azure*</u></strong> to the Azure cloud app. 
   </li>
 </ul>
 
@@ -77,11 +77,11 @@ Build rules to route traffic between the two cloud apps based on an arbitrary HT
 <ul class="list-group">
   <li class="list-group-item">
   <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Route requests with an "<strong>X-MCN-Lab: aws</strong>" header to the AWS cloud app.
+  Route requests with an <strong>X-MCN-Lab: aws</strong> header to the AWS cloud app.
   </li>
   <li class="list-group-item">
   <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Route requests with an "<strong>X-MCN-Lab: azure</strong>" header to the Azure cloud app.
+  Route requests with an <strong>X-MCN-Lab: azure</strong> header to the Azure cloud app.
   </li>
 </ul>
 
