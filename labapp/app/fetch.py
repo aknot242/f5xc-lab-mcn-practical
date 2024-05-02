@@ -5,7 +5,7 @@ def headers_cleaner(headers):
     Remove headers that contain specific substrings.
     Use this to make responses look nicer.
     """
-    unwanted_substrings = ['x-envoy', 'cloudfront', 'x-k8se', 'x-amz', 'z-amzn', 'via', 'x-arr-ssl'] 
+    unwanted_substrings = ['x-envoy', 'cloudfront', 'x-k8se', 'x-amz', 'z-amzn', 'via', 'x-arr-ssl', 'x-ms-containerapp'] 
     filtered_headers = {
         key: value for key, value in headers.items()
         if not any(substring in key.lower() for substring in unwanted_substrings)
