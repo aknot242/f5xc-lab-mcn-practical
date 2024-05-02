@@ -287,7 +287,7 @@ def route2():
         s.headers["X-MCN-lab"] = "aws"
         aws_data = cloudapp_fetch(s, aws_url, 7, 'env', 'AWS')
         s.headers["X-MCN-lab"] = "azure"
-        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
+        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
