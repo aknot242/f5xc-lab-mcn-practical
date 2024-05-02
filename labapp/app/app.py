@@ -323,7 +323,7 @@ def manip2():
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/"
-        t_headers = {"x-mcn-namespace": ns,"x-mcn-src-site": app.config["ce_info"]["site_name"]}
+        t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": app.config["ce_info"]["site_name"]}
         r_data = cloudapp_req_headers(s, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
     except (LabException, requests.RequestException, ValueError) as e:

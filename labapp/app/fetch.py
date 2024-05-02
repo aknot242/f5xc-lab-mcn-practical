@@ -1,3 +1,5 @@
+from requests.structures import CaseInsensitiveDict
+
 def headers_cleaner(headers):
     """
     Remove headers that contain specific substrings.
@@ -34,9 +36,11 @@ def cloudapp_req_headers(session, url, timeout, headers):
     response = session.get(url, timeout=timeout)
     response.raise_for_status()
     data = response.json()
+    req_headers = CaseInsensitiveDict(data['request_headers'])
     print(data)
     for header in headers:
-        if header.lower() not in data['request_headers']:
+        head_value = req_headers.get(header)
+        if not head_value:
             raise ValueError(f"Header {header} not found request headers.")
     clean_headers = headers_cleaner(data['request_headers'])
     data['request_headers'] = clean_headers
