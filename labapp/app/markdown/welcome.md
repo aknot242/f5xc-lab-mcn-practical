@@ -53,12 +53,12 @@ Here's a few things you can do while waiting for the CE to be registered and pro
     Read the lab <strong><a href="/overview">overview</a></strong>.
   </li>
   <li class="list-group-item">
-    <i class="bi bi-gear"></i>&nbsp; &nbsp;
-    Configure lab <strong><a href="/settings">settings</a></strong> after logging into the tenant.
-  </li>
-  <li class="list-group-item">
     <i class="bi bi-envelope-exclamation"></i>&nbsp; &nbsp;
     Check for the tenant <strong>welcome</strong> email.
+  </li>
+  <li class="list-group-item">
+    <i class="bi bi-gear"></i>&nbsp; &nbsp;
+    Configure lab <strong><a href="/settings">settings</a></strong> after logging into the tenant.
   </li>
   <li class="list-group-item">
     <i class="bi bi-cup-hot"></i></i>&nbsp; &nbsp;

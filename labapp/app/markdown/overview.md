@@ -15,15 +15,13 @@ Understanding the environment, it's topology, and the rudimentary functionality 
 
 The lab environment contains three distributed sites meshed using the F5 Distributed Cloud Global Network.
 
-<div style="height:25px"></div>
-
 <ul class="list-group">
   <li class="list-group-item">
-  <img src="/static/aws.png" width="40px" height="auto"> &nbsp;&nbsp;&nbsp;
+  <img src="/static/aws.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
     <strong>student-awsnet</strong> in Amazon Web Services
   </li>
   <li class="list-group-item">
-  <img src="/static/azure.png" width="40px" height="auto"> &nbsp;&nbsp;&nbsp;
+  <img src="/static/azure.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
   <strong>student-azurenet</strong> in Microsoft Azure
   </li>
   <li class="list-group-item">
