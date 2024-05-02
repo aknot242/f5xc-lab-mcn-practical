@@ -230,7 +230,7 @@ def lb_aws():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(s, url, 7, 'env', 'AWS', None)
+        data = cloudapp_fetch(s, url, 7, 'env', 'AWS')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -245,7 +245,7 @@ def lb_azure():
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
-        data = cloudapp_fetch(s, url, 5, 'env', 'Azure')
+        data = cloudapp_fetch(s, url, 7, 'env', 'Azure')
         return jsonify(status='success', data=data)
     except (LabException, requests.RequestException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
@@ -262,8 +262,8 @@ def route1():
         base_url = app.config['base_url']
         aws_url = f"https://{ns}.{base_url}/aws/raw"
         azure_url = f"https://{ns}.{base_url}/azure/raw"
-        aws_data = cloudapp_fetch(s, aws_url, 5, 'env', 'AWS')
-        azure_data = cloudapp_fetch(s, azure_url, 5, 'env', 'Azure')
+        aws_data = cloudapp_fetch(s, aws_url, 7, 'env', 'AWS')
+        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure')
         data = {
             "aws": aws_data,
             "azure": azure_data
@@ -285,9 +285,9 @@ def route2():
         aws_url = f"https://{ns}.{base_url}/"
         azure_url = f"https://{ns}.{base_url}/"
         s.headers["X-MCN-lab"] = "aws"
-        aws_data = cloudapp_fetch(s, aws_url, 5, 'env', 'AWS')
+        aws_data = cloudapp_fetch(s, aws_url, 7, 'env', 'AWS')
         s.headers["X-MCN-lab"] = "azure"
-        azure_data = cloudapp_fetch(s, azure_url, 5, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
+        azure_data = cloudapp_fetch(s, azure_url, 7, 'env', 'Azure', headers={"X-MCN-lab": "azure"})
         data = {
             "aws": aws_data,
             "azure": azure_data
