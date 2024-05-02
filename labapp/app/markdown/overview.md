@@ -104,7 +104,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 });
 </script>
 
-The test made a request to <strong>https://foo.f5demos.com</strong>.
+The test made a request to <strong>https://foo.mcn-lab.f5demos.com</strong>.
 The test succeeded because the response contained the ``JSON`` string ``{ "info": { "foo": True }}``.
 
 <div style="height:25px"></div>
@@ -129,7 +129,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 });
 </script>
 
-The test made a request to <strong>https://bar.f5demos.com</strong>.
+The test made a request to <strong>https://bar.mcn-lab.f5demos.com</strong>.
 The test failed because the response did not contain the ``JSON`` string ``{ "info": { "bar": True}}``.
 
 
