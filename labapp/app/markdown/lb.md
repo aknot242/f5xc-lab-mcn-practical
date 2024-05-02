@@ -132,10 +132,6 @@ Create a new origin pool for the Azure cloud app. Reuse your load balancer.
 
 #### **Test Criteria**
 
-<div class="alert alert-secondary" role="alert">
-  This test will make up to 5 requests.
-</div>
-
 ```http
 GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
@@ -145,6 +141,10 @@ Host: eph-ns.mcn-lab.f5demos.com
   ...
 }
 ```
+
+<div class="alert alert-secondary" role="alert">
+  This test will make up to 5 requests.
+</div>
 
 <div class="left-aligned-button-container">
     <button id="requestBtn2" class="btn btn-primary">Test Load Balancer</button>

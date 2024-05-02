@@ -138,10 +138,6 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 #### **Test Criteria**
 
-<div class="alert alert-secondary" role="alert">
-  This test evaluates response headers.
-</div>
-
 ```http
 GET https://eph-ns.mcn-lab.f5demos.com/aws HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
@@ -159,6 +155,10 @@ Host: eph-ns.mcn-lab.f5demos.com
   "x-mcn-dest-site": "student-azurenet"
 }
 ```
+
+<div class="alert alert-secondary" role="alert">
+  This test evaluates response headers.
+</div>
 
 <div class="left-aligned-button-container">
     <button id="requestBtn3" class="btn btn-primary">Test Load Balancer</button>
