@@ -78,7 +78,7 @@ def create_app():
     
     @app.route('/foo/', methods=['GET'])
     def ex_test():
-        return jsonify({'info': 'bar'})
+        return jsonify({"info": { "foo": True}})
     
     return app
 

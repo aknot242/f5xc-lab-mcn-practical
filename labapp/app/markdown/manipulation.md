@@ -25,7 +25,7 @@ Configure a path <strong>prefix rewrite</strong> to remove part of the request p
   </li>
   <li class="list-group-item">
   <img src="/static/route-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
-  Requests to "<u>https://<i>eph-ns</i>.mcn-lab.f5demos.com<strong>/aws/raw</strong></u>" need to arrive at the origin with a path of "<strong>/raw</strong></u>"
+  Requests to <strong>https://<i>eph-ns</i>.mcn-lab.f5demos.com<u>/aws/raw</u></strong> need to arrive at the origin with a path of <strong>/raw</strong></u>.
   </li>
 </ul>
 
@@ -55,7 +55,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 });
 </script>
 
-Since questions on this functionality are often asked on [F5 DevCentral](https://community.f5.com/), a hint might be warranted. 
+Since questions on this functionality are often asked on <strong><a href="https://community.f5.com/" target="_blank">F5 DevCentral</a></strong>, a hint might be warranted. 
 
 <div id="hints">
 <p>
@@ -64,7 +64,7 @@ Since questions on this functionality are often asked on [F5 DevCentral](https:/
 </p>
 <div class="row">
       <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
-      <img src="/static/rewrite1.png" width="800px" height="auto" alt="temp">
+      <img src="/static/rewrite1.png" width="900px" height="auto" alt="temp">
     </div>
   <div class="collapse multi-collapse" id="multiCollapseExample2" data-bs-parent="#hints">
     <div class="">
@@ -76,9 +76,23 @@ Since questions on this functionality are often asked on [F5 DevCentral](https:/
 
 <div style="height:25px"></div>
 
-### **Exercise 2: Header Shenanigans**
+### **Exercise 2: Request Header Shenanigans**
 
-Insert headers to identify 
+While blind header insertion or deletion is useful in some use cases, this exercise focuses on context aware header manipulation. 
+Use the <strong><a href="https://docs.cloud.f5.com/docs/how-to/advanced-security/configure-http-header-processing" target="_blank">XC Header Processing</a></strong> docs for reference. 
+
+<div style="height:25px"></div>
+
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Insert a request header named <strong>X-MCN-src-site</strong> to identifies the UDF CE to the origin. <u>Do not use a static value</u>. 
+  </li>
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Insert a request header named <strong>X-MCN-namespace</strong> to identifies the ephemeral namespace to the origin. <u>Do not use a static value</u>. 
+  </li>
+</ul>
 
 <div style="height:25px"></div>
 
@@ -89,7 +103,11 @@ GET https://eph-ns.mcn-lab.f5demos.com/ HTTP/1.1
 Host: eph-ns.mcn-lab.f5demos.com
 
 {
-  "env": "azure",
+  ...
+  "request_headers": {
+    "x-mcn-namespace": "wiggly-yellowtail",
+    "x-mcn-src-site": "cluster-xxxxxxxx",
+  },
   ...
 }
 ```
@@ -104,9 +122,57 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 });
 </script>
 
+<div style="height:25px"></div>
+
+### **Exercise 3: Response Header Shenanigans**
+
+<div style="height:25px"></div>
+
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" width="auto" height="50px"> &nbsp; &nbsp;
+  Insert a response header named <strong>X-MCN-dst-site</strong> to determine which cloud CE processed the request. 
+  </li>
+</ul>
+
+<div style="height:25px"></div>
+
+#### **Test Criteria**
+
+<div style="height:25px"></div>
+
+<strong><u>This test will evaluate response headers.</u></strong>
+
+```http
+GET https://eph-ns.mcn-lab.f5demos.com/aws HTTP/1.1
+Host: eph-ns.mcn-lab.f5demos.com
+
+{
+  "x-mcn-dest-site": "student-awsnet"
+}
+```
+
+```http
+GET https://eph-ns.mcn-lab.f5demos.com/azure HTTP/1.1
+Host: eph-ns.mcn-lab.f5demos.com
+
+{
+  "x-mcn-dest-site": "student-azurenet"
+}
+```
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn3" class="btn btn-primary">Test Load Balancer</button>
+</div>
+<div id="result3" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn3').addEventListener('click', () => {
+    makeHttpRequest('requestBtn3', '/_manip3', 'result3');
+});
+</script>
+
+
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-Nice 🚀! If you've completed all the exercises so far, you have a good foundation for how App Connect addresses common L7 MCN scenarios.
-In subsequent labs, we'll explore security and observabilty concepts that build on MCN functionality.
-Head over to the <a href="/vnet" class="alert-link">Network Connect</a> exercise.
+Finish off App Connect with an exercise on load balancer <strong><a href="/portability" class="alert-link">portability</a></strong>.
 
