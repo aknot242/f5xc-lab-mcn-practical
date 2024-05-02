@@ -68,7 +68,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 ### **Exercise 2: Find a Friend**
 
 Do you have a friend working on the lab?
-Ask them their ephemeral namespace and test that their load balancer is being advertised from your site.
+Ask them their <strong>ephemeral namespace</strong> to test advertisement from the UDF site (or test with the value already populated).
 
 
 <div style="height:25px"></div>
@@ -107,7 +107,4 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
 
 <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
-🚀 Nice 🚀! 
-</br>
-
-
+Congratulations on completing the App Connect exercises. Move on to the first Network Connect exercise on <strong><a href="/vnet">virtual networks</a></strong>.
