@@ -24,7 +24,7 @@ When your UDF deployment launched, two automated processes started - Customer Ed
 The CE in the UDF deployment will register with the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
 CEs on first launch update software and, often, their OS. This can take ~20 min from when the CE is booted.
 
-When the CE is ready, the indicator in the navigation pane (👀 look to the left) will show green.
+When the CE is ready, the status indicator in the navigation pane (👀 look to the left) will show <img src="/static/check.png" height="20px" width="auto"></img>.
 Use the indicator to find the CE <strong>site name</strong> needed for configuring the load balancer's advertise policy.
 
 <div style="height:25px"></div>
