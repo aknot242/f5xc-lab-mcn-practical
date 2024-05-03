@@ -5,11 +5,13 @@ import os
 import re
 import json
 import requests
+import urllib
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
 from flask_caching import Cache
 import markdown
 from ce import get_ce_info, get_ce_state
 from fetch import get_runner_session, cloudapp_fetch, cloudapp_req_headers, cloudapp_res_headers
+from score import score_get_results, score_build_table
 
 app = Flask(__name__)
 app.config['ce_info'] = None
@@ -117,7 +119,7 @@ def ce_state():
     data = get_ce_state(app.config['ce_info'])
     return data
 
-@app.route('/lb')
+@app.route('/loadbalancing')
 def lb():
     """lb page"""
     ns = get_eph_ns()
@@ -184,7 +186,7 @@ def netp():
         ns=ns
     )
 
-@app.route('/ref')
+@app.route('/reference')
 def ref():
     """reference page"""
     ns = get_eph_ns()
@@ -199,27 +201,36 @@ def ref():
 def score():
     """scoreboard page"""
     ns = get_eph_ns()
-    score_cookie = request.cookies.get('score', '')
+    score_cookie = request.cookies.get('score', '%7B%7D') 
+    print(score_cookie)
     try:
-        this_score = {json.loads(k): v for k, v in json.loads(score_cookie).items()}
+        decoded_cookie = urllib.parse.unquote(score_cookie)
+        enc_score = json.loads(decoded_cookie)
+        this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
     except json.JSONDecodeError:
         this_score = {}
-    return render_template('score.html',
-        title="MCN Practical: Scoreboard",
-        score=this_score,
-        ns=ns
-    )
-
-@app.route('/scoreboard')
-def scoreboard():
-    progress_cookie = request.cookies.get('progress', '{}')
     try:
-        # Decode the JSON string and handle URL decoding
-        completed_requests = {json.loads(k): v for k, v in json.loads(progress_cookie).items()}
-    except json.JSONDecodeError:
-        completed_requests = {}
-    return render_template('scoreboard.html', completed_requests=completed_requests)
-
+        p_score = score_get_results(this_score)
+        over_table = score_build_table(p_score, 'overview', 'Overview')
+        lb_table = score_build_table(p_score, 'lb', 'Load Balancing')
+        route_table = score_build_table(p_score, 'route', 'Routing')
+        manip_table = score_build_table(p_score, 'manip', 'Manipulation')
+        port_table = score_build_table(p_score, 'port', 'Portability')
+    except LabException as e:
+        print(f"Couldn't build score table: {e}")
+    response = make_response(render_template('score.html',
+            title="MCN Practical: Scoreboard",
+            over_table=over_table,
+            lb_table=lb_table,
+            route_table=route_table,
+            manip_table=manip_table,
+            port_table=port_table,
+            ns=ns
+        ))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate' 
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/_test1')
 def ex_test():

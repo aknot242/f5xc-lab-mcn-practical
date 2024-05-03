@@ -46,7 +46,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_port1', 'result1');
+    testHttpRequest('requestBtn1', '/_port1', 'result1');
 });
 </script>
 
@@ -108,7 +108,7 @@ Host: friend-eph-ns.mcn-lab.f5demos.com
 </div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    makePostRequest('requestBtn2', '/_port2', 'result2', 'inputText2');
+    testPostRequest('requestBtn2', '/_port2', 'result2', 'inputText2');
 });
 </script>
 

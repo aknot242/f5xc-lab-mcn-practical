@@ -61,7 +61,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    makeHttpRequest('requestBtn1', '/_lb1', 'result1');
+    testHttpRequest('requestBtn1', '/_lb1', 'result1');
 });
 </script>
 
@@ -152,7 +152,7 @@ Host: eph-ns.mcn-lab.f5demos.com
 <div id="result2" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    makeHttpRequest('requestBtn2', '/_lb2', 'result2');
+    testHttpRequest('requestBtn2', '/_lb2', 'result2');
 });
 </script>
 

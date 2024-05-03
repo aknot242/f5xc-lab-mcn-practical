@@ -66,10 +66,23 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId) {
         button.disabled = false;
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-}
+  }
   
-function updateScoreCookie(requestUrl, status) {
-    let progress = JSON.parse(getCookie('score') || '{}');
+  function updateScoreCookie(requestUrl, status) {
+    // Get the current cookie, decode it, and parse it as JSON
+    const currentCookie = decodeURIComponent(getScoreCookie('score') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
+    let progress = JSON.parse(currentCookie);
     progress[encodeURIComponent(requestUrl)] = status;
-    document.cookie = `progress=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+    document.cookie = `score=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+  }
+  
+  function getScoreCookie(name) {
+    let cookieArray = document.cookie.split(';');
+    for(let i = 0; i < cookieArray.length; i++) {
+      let cookiePair = cookieArray[i].split('=');
+      if(name == cookiePair[0].trim()) {
+        return cookiePair[1];
+      }
+    }
+    return null;
   }

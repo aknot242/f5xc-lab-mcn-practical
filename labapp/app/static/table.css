@@ -1,0 +1,60 @@
+/* General table styling */
+.score-table {
+    background: #34495E; /* Dark blue background for contrast */
+    color: rgb(85, 155, 221); /* Light blue text for readability */
+    border-radius: .9em; /* Rounded corners for aesthetics */
+    overflow: hidden; /* Keeps the inner elements contained within the border radius */
+    margin: 1em 0; /* Spacing above and below each table */
+}
+
+/* Ensures table cells have appropriate padding and text alignment */
+.score-table th, .score-table td {
+    text-align: left; /* Align text to the left */
+    display: block; /* Stack cells vertically on small screens */
+    padding: .4em .7em; /* Padding for spacing within cells */
+}
+
+.score-table th {
+    background: #34495E; /* Dark blue background for contrast */
+    color: white;
+}
+
+.score-table td {
+    background: rgb(230, 234, 253);
+    color: black;
+}
+
+/* Specific styles for pass/fail scenarios */
+.score-pass {
+    color: rgb(25, 135, 84); /* Green for pass */
+}
+
+.score-fail {
+    color: rgb(203, 68, 74); /* Red for fail */
+}
+
+/* Responsive settings and adjustments for table display */
+@media (min-width: 768px) { /* Adjusting for medium-sized devices and up */
+    .score-table {
+        min-width: 300px; /* Minimum width for tables on larger screens */
+        width: 100%; /* Full width to utilize available space */
+    }
+    .score-table th, .score-table td {
+        display: table-cell; /* Normal table cell display on larger screens */
+    }
+}
+
+/* Responsive container to allow horizontal scrolling on small devices */
+.table-responsive {
+    width: 100%; /* Full width */
+    overflow-x: auto; /* Enable horizontal scrolling when necessary */
+}
+
+/* Adjust first and last cell padding for aesthetics */
+.score-table th:first-child, .score-table td:first-child {
+    padding-left: .75em; /* Remove left padding for clean alignment */
+}
+
+.score-table th:last-child, .score-table td:last-child {
+    padding-right: 0; /* Remove right padding for clean alignment */
+}
