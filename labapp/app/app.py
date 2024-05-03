@@ -232,7 +232,7 @@ def ex_test2():
     
 @app.route('/_lb1')
 def lb_aws():
-    """Azure LB test"""
+    """AWS LB test"""
     try:
         ns = eph_ns()
         if not ns:
