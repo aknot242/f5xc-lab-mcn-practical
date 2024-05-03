@@ -113,7 +113,7 @@ def score_build_table(scores, section, name):
     <table class="score-table"">
         <thead>
           <tr>
-            <th><strong>{name}</strong></th>
+            <th>{name}</th>
           </tr>
         </thead>
         <tbody>
