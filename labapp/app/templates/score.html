@@ -1,0 +1,24 @@
+<!-- score.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard</title>
+</head>
+<body>
+    <h1>Scoreboard</h1>
+    <table>
+        <tr>
+            <th>Request URL</th>
+            <th>Status</th>
+        </tr>
+        {% for url, status in completed_requests.items() %}
+        <tr>
+            <td>{{ url }}</td>
+            <td>{{ status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
