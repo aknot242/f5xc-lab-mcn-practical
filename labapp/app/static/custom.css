@@ -43,6 +43,10 @@ main {
   padding: 50px;
 }
 
+.main-body {
+  padding: 50px;
+}
+
 .err {
   display: flex;
   justify-content: center; /* Centers horizontally */

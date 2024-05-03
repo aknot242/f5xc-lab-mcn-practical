@@ -3,12 +3,15 @@ Flask app for lab/guide
 """
 import os
 import re
+import json
+import requests
+import urllib
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
 from flask_caching import Cache
-import requests
 import markdown
 from ce import get_ce_info, get_ce_state
 from fetch import get_runner_session, cloudapp_fetch, cloudapp_req_headers, cloudapp_res_headers
+from score import score_get_results, score_build_table
 
 app = Flask(__name__)
 app.config['ce_info'] = None
@@ -42,7 +45,7 @@ def validate_eph_ns(input_name):
     pattern = r'^[a-zA-Z]+-[a-zA-Z]+$'
     return bool(re.match(pattern, input_name))
 
-def eph_ns() -> str:
+def get_eph_ns() -> str:
     """check if ephemeral namespace is set"""
     this_eph_ns = request.cookies.get('eph_ns', None)
     return this_eph_ns
@@ -85,7 +88,7 @@ def arch():
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
     """setup page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     if request.method == 'POST':
         action = request.form['action']
         if action == 'save':
@@ -116,10 +119,10 @@ def ce_state():
     data = get_ce_state(app.config['ce_info'])
     return data
 
-@app.route('/lb')
+@app.route('/loadbalancing')
 def lb():
     """lb page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/lb.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: LB",
@@ -130,7 +133,7 @@ def lb():
 @app.route('/route')
 def path():
     """routing page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/route.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: HTTP Routing",
@@ -142,7 +145,7 @@ def path():
 @app.route('/manipulation')
 def header():
     """manipulation page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/manipulation.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: Manipulation",
@@ -153,7 +156,7 @@ def header():
 @app.route('/portability')
 def port():
     """portability page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/portability.md")
     return render_template('exercise_standard.html',
         title="MCN Practical: Portability",
@@ -164,7 +167,7 @@ def port():
 @app.route('/vnet')
 def vnet():
     """vnet page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
         title="MCN Practical: Reference",
@@ -175,7 +178,7 @@ def vnet():
 @app.route('/netpolicy')
 def netp():
     """netpolicy page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
         title="MCN Practical: Reference",
@@ -183,10 +186,10 @@ def netp():
         ns=ns
     )
 
-@app.route('/ref')
+@app.route('/reference')
 def ref():
     """reference page"""
-    ns = eph_ns()
+    ns = get_eph_ns()
     html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
         title="MCN Practical: Reference",
@@ -197,13 +200,37 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
-    ns = eph_ns()
-    html = render_md("markdown/score.md")
-    return render_template('coming-soon.html',
-        title="MCN Practical: Scoreboard",
-        content=html, 
-        ns=ns
-    )
+    ns = get_eph_ns()
+    score_cookie = request.cookies.get('score', '%7B%7D') 
+    print(score_cookie)
+    try:
+        decoded_cookie = urllib.parse.unquote(score_cookie)
+        enc_score = json.loads(decoded_cookie)
+        this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
+    except json.JSONDecodeError:
+        this_score = {}
+    try:
+        p_score = score_get_results(this_score)
+        over_table = score_build_table(p_score, 'overview', 'Overview')
+        lb_table = score_build_table(p_score, 'lb', 'Load Balancing')
+        route_table = score_build_table(p_score, 'route', 'Routing')
+        manip_table = score_build_table(p_score, 'manip', 'Manipulation')
+        port_table = score_build_table(p_score, 'port', 'Portability')
+    except LabException as e:
+        print(f"Couldn't build score table: {e}")
+    response = make_response(render_template('score.html',
+            title="MCN Practical: Scoreboard",
+            over_table=over_table,
+            lb_table=lb_table,
+            route_table=route_table,
+            manip_table=manip_table,
+            port_table=port_table,
+            ns=ns
+        ))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate' 
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/_test1')
 def ex_test():
@@ -234,7 +261,7 @@ def ex_test2():
 def lb_aws():
     """Azure LB test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
@@ -249,7 +276,7 @@ def lb_aws():
 def lb_azure():
     """Azure LB test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}"
@@ -269,7 +296,7 @@ def lb_azure():
 def route1():
     """First Route Test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
@@ -291,7 +318,7 @@ def route1():
 def route2():
     """First Route Test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
@@ -315,7 +342,7 @@ def route2():
 def manip1():
     """First Manip Test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
@@ -331,7 +358,7 @@ def manip1():
 def manip2():
     """Second Manip Test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
@@ -348,7 +375,7 @@ def manip2():
 def manip3():
     """Third Manip Test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
@@ -372,7 +399,7 @@ def manip3():
 def port1():
     """Friend test"""
     try:
-        ns = eph_ns()
+        ns = get_eph_ns()
         if not ns:
             raise LabException("Ephemeral NS not set")
         url = f"https://{ns}.{app.config['base_url']}/"
