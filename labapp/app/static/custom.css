@@ -36,6 +36,23 @@ main {
   width: 125px;
 }
 
+/* Testing */
+
+.lab-image-container {
+  height: 200px; /* Fixed height */
+  overflow: hidden; /* Ensures nothing extends outside the container */
+  display: flex; /* Flexbox to help with centering/positioning the image */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically, if needed */
+}
+
+.lab-header {
+  border-radius: .8em;
+  filter: brightness(110%) contrast(80%);
+}
+
+/* Testing */
+
 .row {
   height: 100%;
 }

@@ -164,7 +164,6 @@ def ref():
 def score():
     """scoreboard page"""
     score_cookie = request.cookies.get('score', '%7B%7D') 
-    print(score_cookie)
     try:
         decoded_cookie = urllib.parse.unquote(score_cookie)
         enc_score = json.loads(decoded_cookie)
@@ -188,6 +187,15 @@ def score():
             manip_table=manip_table,
             port_table=port_table,
         )
+
+@app.route('/test')
+def test():
+    """test page"""
+    ns = get_eph_ns()
+    return render_template('test.html',
+        title="MCN Practical: Test",
+        ns=ns
+    )
 
 @app.route('/_ce_status')
 @cache.cached(timeout=30)
@@ -380,7 +388,6 @@ def port2():
     """Friend test"""
     try:
         data = request.get_json()
-        print(data)
         eph_ns = data['userInput']
         url = f"https://{eph_ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})
