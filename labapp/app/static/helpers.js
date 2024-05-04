@@ -19,10 +19,14 @@ function getCookie(name) {
     return null;
 }
 
-async function testHttpRequest(buttonId, requestUrl, resultDivId) {
+async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
     const button = document.getElementById(buttonId);
     const resultDiv = document.getElementById(resultDivId);
+
+    // Add spinner to button and disable it
+    button.innerHTML = `Testing...<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
     button.disabled = true;
+    
     try {
         const response = await axios.get(requestUrl);
         if (response.data.status === 'success') {
@@ -38,16 +42,23 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
         updateScoreCookie(requestUrl, 'fail');
     } finally {
+        // Restore original button text and remove spinner
+        button.innerHTML = buttonTxt;
         button.disabled = false;
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }
+}
 
-  async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId) {
+async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, buttonTxt) {
     const button = document.getElementById(buttonId);
     const resultDiv = document.getElementById(resultDivId);
     const inputData = document.getElementById(inputDataId).value;
+
+
+    // Add spinner and change button text
+    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>${buttonTxt}`;
     button.disabled = true;
+
     try {
         const response = await axios.post(requestUrl, { userInput: inputData });
         if (response.data.status === 'success') {
@@ -63,10 +74,12 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
         updateScoreCookie(requestUrl, 'fail');
     } finally {
+        // Restore original button text
+        button.innerHTML = buttonTxt;
         button.disabled = false;
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }
+}
   
   function updateScoreCookie(requestUrl, status) {
     // Get the current cookie, decode it, and parse it as JSON

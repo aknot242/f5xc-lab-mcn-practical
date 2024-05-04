@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="main-body">
+
+
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none">
+    <img src="/static/portable.png" width="300px" height="auto" alt="intro">
+</div>
+    
+<h1><strong>Portability</strong></h1>
+    
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+    
+<p>
+    The configuration built so far handles load balancing, routing, and content manipulation.
+    XC refers to this object as a "load balancer" but it's really the holistic representation of an application whose service endpoints live across the distributed network.
+    The object is simple - it doesn't yet include configuration for WAAP, API protection, or a service policy.
+</p>
+<p>   
+    A key advantage of XC over traditional ADCs is its flexibility in specifying <strong>where</strong> a load balancer is advertised.
+</p>
+
+<div style="height:25px"></div>
+    
+<h2><strong>Exercise 1: Advertise Policy</strong></h2>
+    
+<div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <img src="/static/lb-icon.png" class="lab-icon">
+        Configure the load balancer to be advertised from the virtual site <strong>shared/mcn-practical-udf-sites</strong>. 
+      </li>
+    </ul>
+</div>
+    
+<div style="height:25px"></div>
+    
+<h3><strong>Test Criteria</strong></h3>
+
+<pre class="hljs language-http rounded"><code>
+GET https://{{ ns or 'eph-ns '}}.mcn-lab.f5demos.com/ HTTP/1.1
+Host: {{ ns or 'eph-ns '}}.mcn-lab.f5demos.com
+                    
+</code></pre>
+                    
+<pre class="hljs language-json rounded"><code>
+{
+    "info": {
+        "path": "/"
+    }
+    ...
+}
+                
+</code></pre>
+     
+<div class="left-aligned-button-container">
+    <button id="requestBtn1" class="btn btn-primary lab-test-button">Test Load Balancer</button>
+</div>
+<div id="result1" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn1').addEventListener('click', () => {
+    testHttpRequest('requestBtn1', '/_port1', 'result1', 'Test Load Balancer');
+});
+</script>
+        
+<div id="hints">
+    <p>
+      <a class="btn btn-secondary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Why did that work?</a>
+    </p>
+    <div class="row">
+        <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
+          <img src="/static/vsite2.png" width="600px" height="auto" alt="temp">
+          <div style="height:25px"></div>
+          <img src="/static/vsite.png" width="900px" height="auto" alt="temp">
+        </div>
+    </div>
+</div>
+    
+<div style="height:25px"></div>
+    
+<h2><strong>Exercise 2: Find a Friend</strong></h2>
+    
+<p>
+    Do you have a friend working on the lab?
+    Have they updated their advertise policy to use the virtual site?
+    Find thier <strong>ephemeral namespace</strong> (or use the one provided in the form).
+</p>
+
+<div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <img src="/static/lb-icon.png" class="lab-icon">
+        Test if your friend's load balancer is being advertised to the UDF site.
+      </li>
+    </ul>
+</div>    
+    
+<div style="height:25px"></div>
+    
+<h3><strong>Test Criteria</strong></h3>
+  
+<div class="alert alert-secondary" role="alert">
+    Use this ephemeral NS if a friend is unavailable.
+</div>
+
+<pre class="hljs language-http rounded"><code>
+GET https://wiggly-yellowtail.mcn-lab.f5demos.com/ HTTP/1.1
+Host: wiggly-yellowtail.mcn-lab.f5demos.com
+                        
+</code></pre>
+                        
+<pre class="hljs language-json rounded"><code>
+{
+    "info": {
+        "path": "/"
+    }
+    ...
+}
+                    
+</code></pre>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <input type="text" id="inputText2" class="form-control"
+                    placeholder="Enter your string here" aria-label="User input" value="wiggly-yellowtail">
+                <button id="requestBtn2" class="btn btn-primary lab-post-button" type="button">Test Load Balancer</button>
+            </div>
+        </div>
+    </div>
+    <div id="result2" class="mt-3"></div>
+</div>
+<script>
+document.getElementById('requestBtn2').addEventListener('click', () => {
+    testPostRequest('requestBtn2', '/_port2', 'result2', 'inputText2', 'Test Load Balancer');
+});
+</script>
+    
+<div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+    
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+        <a class="page-link" href="/score">Scoreboard <i class="bi bi-arrow-right-circle-fill"></i></a>
+        </li>
+    </ul>
+    </nav>
+
+
+
+
+
+</div>
+{% endblock %}

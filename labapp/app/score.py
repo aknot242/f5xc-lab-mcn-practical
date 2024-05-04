@@ -40,7 +40,7 @@ score_schema = {
         "href": "/route",
         "result": "none"
     },
-    "/_manip1:": {
+    "/_manip1": {
         "name": "Path Rewrite",
         "key": "manip",
         "href": "/manipulation",

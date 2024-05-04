@@ -18,6 +18,24 @@ main {
   overflow-y: auto;
 }
 
+.lab-icon {
+  height: 30px;
+  width: auto;
+  padding-right: 25px;
+}
+
+.lab-test-button {
+  width: 175px;
+}
+
+.lab-post-button {
+  width: 200px;
+}
+
+.lab-ex-test {
+  width: 125px;
+}
+
 .row {
   height: 100%;
 }

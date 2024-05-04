@@ -50,6 +50,12 @@ def get_eph_ns() -> str:
     this_eph_ns = request.cookies.get('eph_ns', None)
     return this_eph_ns
 
+def get_site() -> str:
+    """check if ephemeral namespace is set"""
+    if app.config['ce_info']:
+        return app.config['ce_info'].get("site_name", None)
+    return None
+
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
@@ -70,19 +76,14 @@ def cache_control(response):
 @app.route('/')
 def index():
     """index page"""
-    html = render_md("markdown/welcome.md")
-    return render_template('standard.html',
-        title="MCN Practical: Overview",
-        content=html
+    return render_template('welcome.html',
+        title="MCN Practical: Overview"
     )
 
 @app.route('/overview')
-def arch():
-    """arch page"""
-    html = render_md("markdown/overview.md")
-    return render_template('standard.html',
-        title="MCN Practical: Architecture",
-        content=html
+def overview():
+    return render_template('overview.html',
+        title="MCN Practical: Overview"
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
@@ -105,28 +106,19 @@ def setup():
             response.set_cookie('eph_ns', '', expires=0)
             flash("Ephemeral namespace cleared.", "info")
             return response
-    html = render_md("markdown/setup.md")
     return render_template('setup.html',
         title="MCN Practical: Setup",
-        content=html,
         ns=ns
     )
-
-@app.route('/_ce_status')
-@cache.cached(timeout=30)
-def ce_state():
-    """get ce state (internal route)"""
-    data = get_ce_state(app.config['ce_info'])
-    return data
 
 @app.route('/loadbalancing')
 def lb():
     """lb page"""
     ns = get_eph_ns()
-    html = render_md("markdown/lb.md")
-    return render_template('exercise_standard.html',
+    site = get_site()
+    return render_template('loadbalancing.html',
         title="MCN Practical: LB",
-        content=html,
+        site=site,
         ns=ns
     )
 
@@ -134,22 +126,17 @@ def lb():
 def path():
     """routing page"""
     ns = get_eph_ns()
-    html = render_md("markdown/route.md")
-    return render_template('exercise_standard.html',
+    return render_template('route.html',
         title="MCN Practical: HTTP Routing",
-        content=html,
-        ns=ns,
-
+        ns=ns
     )
 
 @app.route('/manipulation')
 def header():
     """manipulation page"""
     ns = get_eph_ns()
-    html = render_md("markdown/manipulation.md")
-    return render_template('exercise_standard.html',
+    return render_template('manipulation.html',
         title="MCN Practical: Manipulation",
-        content=html, 
         ns=ns
     )
 
@@ -157,32 +144,8 @@ def header():
 def port():
     """portability page"""
     ns = get_eph_ns()
-    html = render_md("markdown/portability.md")
-    return render_template('exercise_standard.html',
+    return render_template('portability.html',
         title="MCN Practical: Portability",
-        content=html, 
-        ns=ns
-    )
-
-@app.route('/vnet')
-def vnet():
-    """vnet page"""
-    ns = get_eph_ns()
-    html = render_md("markdown/reference.md")
-    return render_template('coming-soon.html',
-        title="MCN Practical: Reference",
-        content=html, 
-        ns=ns
-    )
-
-@app.route('/netpolicy')
-def netp():
-    """netpolicy page"""
-    ns = get_eph_ns()
-    html = render_md("markdown/reference.md")
-    return render_template('coming-soon.html',
-        title="MCN Practical: Reference",
-        content=html, 
         ns=ns
     )
 
@@ -200,7 +163,6 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
-    ns = get_eph_ns()
     score_cookie = request.cookies.get('score', '%7B%7D') 
     print(score_cookie)
     try:
@@ -218,19 +180,21 @@ def score():
         port_table = score_build_table(p_score, 'port', 'Portability')
     except LabException as e:
         print(f"Couldn't build score table: {e}")
-    response = make_response(render_template('score.html',
+    return render_template('score.html',
             title="MCN Practical: Scoreboard",
             over_table=over_table,
             lb_table=lb_table,
             route_table=route_table,
             manip_table=manip_table,
             port_table=port_table,
-            ns=ns
-        ))
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate' 
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
+        )
+
+@app.route('/_ce_status')
+@cache.cached(timeout=30)
+def ce_state():
+    """get ce state (internal route)"""
+    data = get_ce_state(app.config['ce_info'])
+    return data
 
 @app.route('/_test1')
 def ex_test():
@@ -359,11 +323,12 @@ def manip2():
     """Second Manip Test"""
     try:
         ns = get_eph_ns()
+        site = get_site()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/"
-        t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": app.config["ce_info"]["site_name"]}
+        t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": site}
         r_data = cloudapp_req_headers(session, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
     except (LabException, ValueError) as e:
