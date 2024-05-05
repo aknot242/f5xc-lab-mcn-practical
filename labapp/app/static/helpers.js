@@ -86,7 +86,7 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
     const currentCookie = decodeURIComponent(getScoreCookie('score') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
     let progress = JSON.parse(currentCookie);
     progress[encodeURIComponent(requestUrl)] = status;
-    document.cookie = `score=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+    document.cookie = `score=${encodeURIComponent(JSON.stringify(progress))}; path=/score; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
   }
   
   function getScoreCookie(name) {
