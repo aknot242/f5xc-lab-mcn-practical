@@ -47,6 +47,7 @@ main {
 .lab-header {
   border-radius: .8em;
   filter: brightness(110%) contrast(80%);
+  filter: blur(.1px);
 }
 /* Testing */
 
