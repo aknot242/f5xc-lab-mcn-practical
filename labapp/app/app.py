@@ -65,7 +65,7 @@ def get_site() -> str:
         return app.config['ce_info'].get("site_name", None)
     return None
 
-def update_cookie_prop(cookie_b64, prop, value):
+def update_cookie_prop_old(cookie_b64, prop, value):
     """update cookie"""
     try:
         json_bytes = base64.b64decode(cookie_b64)
@@ -77,6 +77,25 @@ def update_cookie_prop(cookie_b64, prop, value):
         return base64_bytes
     except json.JSONDecodeError:
         print("Error updating cookie value.")
+        return encode_data("{}")
+    
+def update_cookie_prop(cookie_b64, prop, value):
+    """Update a property in a base64 encoded JSON cookie."""
+    try:
+        json_bytes = base64.b64decode(cookie_b64)
+        json_str = json_bytes.decode('utf-8')
+        cookie_data = json.loads(json_str)
+        if not isinstance(cookie_data, dict):
+            raise ValueError("Cookie data is not a dictionary.")
+        cookie_data[prop] = value
+        updated = json.dumps(cookie_data)
+        base64_bytes = base64.b64encode(updated.encode('utf-8'))
+        return base64_bytes.decode('utf-8')
+    except json.JSONDecodeError:
+        print("Error decoding JSON from cookie.")
+        return encode_data("{}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
         return encode_data("{}")
     
 def get_cookie_prop(cookie_b64, prop):
