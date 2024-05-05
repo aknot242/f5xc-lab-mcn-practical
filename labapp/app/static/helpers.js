@@ -63,7 +63,7 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
         const response = await axios.post(requestUrl, { userInput: inputData });
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
-            resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre><code class="hljs rounded">${prettyJson}</code></pre></div>`;
+            resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre><code class="hljs language-json rounded">${prettyJson}</code></pre></div>`;
             updateScoreCookie(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
