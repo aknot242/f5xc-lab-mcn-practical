@@ -36,8 +36,6 @@ main {
   width: 125px;
 }
 
-/* Testing */
-
 .lab-image-container {
   height: 200px; /* Fixed height */
   overflow: hidden; /* Ensures nothing extends outside the container */
@@ -49,6 +47,20 @@ main {
 .lab-header {
   border-radius: .8em;
   filter: brightness(110%) contrast(80%);
+}
+/* Testing */
+
+.sidebar-link {
+  display: block;
+  padding: 8px 16px;
+  color: #333; /* Adjust the color to fit your theme */
+  text-decoration: none; /* Remove underline from links */
+  border-radius: 4px; /* Rounded corners for links */
+}
+
+.sidebar-link:hover {
+  background-color: #f8f9fa; /* Light grey background on hover */
+  color: #0056b3; /* Change color on hover for better visibility */
 }
 
 /* Testing */

@@ -72,7 +72,7 @@ Exercise reqirements are listed in a table along with an object type indicator.
 
 <p>
 To complete lab exercises, you will run tests against the load balancer advertised from the Customer Edge in your UDF site.
-You will build this load balancer in the <strong><a href="/lb">first exercise</a></strong>.
+You will build this load balancer in the <strong><a href="/loadbalancing">first exercise</a></strong>.
 All tests will be run from this web apllication.
 </p>
 <p>
@@ -158,7 +158,7 @@ The test failed because the response did not contain the <code>JSON</code>  stri
 
 <p><code>curl</code> and <code>jq</code> are provided on the UDF <strong>Runner</strong> instance.</p>
 
-<pre class="hljs language-shell rounded"><code>
+<pre class="hljs language-json rounded"><code>
   ubuntu@ubuntu:~$ curl -s https://foo.mcn-lab.f5demos.com/ | jq
   {
     "info": {
@@ -168,7 +168,7 @@ The test failed because the response did not contain the <code>JSON</code>  stri
   </code></pre>
 
 <div class="alert alert-secondary" role="alert">
-  Responses displayed in exercise tests are truncated for readibility.
+  <strong>Responses displayed in exercise tests are truncated for readibility.</strong>
 </div>
 
 <div style="height:25px"></div>
@@ -186,18 +186,17 @@ To demonstrate, you can access an endpoint of each cloud app from your browser.
 
 <div class="container">
   <div class="row align-items-center">
-      <div class="col-lg-6 col-md-12">
-        <a href="https://aws-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
-          <img src="/static/aws.png" height="100px" width="auto" class="rounded"/>
+    <div class="col-lg-6 col-md-12">
+       <a href="https://aws-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+         <img src="/static/aws.png" height="100px" width="auto" class="rounded"/>
         </a>
-        </div>
-        <div class="col-lg-6 col-md-12 h-100">
-        <a href="https://azure-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
-          <img src="/static/azure.png" height="100px" width="auto"  class="rounded"/>
-        </a>
-      </div>
     </div>
-  </div> 
+    <div class="col-lg-6 col-md-12 h-100">
+      <a href="https://azure-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+        <img src="/static/azure.png" height="100px" width="auto"  class="rounded"/>
+      </a>
+    </div>
+  </div>
 </div>  
 
 <div style="height:25px"></div>
