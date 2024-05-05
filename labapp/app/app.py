@@ -51,9 +51,12 @@ def validate_eph_ns(input_name):
 
 def get_eph_ns() -> str:
     """check if ephemeral namespace is set"""
-    cookie_b64 = request.cookies.get(data_cookie, None)
-    if cookie_b64:
-        return get_cookie_prop(cookie_b64, 'eph_ns')
+    try:
+        cookie_b64 = request.cookies.get(data_cookie, None)
+        if cookie_b64:
+            return get_cookie_prop(cookie_b64, 'eph_ns')
+    except Exception:
+        print("Error getting ephemeral NS")
     return None
 
 def get_site() -> str:
