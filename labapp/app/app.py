@@ -163,6 +163,8 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
+    all_cookies = request.cookies
+    print(f"all cookies: {all_cookies}")
     score_cookie = request.cookies.get('score', '%7B%7D')
     print(f"score cookie: {score_cookie}")
     try:
