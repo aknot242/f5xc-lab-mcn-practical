@@ -245,18 +245,12 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
-    all_cookies = request.cookies
-    print(f"all cookies: {all_cookies}")
-    score_cookie = request.cookies.get('mcnp_scoreboard', '%7B%7D')
-    print(f"score cookie: {score_cookie}")
     try:
-        decoded_cookie = urllib.parse.unquote(score_cookie)
-        print(f"decoded cookie: {decoded_cookie}")
-        enc_score = json.loads(decoded_cookie)
-        print(f"enc score: {enc_score}")
-        this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
-        print(f"this score: {this_score}")
-    except json.JSONDecodeError:
+        cookie_b64 = request.cookies.get(data_cookie)
+        this_score = get_cookie_prop(cookie_b64, 'score')
+        """raise a LabException"""
+    except Exception:
+        print("Error getting score")
         this_score = {}
     try:
         p_score = score_get_results(this_score)
