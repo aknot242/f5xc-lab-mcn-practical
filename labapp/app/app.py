@@ -93,10 +93,11 @@ def update_cookie_prop(cookie_b64, prop, value):
         return base64_bytes.decode('utf-8')
     except json.JSONDecodeError:
         print("Error decoding JSON from cookie.")
-        return encode_data("{}")
+        """TBD: this is not what we want."""
+        return encode_data({})
     except Exception as e:
         print(f"An error occurred: {e}")
-        return encode_data("{}")
+        return encode_data({})
     
 def get_cookie_prop(cookie_b64, prop):
     """get a cookie prop"""
@@ -153,7 +154,7 @@ def index():
     )
     response = make_response(html)
     if data_cookie not in request.cookies:
-        response.set_cookie(data_cookie, encode_data("{}"), max_age=cookie_age)
+        response.set_cookie(data_cookie, encode_data({}), max_age=cookie_age)
     return response
 
 @app.route('/overview')
@@ -175,7 +176,7 @@ def setup():
                 flash("Invalid ephemeral namespace.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
-            cookie_b64 = request.cookies.get('mcnp-ac-data', encode_data("{}"))
+            cookie_b64 = request.cookies.get('mcnp-ac-data', encode_data({}))
             cookie_data = update_cookie_prop(cookie_b64, 'eph_ns', this_eph_ns)
             response.set_cookie(data_cookie, cookie_data)
             flash('Ephemeral namespace successfully set.', "success")
