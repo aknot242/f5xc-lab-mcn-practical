@@ -248,7 +248,6 @@ def score():
     try:
         cookie_b64 = request.cookies.get(data_cookie)
         this_score = get_cookie_prop(cookie_b64, 'score')
-        print(this_score)
         """raise a LabException"""
     except Exception:
         print("Error getting score")
@@ -283,8 +282,6 @@ def test():
 @app.route('/_ce_status')
 def ce_state():
     """get ce state (internal route)"""
-    all_cookies = request.cookies
-    print(f"all cookies: {all_cookies}")
     data = get_ce_state(app.config['ce_info'])
     return data
 
