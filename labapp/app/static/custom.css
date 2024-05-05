@@ -49,6 +49,10 @@ main {
   filter: brightness(110%) contrast(80%);
   filter: blur(.1px);
 }
+
+.lab-header-clear {
+  border-radius: .8em;
+}
 /* Testing */
 
 .sidebar-link {
