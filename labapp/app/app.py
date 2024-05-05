@@ -183,7 +183,8 @@ def setup():
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
-            cookie_b64 = update_cookie_prop(cookie_b64, 'eph_ns', None)
+            cookie_b64 = request.cookies.get('mcnp-ac-data', encode_data({}))
+            cookie_data = update_cookie_prop(cookie_b64, 'eph_ns', None)
             response.set_cookie(data_cookie, cookie_data)
             flash("Ephemeral namespace cleared.", "info")
             return response
