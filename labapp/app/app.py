@@ -206,7 +206,6 @@ def test():
     )
 
 @app.route('/_ce_status')
-@cache.cached(timeout=30)
 def ce_state():
     """get ce state (internal route)"""
     all_cookies = request.cookies
