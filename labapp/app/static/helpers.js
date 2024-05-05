@@ -81,15 +81,15 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
     }
 }
   
-  function updateScoreCookie_orig(requestUrl, status) {
+  function updateScoreCookie(requestUrl, status) {
     // Get the current cookie, decode it, and parse it as JSON
-    const currentCookie = decodeURIComponent(getScoreCookie('score') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
+    const currentCookie = decodeURIComponent(getScoreCookie('mcn-scoreboard') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
     let progress = JSON.parse(currentCookie);
     progress[encodeURIComponent(requestUrl)] = status;
-    document.cookie = `score=${encodeURIComponent(JSON.stringify(progress))}; path=/score; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+    document.cookie = `mcn-scoreboard=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
   }
   
-  function getScoreCookie_orig(name) {
+  function getScoreCookie(name) {
     let cookieArray = document.cookie.split(';');
     for(let i = 0; i < cookieArray.length; i++) {
       let cookiePair = cookieArray[i].split('=');
@@ -99,31 +99,3 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
     }
     return null;
   }
-
-  function updateScoreCookie(requestUrl, status) {
-    // Retrieve the existing score cookie or initialize it to an empty JSON object
-    let currentCookie = getScoreCookie('score') || '{}';
-
-    // Parse the existing cookie into an object
-    let progress = JSON.parse(currentCookie);
-
-    // Update the progress object with the new status for the requestUrl
-    progress[requestUrl] = status;
-
-    // Serialize the progress object back into a JSON string
-    let jsonString = JSON.stringify(progress);
-
-    // Set the updated cookie with the JSON string
-    document.cookie = `score=${jsonString}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
-}
-
-function getScoreCookie(name) {
-    let cookieArray = document.cookie.split(';');
-    for(let i = 0; i < cookieArray.length; i++) {
-        let cookiePair = cookieArray[i].split('=');
-        if(name == cookiePair[0].trim()) {
-            return decodeURIComponent(cookiePair[1]);  // Ensure decoding is performed
-        }
-    }
-    return null;
-}
