@@ -163,12 +163,15 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
-    score_cookie = request.cookies.get('score', '%7B%7D') 
+    score_cookie = request.cookies.get('score', '%7B%7D')
+    print(f"score cookie: {score_cookie}")
     try:
         decoded_cookie = urllib.parse.unquote(score_cookie)
+        print(f"decoded cookie: {decoded_cookie}")
         enc_score = json.loads(decoded_cookie)
+        print(f"enc score: {enc_score}")
         this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
-        print(this_score)
+        print(f"this score: {this_score}")
     except json.JSONDecodeError:
         this_score = {}
     try:
