@@ -5,6 +5,25 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/table.css">
+<script>
+    function clearScore(requestUrl, status) {
+    // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
+    const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
+    const cookieStr = atob(base64EncodedData);
+    let cookieData = JSON.parse(cookieStr);
+
+    // Clear the score
+    cookieData.score = {};
+
+    // Convert the updated cookie object back to string, then encode to base64
+    const updatedStr = JSON.stringify(cookieData);
+    const updatedBase64Data = btoa(updatedStr);
+
+    // Update the cookie with the new base64 encoded data
+    setCookie('mcnp-ac-data', updatedBase64Data, 1); 
+    location.reload();
+}
+</script>
 <div class="main-body">
 
     
