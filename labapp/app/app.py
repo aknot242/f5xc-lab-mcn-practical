@@ -87,6 +87,11 @@ def cache_control(response):
         response.headers['Cache-Control'] = 'public, max-age=3600'
     return response
 
+@app.before_request
+def ensure_cookie():
+    if request.path != '/' and data_cookie not in request.cookies:
+        return redirect('/')
+    
 @app.route('/')
 def index():
     """index page"""
