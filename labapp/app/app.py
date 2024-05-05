@@ -5,6 +5,7 @@ import os
 import re
 import json
 import requests
+import base64
 import urllib
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
 from flask_caching import Cache
@@ -50,8 +51,10 @@ def validate_eph_ns(input_name):
 
 def get_eph_ns() -> str:
     """check if ephemeral namespace is set"""
-    this_eph_ns = request.cookies.get('eph_ns', None)
-    return this_eph_ns
+    cookie_b64 = request.cookies.get(data_cookie, None)
+    if cookie_b64:
+        return get_cookie_prop(cookie_b64, 'eph_ns')
+    return None
 
 def get_site() -> str:
     """check if ephemeral namespace is set"""
@@ -59,17 +62,31 @@ def get_site() -> str:
         return app.config['ce_info'].get("site_name", None)
     return None
 
-def update_cookie(cookie_str, prop, value):
+def update_cookie_prop(cookie_b64, prop, value):
     """update cookie"""
     try:
-        cookie_data = json.loads(cookie_str)
+        json_bytes = base64.b64decode(cookie_b64)
+        json_str = json_bytes.decode('utf-8')
+        cookie_data = json.loads(json_str)
         cookie_data[prop] = value
         updated = json.dumps(cookie_data)
-        return updated
+        base64_bytes = base64.b64encode(updated.encode('utf-8'))
+        return base64_bytes.decode('utf-8')
     except json.JSONDecodeError:
         print("Error decoding cookie data")
         return "{}"
-
+    
+def get_cookie_prop(cookie_b64, prop):
+    """get a cookie prop"""
+    try:
+        json_bytes = base64.b64decode(cookie_b64)
+        json_str = json_bytes.decode('utf-8')
+        c_dict = json.loads(json_str)
+        return c_dict[prop]
+    except json.JSONDecodeError:
+        print("Error decoding cookie data")
+        return None
+    
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
