@@ -83,10 +83,10 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
   
   function updateScoreCookie(requestUrl, status) {
     // Get the current cookie, decode it, and parse it as JSON
-    const currentCookie = decodeURIComponent(getScoreCookie('mcn-scoreboard') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
+    const currentCookie = decodeURIComponent(getScoreCookie('mcnp-scoreboard') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
     let progress = JSON.parse(currentCookie);
     progress[encodeURIComponent(requestUrl)] = status;
-    document.cookie = `mcn-scoreboard=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+    document.cookie = `mcnp-scoreboard=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
   }
   
   function getScoreCookie(name) {
