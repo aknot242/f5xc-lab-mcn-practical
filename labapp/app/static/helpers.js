@@ -31,11 +31,11 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
         const response = await axios.get(requestUrl);
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
-            resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>">${prettyJson}</code></pre></div>`;
+            resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>${prettyJson}</code></pre></div>`;
             updateScoreCookie(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
-            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre><code class="hljs rounded">${errJson}</code></pre></div>`;
+            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
             updateScoreCookie(requestUrl, 'fail');
         }
     } catch (error) {
@@ -67,7 +67,7 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
             updateScoreCookie(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
-            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre><code class="hljs rounded">${errJson}</code></pre></div>`;
+            resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
             updateScoreCookie(requestUrl, 'fail');
         }
     } catch (error) {
