@@ -168,10 +168,12 @@ def score():
         decoded_cookie = urllib.parse.unquote(score_cookie)
         enc_score = json.loads(decoded_cookie)
         this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
+        print(this_score)
     except json.JSONDecodeError:
         this_score = {}
     try:
         p_score = score_get_results(this_score)
+        print(p_score)
         over_table = score_build_table(p_score, 'overview', 'Overview')
         lb_table = score_build_table(p_score, 'lb', 'Load Balancing')
         route_table = score_build_table(p_score, 'route', 'Routing')
