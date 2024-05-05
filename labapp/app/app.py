@@ -24,6 +24,8 @@ app.config['base_url'] = "mcn-lab.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
 app.secret_key = "blahblahblah"
+data_cookie = "mcnp-ac-data"
+cookie_age = 86400
 
 session = get_runner_session()
 session.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
@@ -57,6 +59,17 @@ def get_site() -> str:
         return app.config['ce_info'].get("site_name", None)
     return None
 
+def update_cookie(cookie_str, prop, value):
+    """update cookie"""
+    try:
+        cookie_data = json.loads(cookie_str)
+        cookie_data[prop] = value
+        updated = json.dumps(cookie_data)
+        return updated
+    except json.JSONDecodeError:
+        print("Error decoding cookie data")
+        return "{}"
+
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
@@ -81,17 +94,19 @@ def index():
         title="MCN Practical: Overview"
     )
     response = make_response(html)
-    response.set_cookie('test-cookie', 'test-value', max_age=3600)  # Cookie expires in 1 hour
+    if data_cookie not in request.cookies:
+        response.set_cookie(data_cookie, '{}', max_age=cookie_age)
     return response
 
 @app.route('/overview')
 def overview():
+    """overview page"""
     return render_template('overview.html',
         title="MCN Practical: Overview"
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
-def setup():
+def setup_old():
     """setup page"""
     ns = get_eph_ns()
     if request.method == 'POST':
@@ -102,12 +117,15 @@ def setup():
                 flash("Invalid ephemeral namespace.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
-            response.set_cookie('eph_ns', this_eph_ns, max_age=60*60*24)
+            current_cookie = request.cookies.get('mcnp-ac-data', '{}')
+            cookie_data = update_cookie(current_cookie, 'eph_ns', this_eph_ns)
+            response.set_cookie(data_cookie, cookie_data)
             flash('Ephemeral namespace successfully set.', "success")
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
-            response.set_cookie('eph_ns', '', expires=0)
+            cookie_data = update_cookie(current_cookie, 'eph_ns', None)
+            response.set_cookie(data_cookie, cookie_data)
             flash("Ephemeral namespace cleared.", "info")
             return response
     return render_template('setup.html',
