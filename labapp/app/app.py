@@ -19,6 +19,7 @@ app.config['UDF'] = None
 if os.getenv('UDF', None):
     app.config['ce_info'] = get_ce_info()
     app.config['UDF'] = True
+    app.config['SESSION_COOKIE_SECURE'] = True
 app.config['base_url'] = "mcn-lab.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
