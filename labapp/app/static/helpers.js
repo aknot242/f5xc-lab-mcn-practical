@@ -56,7 +56,7 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
 
 
     // Add spinner and change button text
-    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>${buttonTxt}`;
+    button.innerHTML = `Testing...<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
     button.disabled = true;
 
     try {
