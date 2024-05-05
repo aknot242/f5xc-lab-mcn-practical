@@ -17,7 +17,7 @@ function setCookie(name, value, days) {
     document.cookie = `${name}=${value}${expires}; path=/`;
 }
 
-function updateScoreCookie(requestUrl, status) {
+function updateScore(requestUrl, status) {
     // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
     const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
     const cookieStr = atob(base64EncodedData);
@@ -36,7 +36,24 @@ function updateScoreCookie(requestUrl, status) {
     const updatedBase64Data = btoa(updatedStr);
 
     // Update the cookie with the new base64 encoded data
-    setCookie('mcnp-ac-data', updatedBase64Data, 1);  // Setting expiration as an example
+    setCookie('mcnp-ac-data', updatedBase64Data, 1);
+}
+
+function clearScore(requestUrl, status) {
+    // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
+    const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
+    const cookieStr = atob(base64EncodedData);
+    let cookieData = JSON.parse(cookieStr);
+
+    // Clear the score
+    cookieData.score = {};
+
+    // Convert the updated cookie object back to string, then encode to base64
+    const updatedStr = JSON.stringify(cookieData);
+    const updatedBase64Data = btoa(updatedStr);
+
+    // Update the cookie with the new base64 encoded data
+    setCookie('mcnp-ac-data', updatedBase64Data, 1); 
 }
 
 async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
@@ -52,15 +69,15 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>${prettyJson}</code></pre></div>`;
-            updateScoreCookie(requestUrl, 'pass');
+            updateScore(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
-            updateScoreCookie(requestUrl, 'fail');
+            updateScore(requestUrl, 'fail');
         }
     } catch (error) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        updateScoreCookie(requestUrl, 'fail');
+        updateScore(requestUrl, 'fail');
     } finally {
         // Restore original button text and remove spinner
         button.innerHTML = buttonTxt;
@@ -84,15 +101,15 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>${prettyJson}</code></pre></div>`;
-            updateScoreCookie(requestUrl, 'pass');
+            updateScore(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
-            updateScoreCookie(requestUrl, 'fail');
+            updateScore(requestUrl, 'fail');
         }
     } catch (error) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        updateScoreCookie(requestUrl, 'fail');
+        updateScore(requestUrl, 'fail');
     } finally {
         // Restore original button text
         button.innerHTML = buttonTxt;
