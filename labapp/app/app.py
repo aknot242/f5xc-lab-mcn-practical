@@ -248,6 +248,7 @@ def score():
     try:
         cookie_b64 = request.cookies.get(data_cookie)
         this_score = get_cookie_prop(cookie_b64, 'score')
+        print(this_score)
         """raise a LabException"""
     except Exception:
         print("Error getting score")
