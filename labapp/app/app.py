@@ -77,9 +77,12 @@ def cache_control(response):
 @app.route('/')
 def index():
     """index page"""
-    return render_template('welcome.html',
+    html = render_template('welcome.html',
         title="MCN Practical: Overview"
     )
+    response = make_response(html)
+    response.set_cookie('test-cookie', 'test-value', max_age=3600)  # Cookie expires in 1 hour
+    return response
 
 @app.route('/overview')
 def overview():
