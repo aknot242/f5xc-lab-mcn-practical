@@ -87,6 +87,18 @@ def get_cookie_prop(cookie_b64, prop):
         print("Error decoding cookie data")
         return None
     
+def encode_data(data):
+    """Encode dictionary to Base64-encoded JSON."""
+    json_str = json.dumps(data)
+    base64_bytes = base64.b64encode(json_str.encode('utf-8'))
+    return base64_bytes.decode('utf-8')
+
+def decode_data(encoded_data):
+    """Decode Base64-encoded JSON to dictionary."""
+    json_bytes = base64.b64decode(encoded_data)
+    json_str = json_bytes.decode('utf-8')
+    return json.loads(json_str)
+    
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
@@ -106,6 +118,8 @@ def cache_control(response):
 
 @app.before_request
 def ensure_cookie():
+    """ensure cookie"""
+    """TBD: Do a little better here with a warning"""
     if request.path != '/' and data_cookie not in request.cookies:
         return redirect('/')
     
@@ -113,7 +127,7 @@ def ensure_cookie():
 def index():
     """index page"""
     html = render_template('welcome.html',
-        title="MCN Practical: Overview"
+        title="MCN Practical: Welcome"
     )
     response = make_response(html)
     if data_cookie not in request.cookies:
@@ -139,14 +153,14 @@ def setup_old():
                 flash("Invalid ephemeral namespace.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
-            current_cookie = request.cookies.get('mcnp-ac-data', '{}')
-            cookie_data = update_cookie(current_cookie, 'eph_ns', this_eph_ns)
+            cookie_b64 = request.cookies.get('mcnp-ac-data', '{}')
+            cookie_data = update_cookie_prop(cookie_b64, 'eph_ns', this_eph_ns)
             response.set_cookie(data_cookie, cookie_data)
             flash('Ephemeral namespace successfully set.', "success")
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
-            cookie_data = update_cookie(current_cookie, 'eph_ns', None)
+            cookie_b64 = update_cookie_prop(cookie_b64, 'eph_ns', None)
             response.set_cookie(data_cookie, cookie_data)
             flash("Ephemeral namespace cleared.", "info")
             return response
