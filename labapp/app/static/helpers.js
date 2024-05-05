@@ -81,7 +81,7 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
     }
 }
   
-  function updateScoreCookie(requestUrl, status) {
+  function updateScoreCookie_old(requestUrl, status) {
     // Get the current cookie, decode it, and parse it as JSON
     const currentCookie = decodeURIComponent(getScoreCookie('mcnp-scoreboard') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
     let progress = JSON.parse(currentCookie);
@@ -99,3 +99,29 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
     }
     return null;
   }
+
+  function updateScoreCookie(requestUrl, status) {
+    // Retrieve the existing score cookie or initialize it to an empty JSON object.
+    // The cookie value retrieved is assumed to be URI-encoded since it was set as such.
+    let currentCookie = getCookie('mcnp-scoreboard') || '{}';
+
+    // Decode the retrieved cookie string to handle any URI-encoded characters.
+    let decodedCookie = decodeURIComponent(currentCookie);
+
+    // Parse the decoded cookie string into an object.
+    let progress = JSON.parse(decodedCookie);
+
+    // Update the progress object with the new status for the requestUrl.
+    // Using encodeURIComponent to ensure the URL is safely encoded.
+    progress[encodeURIComponent(requestUrl)] = status;
+
+    // Serialize the progress object back into a JSON string.
+    let jsonString = JSON.stringify(progress);
+
+    // Encode the entire JSON string to ensure all special characters are URI-safe.
+    let encodedJsonString = encodeURIComponent(jsonString);
+
+    // Use the setCookie function to update the cookie with the URI-encoded JSON string.
+    setCookie('mcnp-scoreboard', encodedJsonString, 1); // Set for 1 day expiration
+}
+
