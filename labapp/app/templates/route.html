@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="main-body">
+
+<div class="text-center">
+    <img src="/static/images/banners/routing-banner.png" alt="Banner" class="img-fluid lab-header">
+</div>
+                
+<div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<div class="container mt-3">
+    {% if not ns %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>Configure your ephemeral NS from the <a href="/setup" class="alert-link">setup page</a> before continuing.</strong>
+        </div>
+    {% endif %}
+</div>
+
+<p>
+Modern applications, and some classic ones, are often comprised of disparate services spread across sites. 
+MCN solutions must be able to make routing decisions based on characterstics of an HTTP request.
+F5 XC App Connect is a distributed L7 proxy that provides intelligent routing, visibility, and strategic points of control.
+</p>
+
+<div style="height:25px"></div>
+
+<h2><strong>Exercise 1: Path Routing</strong></h2>
+
+<p>
+Build routing rules and configure your load balancer to route traffic between the two cloud apps based on the request url.
+</p>
+
+<div>
+  <ul class="list-group">
+    <li class="list-group-item">
+    <img src="/static/images/common/origin-icon.png" class="lab-icon">
+    Reuse the origin pools from the previous exercise.
+    </li>
+    <li class="list-group-item">
+    <img src="/static/images/common/route-icon.png" class="lab-icon">
+    Route requests to <strong>https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/<u>aws</u></strong> to the AWS cloud app. 
+    </li>
+    <li class="list-group-item">
+    <img src="/static/images/common/route-icon.png" class="lab-icon">
+    Route requests to <strong>https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/<u>azure</u></strong> to the Azure cloud app. 
+    </li>
+  </ul>
+</div>
+
+
+<div style="height:25px"></div>
+
+<h3><strong>Test Criteria</strong></h3>
+
+<div class="alert alert-secondary" role="alert">
+    <strong>This test validates multiple HTTP requests.</strong>
+</div>
+
+<strong>Request 1</strong>
+<pre class="hljs language-http rounded"><code>
+GET https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/aws/raw HTTP/1.1
+Host: {{ ns or 'eph-ns' }}.mcn-lab.f5demos.com
+    
+</code></pre>
+    
+<pre class="hljs language-json rounded"><code>
+{
+    "env": "aws",
+    ...
+}
+
+</code></pre>
+
+<strong>Request 2</strong>
+<pre class="hljs language-http rounded"><code>
+GET https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/azure/raw HTTP/1.1
+Host: {{ ns or 'eph-ns' }}.mcn-lab.f5demos.com
+        
+</code></pre>
+        
+<pre class="hljs language-json rounded"><code>
+{
+    "env": "azure",
+    ...
+}
+        
+</code></pre>
+
+<div style="height:25px"></div>
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn1" class="btn btn-primary lab-test-button">Test Load Balancer</button>
+</div>
+<div id="result1" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn1').addEventListener('click', () => {
+    testHttpRequest('requestBtn1', '/_route1', 'result1', 'Test Load Balancer');
+});
+</script>
+
+<div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<h2><strong>Exercise 2: Header Routing</strong></h2>
+
+<p>
+Build rules to route traffic between the two cloud apps based on an arbitrary HTTP request header.
+</p>
+
+<div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <img src="/static/images/common/route-icon.png" class="lab-icon">
+            Route requests with an <strong>X-MCN-Lab: aws</strong> header to the AWS cloud app.
+        </li>
+        <li class="list-group-item">
+            <img src="/static/images/common/route-icon.png" class="lab-icon">
+            Route requests with an <strong>X-MCN-Lab: azure</strong> header to the Azure cloud app.
+        </li>
+    </ul>
+</div>
+
+<div style="height:25px"></div>
+
+<h3><strong>Test Criteria</strong></h3>
+
+<div class="alert alert-secondary" role="alert">
+    <strong>This test validates multiple HTTP requests.</strong>
+</div>
+
+<strong>Request 1</strong>
+<pre class="hljs language-http rounded"><code>
+GET https://{{ ns or 'eph-ns '}}.mcn-lab.f5demos.com/raw HTTP/1.1
+Host: {{ ns or 'eph-ns '}}.mcn-lab.f5demos.com
+X-MCN-lab: aws
+            
+</code></pre>
+            
+<pre class="hljs language-json rounded"><code>
+{
+    "env": "aws",
+    ...
+}
+        
+</code></pre>
+
+<strong>Request 2</strong>
+<pre class="hljs language-http rounded"><code>
+GET https://{{ ns or 'eph-ns '}}.mcn-lab.f5demos.com/raw HTTP/1.1
+Host: {{ ns or 'eph-ns '}}.mcn-lab.f5demos.com
+X-MCN-lab: azure
+                
+</code></pre>
+                
+<pre class="hljs language-json rounded"><code>
+{
+    "env": "azure",
+    ...
+}
+            
+</code></pre>
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn2" class="btn btn-primary lab-test-button">Test Load Balancer</button>
+</div>
+<div id="result2" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn2').addEventListener('click', () => {
+    testHttpRequest('requestBtn2', '/_route2', 'result2', 'Test Load Balancer');
+});
+</script>
+
+<div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<nav aria-label="labapp nav">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" href="/manipulation">Manipulation <i class="bi bi-arrow-right-circle-fill"></i></a>
+      </li>
+    </ul>
+  </nav>
+
+
+
+
+</div>
+{% endblock %}

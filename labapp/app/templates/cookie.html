@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="main-body">
+
+    <div class="col text-center">
+        <div class="content-container">
+            <img src="/static/images/banners/cookie-err.png" alt="Banner" class="img-fluid lab-header-clear">
+            <div class="alert alert-danger mt-3" role="alert">
+                <strong><i class="bi bi-cookie"></i>&nbsp;&nbsp;Verify cookies are enabled&nbsp;&nbsp;<i class="bi bi-cookie"></i></strong>
+             </div>
+            <a href="/" class="btn btn-primary"><i class="bi bi-house-door-fill"></i>&nbsp;&nbsp;Home</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

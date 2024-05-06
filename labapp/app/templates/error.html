@@ -3,9 +3,29 @@
 {% block title %}MCN Practical Error{% endblock %}
 
 {% block content %}
-    <div class="err">
-        <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-            <img src="{{ err_img }}" alt="Descriptive Text">
-        </a>
+    {% if code == 404 %}
+    <div class="col text-center">
+        <div class="content-container">
+            <img src="/static/images/banners/404-err.png" alt="Banner" class="img-fluid lab-header-clear">
+        </div>
     </div>
+    {% endif %}
+
+    {% if code == 500 %}
+
+    <script>
+        function clearCookie(name) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            window.location.href = "/";
+        }
+    </script>
+
+    <div class="col text-center">
+        <div class="content-container">
+            <img src="/static/images/banners/500-err.png" alt="Banner" class="img-fluid lab-header-clear">
+            <button class="btn btn-danger mt-2" onclick="clearCookie('mcnp-ac-data')">Clear Lab State</button>
+        </div>
+    </div>
+    {% endif %}
+
 {% endblock %}

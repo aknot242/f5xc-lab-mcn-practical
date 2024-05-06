@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="main-body">
+
+    <div class="text-center">
+      <img src="/static/images/banners/practical.png" alt="Banner" class="img-fluid lab-header-clear">
+    </div>
+        
+    <div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+    
+    <div class="alert alert-secondary text-center" role="alert">
+      <strong><i class="bi bi-cookie"></i>&nbsp;&nbsp;This lab requires cookies to be enabled&nbsp;&nbsp;<i class="bi bi-cookie"></i></strong>
+   </div>
+
+    <div style="height:25px"></div>
+    
+    <h1><strong>Getting Started</strong></h1>
+    
+    <p>
+    When your UDF deployment launched, two automated processes started - Customer Edge ("CE") registration and account provisioning in the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+    </p>
+
+    <div style="height:25px"></div>
+    
+    <h2><strong>Customer Edge</strong></h2>
+    
+    <p>
+    The CE in the UDF deployment will register with the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+    CEs on first launch update software and, often, their OS. This can take ~20 min from when the CE is booted.
+    </p>    
+
+    <p>
+    When the CE is ready, the status indicator in the navigation pane (👀 look to the left) will show <img src="/static/images/welcome/check.png" height="20px" width="auto"></img>.
+    Use the indicator to find the CE <strong>site name</strong> needed for configuring the load balancer's advertise policy.
+    </p>
+    <div style="height:25px"></div>
+    
+    <h2><strong>Account Provisioning</strong></h2>
+    
+    <p>
+    Check the email used to launch your UDF deployment for a <strong>welcome</strong> or password reset email from the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+    Update your password to log into the tenant.
+    </p>
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12">
+            <a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">
+                <img src="/static/images/welcome/email.png" height="300px" width="auto" class="rounded"/>
+            </a>
+            </div>
+            <div class="col-lg-6 col-md-12">
+            <a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">
+                <img src="/static/images/welcome/password.png" height="300px" width="auto" class="rounded"/>
+            </a>
+            </div>
+        </div> 
+    </div>  
+    
+    <div style="height:25px"></div>
+    
+    <h1><strong>While You Wait</strong></h1>
+    
+    <div>
+    Here's a few things you can do while waiting for the CE to be registered and provisioned:
+    <div style="height:25px"></div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <i class="bi bi-book"></i>&nbsp; &nbsp;
+        Read the lab <strong><a href="/overview">overview</a></strong>.
+      </li>
+      <li class="list-group-item">
+        <i class="bi bi-envelope-exclamation"></i>&nbsp; &nbsp;
+        Check for the tenant <strong>welcome</strong> email.
+      </li>
+      <li class="list-group-item">
+        <i class="bi bi-gear"></i>&nbsp; &nbsp;
+        Configure lab <strong><a href="/setup">setup</a></strong> after logging into the tenant.
+      </li>
+      <li class="list-group-item">
+        <i class="bi bi-cup-hot"></i></i>&nbsp; &nbsp;
+        Get a cup of coffee.
+      </li>
+      </li>
+    </ul>
+    </div>
+    
+    <div  style="height:25px" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+    
+    <nav aria-label="labapp nav">
+      <ul class="pagination justify-content-end">
+        <li class="page-item">
+          <a class="page-link" href="/overview">Overview <i class="bi bi-arrow-right-circle-fill"></i></a>
+        </li>
+      </ul>
+    </nav>
+    
+
+</div>
+{% endblock %}
