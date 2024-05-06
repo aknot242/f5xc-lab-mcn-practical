@@ -30,7 +30,7 @@
         <div class="col-auto bg-light sidebar" id="sidebar">
             <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
                 <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom logo-box">
-                    <img src="/static/multi-cloud-app-connect.svg" width="200" height="auto" alt="Logo">
+                    <img src="/static/images/common/multi-cloud-app-connect.svg" width="200" height="auto" alt="Logo">
                     <span class="fs-5"><strong>Multi-Cloud App Connect</strong></span>
                 </a>
                 <ul class="list-unstyled ps-0">
@@ -74,18 +74,18 @@
                           .then(data => {
                               if (!data.err) {
                                   document.getElementById('siteName').textContent = data.site_name;
-                                  document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+                                  document.getElementById('statusImage').src = data.state === "PROVISIONED" ? "/static/images/common/good.png" : "/static/images/common/bad.png";
                                   setCookie('siteNameCache', data.site_name, 1);
                                   setCookie('stateCache', data.state, 1);
                               } else {
                                   document.getElementById('siteName').textContent = 'CE info unavailable';
-                                  document.getElementById('statusImage').src = "/static/bad.png";
+                                  document.getElementById('statusImage').src = "/static/images/common/bad.png";
                               }
                           })
                           .catch(error => {
                               console.error('There was a problem with the fetch operation:', error);
                               document.getElementById('siteName').textContent = 'Error';
-                              document.getElementById('statusImage').src = "/static/bad.png";
+                              document.getElementById('statusImage').src = "/static/images/common/bad.png";
                           });
                     }
                     document.addEventListener('DOMContentLoaded', function() {
@@ -94,7 +94,7 @@
                 
                       if (cachedSiteName && cachedState) {
                           document.getElementById('siteName').textContent = cachedSiteName;
-                          document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/good.png" : "/static/bad.png";
+                          document.getElementById('statusImage').src = cachedState === "PROVISIONED" ? "/static/images/common/good.png" : "/static/images/common/bad.png";
                       } else {
                           fetchAndUpdateStatus();
                       }
@@ -103,7 +103,7 @@
                   </script>
                         <div class="status-box align-items-center bg-light p-2 text-center rounded border">
                             <p><strong id="siteName">{{ config["ce_info"]["site_name"] }}</strong></p>
-                            <img id="statusImage" src="/static/unknown.png" alt="Status" style="width:50px; height:auto;">
+                            <img id="statusImage" src="/static/images/common/unknown.png" alt="Status" style="width:50px; height:auto;">
                         </div>
                 {% endif %}
 

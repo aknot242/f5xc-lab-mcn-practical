@@ -6,10 +6,18 @@
 <div class="main-body">
 
 <div class="text-center">
-    <img src="/static/images/lb-banner.png" alt="Banner" class="img-fluid lab-header">
+    <img src="/static/images/banners/lb-banner.png" alt="Banner" class="img-fluid lab-header">
 </div>
                 
 <div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<div class="container mt-3">
+    {% if not ns %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>Configure your ephemeral NS from the <a href="/setup" class="alert-link">setup page</a> before continuing.</strong>
+        </div>
+    {% endif %}
+</div>
     
 <p>
     Load balancing is the cornerstone of XC's App Connect functionality.
@@ -29,27 +37,27 @@
 <div>    
     <ul class="list-group">
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The URL for the cloud app hosted in AWS is <strong>https://aws-cloud-app.mcn-lab.f5demos.com</strong>
         </li>
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The cloud app is only reachable from the <strong>student-awsnet</strong> site.
         </li>
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The cloud app is <strong>TLS</strong> only. 
         </li>
         <li class="list-group-item">
-        <img src="/static/lb-icon.png" class="lab-icon">
+        <img src="/static/images/common/lb-icon.png" class="lab-icon">
             The load balancer domain is <strong>{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com</strong>. 
         </li>
         <li class="list-group-item">
-        <img src="/static/lb-icon.png" class="lab-icon">
+        <img src="/static/images/common/lb-icon.png" class="lab-icon">
             Use the <strong>mcn-lab-wildcard</strong> wildcard cert in the shared NS to enable TLS on the LB. 
         </li>
         <li class="list-group-item">
-            <img src="/static/lb-icon.png" class="lab-icon">
+            <img src="/static/images/common/lb-icon.png" class="lab-icon">
             <strong>Do not advertise your load balancer to the internet.</strong>
             {% if site %} Your site name is {{ site }}{% endif %}
         </li>
@@ -102,23 +110,23 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 
         <div class="collapse multi-collapse" id="multiCollapseExample1" data-bs-parent="#hints">
             <div class="">
-                <img src="/static/load-balancer1.png" width="800px" height="auto" alt="temp">
+                <img src="/static/images/lb/load-balancer1.png" width="800px" height="auto" alt="temp">
                 <div style="height:25px"></div>
-                <img src="/static/load-balancer2.png" width="800px" height="auto" alt="temp">
+                <img src="/static/images/lb/load-balancer2.png" width="800px" height="auto" alt="temp">
             </div>
         </div>
             
             
         <div class="collapse multi-collapse" id="multiCollapseExample2" data-bs-parent="#hints">
             <div class="">
-                <img src="/static/origin-pool.png" width="800px" height="auto" alt="temp">
+                <img src="/static/images/lb/origin-pool.png" width="800px" height="auto" alt="temp">
             </div>
         </div>
             
             
         <div class="collapse multi-collapse" id="multiCollapseExample3" data-bs-parent="#hints">
             <div class="">
-                <img src="/static/origin-server.png" width="800px" height="auto" alt="temp">
+                <img src="/static/images/lb/origin-server.png" width="800px" height="auto" alt="temp">
             </div>
         </div>
         
@@ -139,19 +147,19 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
 <div>
     <ul class="list-group">
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The URL for the cloud app hosted in Azure is <strong>https://azure-cloud-app.mcn-lab.f5demos.com</strong>
         </li>
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The cloud app is only reachable from the <strong>student-azurenet</strong> site.
         </li>
         <li class="list-group-item">
-        <img src="/static/origin-icon.png" class="lab-icon">
+        <img src="/static/images/common/origin-icon.png" class="lab-icon">
             The cloud app is TLS only. 
         </li>
         <li class="list-group-item">
-        <img src="/static/lb-icon.png" class="lab-icon">
+        <img src="/static/images/common/lb-icon.png" class="lab-icon">
             Keep the AWS Origin Pool in place. 
         </li>
     </ul>

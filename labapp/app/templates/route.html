@@ -6,10 +6,18 @@
 <div class="main-body">
 
 <div class="text-center">
-    <img src="/static/images/routing-banner.png" alt="Banner" class="img-fluid lab-header">
+    <img src="/static/images/banners/routing-banner.png" alt="Banner" class="img-fluid lab-header">
 </div>
                 
 <div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<div class="container mt-3">
+    {% if not ns %}
+        <div class="alert alert-danger text-center" role="alert">
+            <strong>Configure your ephemeral NS from the <a href="/setup" class="alert-link">setup page</a> before continuing.</strong>
+        </div>
+    {% endif %}
+</div>
 
 <p>
 Modern applications, and some classic ones, are often comprised of disparate services spread across sites. 
@@ -28,15 +36,15 @@ Build routing rules and configure your load balancer to route traffic between th
 <div>
   <ul class="list-group">
     <li class="list-group-item">
-    <img src="/static/origin-icon.png" class="lab-icon">
+    <img src="/static/images/common/origin-icon.png" class="lab-icon">
     Reuse the origin pools from the previous exercise.
     </li>
     <li class="list-group-item">
-    <img src="/static/route-icon.png" class="lab-icon">
+    <img src="/static/images/common/route-icon.png" class="lab-icon">
     Route requests to <strong>https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/<u>aws</u></strong> to the AWS cloud app. 
     </li>
     <li class="list-group-item">
-    <img src="/static/route-icon.png" class="lab-icon">
+    <img src="/static/images/common/route-icon.png" class="lab-icon">
     Route requests to <strong>https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/<u>azure</u></strong> to the Azure cloud app. 
     </li>
   </ul>
@@ -104,11 +112,11 @@ Build rules to route traffic between the two cloud apps based on an arbitrary HT
 <div>
     <ul class="list-group">
         <li class="list-group-item">
-            <img src="/static/route-icon.png" class="lab-icon">
+            <img src="/static/images/common/route-icon.png" class="lab-icon">
             Route requests with an <strong>X-MCN-Lab: aws</strong> header to the AWS cloud app.
         </li>
         <li class="list-group-item">
-            <img src="/static/route-icon.png" class="lab-icon">
+            <img src="/static/images/common/route-icon.png" class="lab-icon">
             Route requests with an <strong>X-MCN-Lab: azure</strong> header to the Azure cloud app.
         </li>
     </ul>
