@@ -1,14 +1,16 @@
 # MCN Practical Lab
 
-<img src="/labapp/app/static/logo.png" width="auto" height="200" />
+<img src="/labapp/app/static/images/common/multi-cloud-app-connect.svg" width="auto" height="200" />
 
-This lab is a practical and hands on exercise covering core F5 Distributed Cloud ("XC") Multi-Cloud Networking ("MCN") concepts.
+This lab is a practical and hands on exercise covering core F5 Distributed Cloud ("XC") Multi-Cloud Networking ("MCN") App Connect concepts.
 
 
 ## Lab App
+The lab all is used as the guide and to test all configuration built for the lab. Launch the access method in the UDF "Runner" instance to get started.
 
 
 ## Cloud App
+This is a simple echo application. For the lab, there are instances in AWS and Azure.
 
 
 ## Support
