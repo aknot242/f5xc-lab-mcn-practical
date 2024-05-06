@@ -18,6 +18,10 @@ main {
   overflow-y: auto;
 }
 
+.full-height-container {
+  min-height: 100vh; /* Set the minimum height to 100% of the viewport height */
+}
+
 .lab-icon {
   height: 30px;
   width: auto;
