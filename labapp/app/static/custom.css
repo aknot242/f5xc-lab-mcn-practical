@@ -52,10 +52,12 @@ main {
   border-radius: .8em;
   filter: brightness(110%) contrast(80%);
   filter: blur(.1px);
+  max-width: 75%;
 }
 
 .lab-header-clear {
   border-radius: .8em;
+  max-width: 75%;
 }
 /* Testing */
 
