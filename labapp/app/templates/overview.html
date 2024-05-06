@@ -48,7 +48,7 @@ The lab environment contains three distributed sites meshed using the F5 Distrib
 
 <p>
 Lab exercises will ask you to create configuration in the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
-Exercise reqirements are listed in a table along with an object type indicator. 
+Exercise requirements are listed in a table along with an object type indicator. 
 </p>
 
 <ul class="list-group">
@@ -73,7 +73,7 @@ Exercise reqirements are listed in a table along with an object type indicator.
 <p>
 To complete lab exercises, you will run tests against the load balancer advertised from the Customer Edge in your UDF site.
 You will build this load balancer in the <strong><a href="/loadbalancing">first exercise</a></strong>.
-All tests will be run from this web apllication.
+All tests will be run from this web application.
 </p>
 <p>
 Each test will specify success criteria followed by a <button id="null" class="btn btn-primary disabled">Test Load Balancer</button> button.
@@ -106,18 +106,18 @@ The second section shows a value the test expects in the response.
 </code></pre>
 
 <div class="left-aligned-button-container">
-    <button id="requestBtn1" class="btn btn-primary lab-ex-test">👍 Test</button>
+    <button id="requestBtn1" class="btn btn-primary lab-test-button">Test Load Balancer</button>
 </div>
 <div id="result1" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn1').addEventListener('click', () => {
-    testHttpRequest('requestBtn1', '/_test1', 'result1', '👍 Test');
+    testHttpRequest('requestBtn1', '/_test1', 'result1', 'Test Load Balancer');
 });
 </script>
 
 <p>
   The test made a request to <strong>https://foo.mcn-lab.f5demos.com</strong>.
-  The test succeeded because the response contained the <code>JSON</code> string <code> {"info": { "foo": True }}</code>.
+  The test <strong>succeeded</strong> because the response contained the <code>JSON</code> string <code> {"info": { "foo": True }}</code>.
 </p>
 
 <div style="height:25px"></div>
@@ -138,18 +138,18 @@ Host: foo.mcn-lab.f5demos.com
 </code></pre>
 
 <div class="left-aligned-button-container">
-    <button id="requestBtn2" class="btn btn-primary lab-ex-test">👎 Test</button>
+    <button id="requestBtn2" class="btn btn-primary lab-test-button">Test Load Balancer</button>
 </div>
 <div id="result2" class="mt-3"></div>
 <script>
 document.getElementById('requestBtn2').addEventListener('click', () => {
-    testHttpRequest('requestBtn2', '/_test2', 'result2', '👎 Test');
+    testHttpRequest('requestBtn2', '/_test2', 'result2', 'Test Load Balancer');
 });
 </script>
 
 <p>
 The test made a request to <strong>https://foo.mcn-lab.f5demos.com</strong>.
-The test failed because the response did not contain the <code>JSON</code>  string <code>{ "info": { "bar": True}}</code>.
+The test <strong>failed</strong> because the response did not contain the <code>JSON</code>  string <code>{ "info": { "bar": True}}</code>.
 </p>
 
 <div style="height:25px"></div>
