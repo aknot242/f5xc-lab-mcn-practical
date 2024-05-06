@@ -53,6 +53,10 @@
             The load balancer domain is <strong>{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com</strong>. 
         </li>
         <li class="list-group-item">
+            <img src="/static/images/common/lb-icon.png" class="lab-icon">
+                Traffic to <strong>all paths</strong> should be directed to the origin. 
+            </li>
+        <li class="list-group-item">
         <img src="/static/images/common/lb-icon.png" class="lab-icon">
             Use the <strong>mcn-lab-wildcard</strong> wildcard cert in the shared NS to enable TLS on the LB. 
         </li>
@@ -156,11 +160,11 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
         </li>
         <li class="list-group-item">
         <img src="/static/images/common/origin-icon.png" class="lab-icon">
-            The cloud app is TLS only. 
+            The cloud app is <strong>TLS</strong> only. 
         </li>
         <li class="list-group-item">
         <img src="/static/images/common/lb-icon.png" class="lab-icon">
-            Keep the AWS Origin Pool in place. 
+            Traffic should <strong>round robin</strong> between the origins. 
         </li>
     </ul>
 </div>
