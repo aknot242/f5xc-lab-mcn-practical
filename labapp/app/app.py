@@ -130,7 +130,7 @@ def cache_control(response):
 def ensure_cookie():
     """Ensure that the cookie is present, otherwise redirect to the cookie page."""
     if not request.path.startswith('/static'):
-        if (request.path not in ['/', '/cookie']) and (data_cookie not in request.cookies):
+        if (request.path not in ['/', '/cookie', '/_ce_status']) and (data_cookie not in request.cookies):
             return redirect('/cookie')
 
 @app.route('/')
@@ -204,9 +204,11 @@ def path():
 def header():
     """manipulation page"""
     ns = get_eph_ns()
+    site = get_site()
     return render_template('manipulation.html',
         title="MCN Practical: Manipulation",
-        ns=ns
+        ns=ns, 
+        site=site
     )
 
 @app.route('/portability')
