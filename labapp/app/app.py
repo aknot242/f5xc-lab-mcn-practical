@@ -129,8 +129,9 @@ def cache_control(response):
 @app.before_request
 def ensure_cookie():
     """Ensure that the cookie is present, otherwise redirect to the cookie page."""
-    if (request.path not in ['/', '/cookie']) and ('data_cookie' not in request.cookies):
-        return redirect('/cookie')
+    if not request.path.startswith('/static'):
+        if (request.path not in ['/', '/cookie']) and (data_cookie not in request.cookies):
+            return redirect('/cookie')
 
 @app.route('/')
 def index():
