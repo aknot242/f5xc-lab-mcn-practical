@@ -224,11 +224,8 @@ def port():
 def ref():
     """reference page"""
     ns = get_eph_ns()
-    html = render_md("markdown/reference.md")
     return render_template('coming-soon.html',
-        title="MCN Practical: Reference",
-        content=html, 
-        ns=ns
+        title="MCN Practical: Reference"
     )
 
 @app.route('/score')
