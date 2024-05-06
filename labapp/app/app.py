@@ -64,20 +64,6 @@ def get_site() -> str:
     if app.config['ce_info']:
         return app.config['ce_info'].get("site_name", None)
     return None
-
-def update_cookie_prop_old(cookie_b64, prop, value):
-    """update cookie"""
-    try:
-        json_bytes = base64.b64decode(cookie_b64)
-        json_str = json_bytes.decode('utf-8')
-        cookie_data = json.loads(json_str)
-        cookie_data[prop] = value
-        updated = json.dumps(cookie_data)
-        base64_bytes = base64.b64encode(updated.encode('utf-8'))
-        return base64_bytes
-    except json.JSONDecodeError:
-        print("Error updating cookie value.")
-        return encode_data("{}")
     
 def update_cookie_prop(cookie_b64, prop, value):
     """Update a property in a base64 encoded JSON cookie."""
@@ -126,11 +112,12 @@ def decode_data(encoded_data):
 @app.errorhandler(500)
 def return_err(err):
     """common error handler"""
-    img = {
-        404: "/static/404.png",
-        500: "/static/500.png"
-    }
-    return render_template("error.html", err_img=img[err.code])
+    return render_template("error.html", code=err.code)
+
+@app.route('/cookie')
+def cookie_err():
+    """cookie error"""
+    return render_template("cookie.html")
 
 @app.after_request
 def cache_control(response):
@@ -144,7 +131,7 @@ def ensure_cookie():
     """ensure cookie"""
     """TBD: Do a little better here with a warning"""
     if request.path != '/' and data_cookie not in request.cookies:
-        return redirect('/')
+        return redirect('/cookie')
     
 @app.route('/')
 def index():
