@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="main-body">
+
+<div class="text-center">
+    <img src="/static/images/overview-banner.png" alt="Banner" class="img-fluid lab-header">
+</div>
+                
+<div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<p>
+The lab environment, the service endpoints, and how you interact with the load balancer have been simplified in an effort to focus on concepts.
+Understanding the environment, it's topology, and the rudimentary functionality of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> will help in completing the exercises.
+</p>
+<div style="height:25px"></div>
+
+<h2><strong>Architecture</strong></h2>
+
+<p>
+The lab environment contains three distributed sites meshed using the F5 Distributed Cloud Global Network.
+</p>
+
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/aws.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
+    <strong>student-awsnet</strong> in Amazon Web Services
+  </li>
+  <li class="list-group-item">
+  <img src="/static/azure.png" width="40px" height="auto" class="rounded"> &nbsp;&nbsp;&nbsp;
+  <strong>student-azurenet</strong> in Microsoft Azure
+  </li>
+  <li class="list-group-item">
+  <img src="/static/mcnp-udf.png" width="40px" height="auto"> &nbsp;&nbsp;&nbsp;
+  <strong>Lab CE</strong> in UDF 
+  </li>
+</ul>
+
+<div style="height:25px"></div>
+
+<div style="width: 60%;" class="d-flex justify-content-center align-items-center">
+  <img src="/static/mcn-prac-arch-base.png" alt="Arch" class="img-fluid">
+</div>
+
+<h2><strong>Lab Exercises</strong></h2>
+
+<p>
+Lab exercises will ask you to create configuration in the <strong><a href="https://f5-xc-lab-mcn.console.ves.volterra.io/" target="_blank">lab tenant</a></strong>.
+Exercise reqirements are listed in a table along with an object type indicator. 
+</p>
+
+<ul class="list-group">
+  <li class="list-group-item">
+  <img src="/static/lb-icon.png" class="lab-icon">
+    <strong>Load Balancer</strong>
+  </li>
+  <li class="list-group-item">
+  <img src="/static/origin-icon.png" class="lab-icon">
+    <strong>Origin Pool</strong>
+  </li>
+  <li class="list-group-item">
+  <img src="/static/route-icon.png" class="lab-icon">
+    <strong>Route</strong> 
+  </li>
+</ul>
+
+<div style="height:25px"></div>
+
+<h4><strong>Test Criteria</strong></h4>
+
+<p>
+To complete lab exercises, you will run tests against the load balancer advertised from the Customer Edge in your UDF site.
+You will build this load balancer in the <strong><a href="/loadbalancing">first exercise</a></strong>.
+All tests will be run from this web apllication.
+</p>
+<p>
+Each test will specify success criteria followed by a <button id="null" class="btn btn-primary disabled">Test Load Balancer</button> button.
+</p>
+<p>
+Here are some illustrative examples. 
+</p>
+
+<p>
+The first section of the test criteria shows the request being made.
+</p>
+
+<pre class="hljs language-http rounded"><code>
+GET https://foo.mcn-lab.f5demos.com/ HTTP/1.1
+Host: foo.mcn-lab.f5demos.com
+
+</code></pre>
+
+<p>
+The second section shows a value the test expects in the response.
+</p>
+
+<pre class="hljs language-json rounded"><code>
+{
+  "info": {
+    "foo": True
+  }
+}
+
+</code></pre>
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn1" class="btn btn-primary lab-ex-test">👍 Test</button>
+</div>
+<div id="result1" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn1').addEventListener('click', () => {
+    testHttpRequest('requestBtn1', '/_test1', 'result1', '👍 Test');
+});
+</script>
+
+<p>
+  The test made a request to <strong>https://foo.mcn-lab.f5demos.com</strong>.
+  The test succeeded because the response contained the <code>JSON</code> string <code> {"info": { "foo": True }}</code>.
+</p>
+
+<div style="height:25px"></div>
+
+<pre class="hljs language-http rounded"><code>
+GET https://foo.mcn-lab.f5demos.com/ HTTP/1.1
+Host: foo.mcn-lab.f5demos.com
+
+</code></pre>
+
+<pre class="hljs language-json rounded"><code>
+{
+  "info": {
+    "bar": True
+  }
+}
+
+</code></pre>
+
+<div class="left-aligned-button-container">
+    <button id="requestBtn2" class="btn btn-primary lab-ex-test">👎 Test</button>
+</div>
+<div id="result2" class="mt-3"></div>
+<script>
+document.getElementById('requestBtn2').addEventListener('click', () => {
+    testHttpRequest('requestBtn2', '/_test2', 'result2', '👎 Test');
+});
+</script>
+
+<p>
+The test made a request to <strong>https://foo.mcn-lab.f5demos.com</strong>.
+The test failed because the response did not contain the <code>JSON</code>  string <code>{ "info": { "bar": True}}</code>.
+</p>
+
+<div style="height:25px"></div>
+
+<h4><strong>Other Tools</strong></h4>
+
+<p><code>curl</code> and <code>jq</code> are provided on the UDF <strong>Runner</strong> instance.</p>
+
+<pre class="hljs language-json rounded"><code>
+  ubuntu@ubuntu:~$ curl -s https://foo.mcn-lab.f5demos.com/ | jq
+  {
+    "info": {
+      "foo": true
+    }
+  }
+  </code></pre>
+
+<div class="alert alert-secondary" role="alert">
+  <strong>Responses displayed in exercise tests are truncated for readibility.</strong>
+</div>
+
+<div style="height:25px"></div>
+
+<h2><strong>Cloud App</strong></h2>
+
+<p>
+Exercises are run against instances of the <strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/tree/main/cloudapp" target="_blank">cloud app</a></strong> hosted in each remote cloud environment.
+The cloud app simply echoes back HTTP request info.
+Unless otherwise noted, test results display headers and info <strong>from the request received by the app</strong>.
+In other words, test critera are evaluating being sent (as echoed back from the cloud app).
+
+To demonstrate, you can access an endpoint of each cloud app from your browser.
+</p>
+
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col-lg-6 col-md-12">
+       <a href="https://aws-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+         <img src="/static/aws.png" height="100px" width="auto" class="rounded"/>
+        </a>
+    </div>
+    <div class="col-lg-6 col-md-12 h-100">
+      <a href="https://azure-cloud-app.mcn-lab.f5demos.com/pretty" target="_blank">
+        <img src="/static/azure.png" height="100px" width="auto"  class="rounded"/>
+      </a>
+    </div>
+  </div>
+</div>  
+
+<div style="height:25px"></div>
+
+<h2><strong>Issues</strong></h2>
+
+<p>
+Use the lab repository <i class="bi bi-github"> </i><strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/" target="_blank">issue tracker</a></strong> to report bugs, typos, or lab enhancements.
+</p>
+<div href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<nav aria-label="labapp nav">
+  <ul class="pagination justify-content-end">
+    <li class="page-item">
+      <a class="page-link" href="/setup">Setup <i class="bi bi-arrow-right-circle-fill"></i></a>
+    </li>
+  </ul>
+</nav>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+

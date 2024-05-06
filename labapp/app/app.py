@@ -5,6 +5,7 @@ import os
 import re
 import json
 import requests
+import base64
 import urllib
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
 from flask_caching import Cache
@@ -19,10 +20,13 @@ app.config['UDF'] = None
 if os.getenv('UDF', None):
     app.config['ce_info'] = get_ce_info()
     app.config['UDF'] = True
+    app.config['SESSION_COOKIE_SECURE'] = True
 app.config['base_url'] = "mcn-lab.f5demos.com"
 app.config['CACHE_TYPE'] = 'SimpleCache'
 cache = Cache(app)
 app.secret_key = "blahblahblah"
+data_cookie = "mcnp-ac-data"
+cookie_age = 86400
 
 session = get_runner_session()
 session.headers.update({"User-Agent": "MCN-Lab-Runner/1.0"})
@@ -47,18 +51,73 @@ def validate_eph_ns(input_name):
 
 def get_eph_ns() -> str:
     """check if ephemeral namespace is set"""
-    this_eph_ns = request.cookies.get('eph_ns', None)
-    return this_eph_ns
+    try:
+        cookie_b64 = request.cookies.get(data_cookie, None)
+        if cookie_b64:
+            return get_cookie_prop(cookie_b64, 'eph_ns')
+    except Exception:
+        print("Error getting ephemeral NS")
+    return None
 
+def get_site() -> str:
+    """check if ephemeral namespace is set"""
+    if app.config['ce_info']:
+        return app.config['ce_info'].get("site_name", None)
+    return None
+    
+def update_cookie_prop(cookie_b64, prop, value):
+    """Update a property in a base64 encoded JSON cookie."""
+    try:
+        json_bytes = base64.b64decode(cookie_b64)
+        json_str = json_bytes.decode('utf-8')
+        cookie_data = json.loads(json_str)
+        if not isinstance(cookie_data, dict):
+            raise ValueError("Cookie data is not a dictionary.")
+        cookie_data[prop] = value
+        updated = json.dumps(cookie_data)
+        base64_bytes = base64.b64encode(updated.encode('utf-8'))
+        return base64_bytes.decode('utf-8')
+    except json.JSONDecodeError:
+        print("Error decoding JSON from cookie.")
+        """TBD: this is not what we want."""
+        return encode_data({})
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return encode_data({})
+    
+def get_cookie_prop(cookie_b64, prop):
+    """get a cookie prop"""
+    try:
+        json_bytes = base64.b64decode(cookie_b64)
+        json_str = json_bytes.decode('utf-8')
+        c_dict = json.loads(json_str)
+        return c_dict[prop]
+    except json.JSONDecodeError:
+        print("Error decoding cookie data")
+        return None
+    
+def encode_data(data):
+    """Encode dictionary to Base64-encoded JSON."""
+    json_str = json.dumps(data)
+    base64_bytes = base64.b64encode(json_str.encode('utf-8'))
+    return base64_bytes.decode('utf-8')
+
+def decode_data(encoded_data):
+    """Decode Base64-encoded JSON to dictionary."""
+    json_bytes = base64.b64decode(encoded_data)
+    json_str = json_bytes.decode('utf-8')
+    return json.loads(json_str)
+    
 @app.errorhandler(404)
 @app.errorhandler(500)
 def return_err(err):
     """common error handler"""
-    img = {
-        404: "/static/404.png",
-        500: "/static/500.png"
-    }
-    return render_template("error.html", err_img=img[err.code])
+    return render_template("error.html", code=err.code)
+
+@app.route('/cookie')
+def cookie_err():
+    """cookie error"""
+    return render_template("cookie.html")
 
 @app.after_request
 def cache_control(response):
@@ -66,23 +125,30 @@ def cache_control(response):
     if request.path.startswith("/static/") and request.path.endswith(".png"):
         response.headers['Cache-Control'] = 'public, max-age=3600'
     return response
+    
+@app.before_request
+def ensure_cookie():
+    """Ensure that the cookie is present, otherwise redirect to the cookie page."""
+    if not request.path.startswith('/static'):
+        if (request.path not in ['/', '/cookie']) and (data_cookie not in request.cookies):
+            return redirect('/cookie')
 
 @app.route('/')
 def index():
     """index page"""
-    html = render_md("markdown/welcome.md")
-    return render_template('standard.html',
-        title="MCN Practical: Overview",
-        content=html
+    html = render_template('welcome.html',
+        title="MCN Practical: Welcome"
     )
+    response = make_response(html)
+    if data_cookie not in request.cookies:
+        response.set_cookie(data_cookie, encode_data({}), max_age=cookie_age)
+    return response
 
 @app.route('/overview')
-def arch():
-    """arch page"""
-    html = render_md("markdown/overview.md")
-    return render_template('standard.html',
-        title="MCN Practical: Architecture",
-        content=html
+def overview():
+    """overview page"""
+    return render_template('overview.html',
+        title="MCN Practical: Overview"
     )
 
 @app.route('/setup', methods=['GET', 'POST'])
@@ -97,36 +163,31 @@ def setup():
                 flash("Invalid ephemeral namespace.", "danger")
                 return redirect(url_for('setup'))
             response = make_response(redirect('/setup'))
-            response.set_cookie('eph_ns', this_eph_ns, max_age=60*60*24)
+            cookie_b64 = request.cookies.get('mcnp-ac-data', encode_data({}))
+            cookie_data = update_cookie_prop(cookie_b64, 'eph_ns', this_eph_ns)
+            response.set_cookie(data_cookie, cookie_data)
             flash('Ephemeral namespace successfully set.', "success")
             return response
         if action == 'clear':
             response = make_response(redirect('/setup'))
-            response.set_cookie('eph_ns', '', expires=0)
+            cookie_b64 = request.cookies.get('mcnp-ac-data', encode_data({}))
+            cookie_data = update_cookie_prop(cookie_b64, 'eph_ns', None)
+            response.set_cookie(data_cookie, cookie_data)
             flash("Ephemeral namespace cleared.", "info")
             return response
-    html = render_md("markdown/setup.md")
     return render_template('setup.html',
         title="MCN Practical: Setup",
-        content=html,
         ns=ns
     )
-
-@app.route('/_ce_status')
-@cache.cached(timeout=30)
-def ce_state():
-    """get ce state (internal route)"""
-    data = get_ce_state(app.config['ce_info'])
-    return data
 
 @app.route('/loadbalancing')
 def lb():
     """lb page"""
     ns = get_eph_ns()
-    html = render_md("markdown/lb.md")
-    return render_template('exercise_standard.html',
+    site = get_site()
+    return render_template('loadbalancing.html',
         title="MCN Practical: LB",
-        content=html,
+        site=site,
         ns=ns
     )
 
@@ -134,22 +195,17 @@ def lb():
 def path():
     """routing page"""
     ns = get_eph_ns()
-    html = render_md("markdown/route.md")
-    return render_template('exercise_standard.html',
+    return render_template('route.html',
         title="MCN Practical: HTTP Routing",
-        content=html,
-        ns=ns,
-
+        ns=ns
     )
 
 @app.route('/manipulation')
 def header():
     """manipulation page"""
     ns = get_eph_ns()
-    html = render_md("markdown/manipulation.md")
-    return render_template('exercise_standard.html',
+    return render_template('manipulation.html',
         title="MCN Practical: Manipulation",
-        content=html, 
         ns=ns
     )
 
@@ -157,32 +213,8 @@ def header():
 def port():
     """portability page"""
     ns = get_eph_ns()
-    html = render_md("markdown/portability.md")
-    return render_template('exercise_standard.html',
+    return render_template('portability.html',
         title="MCN Practical: Portability",
-        content=html, 
-        ns=ns
-    )
-
-@app.route('/vnet')
-def vnet():
-    """vnet page"""
-    ns = get_eph_ns()
-    html = render_md("markdown/reference.md")
-    return render_template('coming-soon.html',
-        title="MCN Practical: Reference",
-        content=html, 
-        ns=ns
-    )
-
-@app.route('/netpolicy')
-def netp():
-    """netpolicy page"""
-    ns = get_eph_ns()
-    html = render_md("markdown/reference.md")
-    return render_template('coming-soon.html',
-        title="MCN Practical: Reference",
-        content=html, 
         ns=ns
     )
 
@@ -200,14 +232,12 @@ def ref():
 @app.route('/score')
 def score():
     """scoreboard page"""
-    ns = get_eph_ns()
-    score_cookie = request.cookies.get('score', '%7B%7D') 
-    print(score_cookie)
     try:
-        decoded_cookie = urllib.parse.unquote(score_cookie)
-        enc_score = json.loads(decoded_cookie)
-        this_score = {urllib.parse.unquote(k): v for k, v in enc_score.items()}
-    except json.JSONDecodeError:
+        cookie_b64 = request.cookies.get(data_cookie)
+        this_score = get_cookie_prop(cookie_b64, 'score')
+        """raise a LabException"""
+    except Exception:
+        print("Error getting score")
         this_score = {}
     try:
         p_score = score_get_results(this_score)
@@ -218,19 +248,29 @@ def score():
         port_table = score_build_table(p_score, 'port', 'Portability')
     except LabException as e:
         print(f"Couldn't build score table: {e}")
-    response = make_response(render_template('score.html',
+    return render_template('score.html',
             title="MCN Practical: Scoreboard",
             over_table=over_table,
             lb_table=lb_table,
             route_table=route_table,
             manip_table=manip_table,
             port_table=port_table,
-            ns=ns
-        ))
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate' 
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
+        )
+
+@app.route('/test')
+def test():
+    """test page"""
+    ns = get_eph_ns()
+    return render_template('test.html',
+        title="MCN Practical: Test",
+        ns=ns
+    )
+
+@app.route('/_ce_status')
+def ce_state():
+    """get ce state (internal route)"""
+    data = get_ce_state(app.config['ce_info'])
+    return data
 
 @app.route('/_test1')
 def ex_test():
@@ -359,11 +399,12 @@ def manip2():
     """Second Manip Test"""
     try:
         ns = get_eph_ns()
+        site = get_site()
         if not ns:
             raise LabException("Ephemeral NS not set")
         base_url = app.config['base_url']
         url = f"https://{ns}.{base_url}/"
-        t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": app.config["ce_info"]["site_name"]}
+        t_headers = { "x-mcn-namespace": ns, "x-mcn-src-site": site}
         r_data = cloudapp_req_headers(session, url, 7, t_headers)
         return jsonify(status='success', data=r_data)
     except (LabException, ValueError) as e:
@@ -415,7 +456,6 @@ def port2():
     """Friend test"""
     try:
         data = request.get_json()
-        print(data)
         eph_ns = data['userInput']
         url = f"https://{eph_ns}.{app.config['base_url']}/"
         data = cloudapp_fetch(session, url, 7, 'info', {"method": "GET", "path": "/"})

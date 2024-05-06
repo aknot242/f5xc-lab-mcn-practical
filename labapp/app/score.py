@@ -40,7 +40,7 @@ score_schema = {
         "href": "/route",
         "result": "none"
     },
-    "/_manip1:": {
+    "/_manip1": {
         "name": "Path Rewrite",
         "key": "manip",
         "href": "/manipulation",
@@ -86,8 +86,6 @@ def score_get_results(cookie_results):
     for test_path, result in cookie_results.items():
         if test_path in score_schema:
             this_score[test_path]['result'] = result
-    print(this_score)
-    print(score_schema)
     return this_score
 
 def score_sort(scores, key):
@@ -100,7 +98,6 @@ def score_build_table(scores, section, name):
     section_scores = score_sort(scores, section)
     rows_html = ""
     for key, score in section_scores.items():
-        print(score['result'])
         r_icon = result_map[score['result']]
         section_html = f"""
         <tr>

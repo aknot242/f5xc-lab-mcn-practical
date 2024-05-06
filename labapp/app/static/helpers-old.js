@@ -1,59 +1,22 @@
-// Utility function to get a cookie by name
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-}
-
-// Utility function to set a cookie
 function setCookie(name, value, days) {
-    let expires = '';
+    var expires = "";
     if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = `; expires=${date.toUTCString()}`;
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = `${name}=${value}${expires}; path=/`;
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-function updateScore(requestUrl, status) {
-    // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
-    const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
-    const cookieStr = atob(base64EncodedData);
-    let cookieData = JSON.parse(cookieStr);
-
-    // Check if the 'score' object exists, if not initialize it
-    if (!cookieData.score) {
-        cookieData.score = {};
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
     }
-
-    // Update the score object with the result of the current request
-    cookieData.score[requestUrl] = status;
-
-    // Convert the updated cookie object back to string, then encode to base64
-    const updatedStr = JSON.stringify(cookieData);
-    const updatedBase64Data = btoa(updatedStr);
-
-    // Update the cookie with the new base64 encoded data
-    setCookie('mcnp-ac-data', updatedBase64Data, 1);
-}
-
-function clearScore(requestUrl, status) {
-    // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
-    const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
-    const cookieStr = atob(base64EncodedData);
-    let cookieData = JSON.parse(cookieStr);
-
-    // Clear the score
-    cookieData.score = {};
-
-    // Convert the updated cookie object back to string, then encode to base64
-    const updatedStr = JSON.stringify(cookieData);
-    const updatedBase64Data = btoa(updatedStr);
-
-    // Update the cookie with the new base64 encoded data
-    setCookie('mcnp-ac-data', updatedBase64Data, 1); 
+    return null;
 }
 
 async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
@@ -69,15 +32,15 @@ async function testHttpRequest(buttonId, requestUrl, resultDivId, buttonTxt) {
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>${prettyJson}</code></pre></div>`;
-            updateScore(requestUrl, 'pass');
+            updateScoreCookie(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
-            updateScore(requestUrl, 'fail');
+            updateScoreCookie(requestUrl, 'fail');
         }
     } catch (error) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        updateScore(requestUrl, 'fail');
+        updateScoreCookie(requestUrl, 'fail');
     } finally {
         // Restore original button text and remove spinner
         button.innerHTML = buttonTxt;
@@ -101,15 +64,15 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
         if (response.data.status === 'success') {
             const prettyJson = JSON.stringify(response.data.data, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-success"><b>Request Succeeded:</b><br><pre class="hljs language-json rounded"><code>${prettyJson}</code></pre></div>`;
-            updateScore(requestUrl, 'pass');
+            updateScoreCookie(requestUrl, 'pass');
         } else {
             const errJson = JSON.stringify(response.data.error, null, 4);
             resultDiv.innerHTML = `<div class="alert alert-danger"><b>Request Failed:</b><br><pre class="hljs rounded"><code>${errJson}</code></pre></div>`;
-            updateScore(requestUrl, 'fail');
+            updateScoreCookie(requestUrl, 'fail');
         }
     } catch (error) {
         resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-        updateScore(requestUrl, 'fail');
+        updateScoreCookie(requestUrl, 'fail');
     } finally {
         // Restore original button text
         button.innerHTML = buttonTxt;
@@ -117,3 +80,48 @@ async function testPostRequest(buttonId, requestUrl, resultDivId, inputDataId, b
         resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 }
+  
+  function updateScoreCookie_old(requestUrl, status) {
+    // Get the current cookie, decode it, and parse it as JSON
+    const currentCookie = decodeURIComponent(getScoreCookie('mcnp_scoreboard') || '%7B%7D'); // Ensure the default value is an encoded empty JSON object
+    let progress = JSON.parse(currentCookie);
+    progress[encodeURIComponent(requestUrl)] = status;
+    document.cookie = `mcnp_scoreboard=${encodeURIComponent(JSON.stringify(progress))}; path=/; expires=${new Date(new Date().getTime() + 86400e3).toUTCString()};`;
+  }
+  
+  function getScoreCookie(name) {
+    let cookieArray = document.cookie.split(';');
+    for(let i = 0; i < cookieArray.length; i++) {
+      let cookiePair = cookieArray[i].split('=');
+      if(name == cookiePair[0].trim()) {
+        return cookiePair[1];
+      }
+    }
+    return null;
+  }
+
+  function updateScoreCookie(requestUrl, status) {
+    // Retrieve the existing score cookie or initialize it to an empty JSON object.
+    // The cookie value retrieved is assumed to be URI-encoded since it was set as such.
+    let currentCookie = getCookie('mcnp_scoreboard') || '{}';
+
+    // Decode the retrieved cookie string to handle any URI-encoded characters.
+    let decodedCookie = decodeURIComponent(currentCookie);
+
+    // Parse the decoded cookie string into an object.
+    let progress = JSON.parse(decodedCookie);
+
+    // Update the progress object with the new status for the requestUrl.
+    // Using encodeURIComponent to ensure the URL is safely encoded.
+    progress[encodeURIComponent(requestUrl)] = status;
+
+    // Serialize the progress object back into a JSON string.
+    let jsonString = JSON.stringify(progress);
+
+    // Encode the entire JSON string to ensure all special characters are URI-safe.
+    let encodedJsonString = encodeURIComponent(jsonString);
+
+    // Use the setCookie function to update the cookie with the URI-encoded JSON string.
+    setCookie('mcnp_scoreboard', encodedJsonString, 1); // Set for 1 day expiration
+}
+

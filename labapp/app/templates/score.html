@@ -5,8 +5,33 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/table.css">
+<script>
+    function clearScore(requestUrl, status) {
+    // Retrieve the current cookie, assume it's base64 encoded, or default to an encoded empty object
+    const base64EncodedData = getCookie('mcnp-ac-data') || btoa('{}');
+    const cookieStr = atob(base64EncodedData);
+    let cookieData = JSON.parse(cookieStr);
+
+    // Clear the score
+    cookieData.score = {};
+
+    // Convert the updated cookie object back to string, then encode to base64
+    const updatedStr = JSON.stringify(cookieData);
+    const updatedBase64Data = btoa(updatedStr);
+
+    // Update the cookie with the new base64 encoded data
+    setCookie('mcnp-ac-data', updatedBase64Data, 1); 
+    location.reload();
+}
+</script>
 <div class="main-body">
-<h1>Scoreboard</h1>
+
+    
+<div class="text-center">
+    <img src="/static/images/score-banner.png" alt="Banner" class="img-fluid lab-header">
+</div>
+                
+<div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
 
 
 <div class="container">
@@ -36,15 +61,25 @@
     </div>
 </div>
 
-
-<div class="container mt-5">
-    <button class="btn btn-danger" onclick="clearCookie('score')">Clear Scores</button>
+<div class="container mt-1">
+    <button class="btn btn-danger" onclick="clearScore()">Clear Scores</button>
 </div>
-<script>
-    function clearCookie(name) {
-        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        location.reload();
-    }
-</script>
+
+<div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom"></div>
+
+<div style="height:25px"></div>
+
+<div class="mt-6">
+    <h4><strong>Feedback</strong></h4>
+    <p>
+        <img src="/static/ms-forms.png" height="50px" width="auto" class="rounded"/>
+        Please tell us your thoughts about the lab using <strong><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=L_093Ttq0UCb4L-DJ9gcULXGWCx14gdAhrSFCCStGodUQTlQNVpKSlNZWlpDSENIVFlPVU84Q1VJMC4u" target="_blank">this form</a></strong>.
+    </p>
+    <div style="height:25px"></div>
+    <h4><strong>Issues</strong></h4>
+    <p>
+        Use the lab repository <i class="bi bi-github"> </i><strong><a href="https://github.com/f5devcentral/f5xc-lab-mcn-practical/" target="_blank">issue tracker</a></strong> to report bugs, typos, or lab enhancements.
+    </p>
+</div>
 {% endblock %}
 

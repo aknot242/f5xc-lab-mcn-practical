@@ -18,6 +18,58 @@ main {
   overflow-y: auto;
 }
 
+.lab-icon {
+  height: 30px;
+  width: auto;
+  padding-right: 25px;
+}
+
+.lab-test-button {
+  width: 175px;
+}
+
+.lab-post-button {
+  width: 200px;
+}
+
+.lab-ex-test {
+  width: 125px;
+}
+
+.lab-image-container {
+  height: 200px; /* Fixed height */
+  overflow: hidden; /* Ensures nothing extends outside the container */
+  display: flex; /* Flexbox to help with centering/positioning the image */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically, if needed */
+}
+
+.lab-header {
+  border-radius: .8em;
+  filter: brightness(110%) contrast(80%);
+  filter: blur(.1px);
+}
+
+.lab-header-clear {
+  border-radius: .8em;
+}
+/* Testing */
+
+.sidebar-link {
+  display: block;
+  padding: 8px 16px;
+  color: #333; /* Adjust the color to fit your theme */
+  text-decoration: none; /* Remove underline from links */
+  border-radius: 4px; /* Rounded corners for links */
+}
+
+.sidebar-link:hover {
+  background-color: #f8f9fa; /* Light grey background on hover */
+  color: #0056b3; /* Change color on hover for better visibility */
+}
+
+/* Testing */
+
 .row {
   height: 100%;
 }
@@ -47,18 +99,18 @@ main {
   padding: 50px;
 }
 
-.err {
+.err-container {
   display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   height: 100vh; /* Full viewport height */
+  margin-bottom: 0
 }
-
-.err img {
-  display: block;
-  width: 100%; /* This will make the image responsive */
-  max-width: 600px; /* Maximum width of the image */
-  margin: 0 auto; /* Center the image */
+.err-container img {
+  width: 80%;
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  border-radius: .8em;
 }
 
 .err p {
