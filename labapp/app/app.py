@@ -220,14 +220,6 @@ def port():
         ns=ns
     )
 
-@app.route('/reference')
-def ref():
-    """reference page"""
-    ns = get_eph_ns()
-    return render_template('coming-soon.html',
-        title="MCN Practical: Reference"
-    )
-
 @app.route('/score')
 def score():
     """scoreboard page"""
