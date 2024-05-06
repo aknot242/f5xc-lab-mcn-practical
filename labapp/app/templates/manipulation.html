@@ -28,7 +28,7 @@
 
 <div style="height:25px"></div>
     
-<h2><strong>Exercise 1: Path Rewrite</strong></h2>
+<h1><strong>Exercise 1: Path Rewrite</strong></h1>
 
 <p>
 Configure a path <strong>prefix rewrite</strong> to remove part of the request path when routing to an origin.
@@ -49,7 +49,7 @@ Configure a path <strong>prefix rewrite</strong> to remove part of the request p
     
 <div style="height:25px"></div>
     
-<h3><strong>Test Criteria</strong></h3>
+<h2><strong>Test Criteria</strong></h2>
 
 <pre class="hljs language-http rounded"><code>
 GET https://{{ ns or 'eph-ns' }}.mcn-lab.f5demos.com/aws/raw HTTP/1.1
@@ -99,7 +99,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
     
 <div style="height:25px"></div>
     
-<h2><strong>Exercise 2: Request Header Shenanigans</strong></h2>
+<h1><strong>Exercise 2: Request Header Shenanigans</strong></h1>
 
 <p>
     While blind header insertion or deletion is useful in some use cases, this exercise focuses on context aware header manipulation. 
@@ -123,7 +123,7 @@ document.getElementById('requestBtn1').addEventListener('click', () => {
     
 <div style="height:25px"></div>
     
-<h3><strong>Test Criteria</strong></h3>
+<h2><strong>Test Criteria</strong></h2>
 
 <pre class="hljs language-http rounded"><code>
 GET https://{{ ns or 'eph-ns '}}.mcn-lab.f5demos.com/ HTTP/1.1
@@ -156,7 +156,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
     
 <div style="height:25px"></div>
     
-<h2><strong>Exercise 3: Response Header Shenanigans</strong></h2>
+<h1><strong>Exercise 3: Response Header Shenanigans</strong></h1>
     
 <div style="height:25px"></div>
     
@@ -171,7 +171,7 @@ document.getElementById('requestBtn2').addEventListener('click', () => {
     
 <div style="height:25px"></div>
     
-<h3><strong>Test Criteria</strong></h3>
+<h2><strong>Test Criteria</strong></h2>
 
 <div class="alert alert-secondary" role="alert">
     <strong>This test validates multiple HTTP requests.</strong>
