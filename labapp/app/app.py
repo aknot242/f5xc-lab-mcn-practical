@@ -125,14 +125,13 @@ def cache_control(response):
     if request.path.startswith("/static/") and request.path.endswith(".png"):
         response.headers['Cache-Control'] = 'public, max-age=3600'
     return response
-
+    
 @app.before_request
 def ensure_cookie():
-    """ensure cookie"""
-    """TBD: Do a little better here with a warning"""
-    if request.path != '/' and data_cookie not in request.cookies:
+    """Ensure that the cookie is present, otherwise redirect to the cookie page."""
+    if (request.path not in ['/', '/cookie']) and ('data_cookie' not in request.cookies):
         return redirect('/cookie')
-    
+
 @app.route('/')
 def index():
     """index page"""
