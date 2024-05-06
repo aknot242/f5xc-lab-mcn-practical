@@ -5,6 +5,7 @@ import os
 import re
 import json
 import requests
+from requests.exceptions import HTTPError
 import base64
 import urllib
 from flask import Flask, render_template, jsonify, request, redirect, make_response, flash, url_for
@@ -272,8 +273,10 @@ def ex_test():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
 
 @app.route('/_test2')
 def ex_test2():
@@ -284,8 +287,10 @@ def ex_test2():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
 
     
 @app.route('/_lb1')
@@ -300,8 +305,10 @@ def lb_aws():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
    
 @app.route('/_lb2')
 def lb_azure():
@@ -320,8 +327,10 @@ def lb_azure():
         raise ValueError("Failed to find Azure Origin Pool")
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
     
 @app.route('/_route1')
 def route1():
@@ -342,8 +351,10 @@ def route1():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
     
 @app.route('/_route2')
 def route2():
@@ -366,8 +377,10 @@ def route2():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
 
 @app.route('/_manip1')
 def manip1():
@@ -382,8 +395,10 @@ def manip1():
         return jsonify(status='success', data=r_data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
     
 @app.route('/_manip2')
 def manip2():
@@ -400,8 +415,10 @@ def manip2():
         return jsonify(status='success', data=r_data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
     
 @app.route('/_manip3')
 def manip3():
@@ -424,8 +441,10 @@ def manip3():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
 
 @app.route('/_port1')
 def port1():
@@ -439,8 +458,10 @@ def port1():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
         
 @app.route('/_port2', methods=['POST'])
 def port2():
@@ -453,8 +474,10 @@ def port2():
         return jsonify(status='success', data=data)
     except (LabException, ValueError) as e:
         return jsonify(status='fail', error=str(e))
-    except requests.RequestException:
-        return jsonify(status='fail', error="Connection/Request Error")
+    except HTTPError as e:
+        return jsonify(status='fail', error=f"HTTP Error: {e.response.status_code} {e.response.reason}")
+    except requests.RequestException as e:
+        return jsonify(status='fail', error=f"Error: Connection/Network Issue")
         
 
 if __name__ == '__main__':

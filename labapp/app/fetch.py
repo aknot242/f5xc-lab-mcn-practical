@@ -43,7 +43,7 @@ def cloudapp_fetch(session, url, timeout, prop, value):
     response.raise_for_status()
     data = response.json()
     if data.get(prop) != value:
-        raise ValueError(f'Invalid {prop}: expected {value}, got {data.get(prop)}')
+        raise ValueError(f'Value Error for {prop}: expected {value}, got {data.get(prop)}')
     if data.get("request_headers"):
         clean_headers = headers_cleaner(data['request_headers'])
         data['request_headers'] = clean_headers
@@ -61,7 +61,7 @@ def cloudapp_req_headers(session, url, timeout, headers):
     for header in headers:
         head_value = req_headers.get(header)
         if not head_value:
-            raise ValueError(f"Header {header} not found request headers")
+            raise ValueError(f"Header Error: {header} not found request headers")
     clean_headers = headers_cleaner(data['request_headers'])
     data['request_headers'] = clean_headers
     return data
@@ -77,6 +77,6 @@ def cloudapp_res_headers(session, url, timeout, headers):
     for header in headers:
         head_value = data.get(header)
         if not head_value:
-            raise ValueError(f"Header {header} not found response headers from {url}")
+            raise ValueError(f"Header Error: {header} not found response headers from {url}")
     header_dict = dict(data)
     return header_dict
