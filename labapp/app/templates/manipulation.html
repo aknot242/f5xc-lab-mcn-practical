@@ -128,7 +128,7 @@ Host: {{ ns or 'eph-ns '}}.mcn-lab.f5demos.com
     ...
     "request_headers": {
         "x-mcn-namespace": "wiggly-yellowtail",
-        "x-mcn-src-site": "cluster-xxxxxxxx",
+        "x-mcn-src-site": "{{ site or 'cluster-xxxxxxxxx' }}",
     },
     ...
 }

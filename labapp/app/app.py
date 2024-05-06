@@ -204,9 +204,11 @@ def path():
 def header():
     """manipulation page"""
     ns = get_eph_ns()
+    site = get_site()
     return render_template('manipulation.html',
         title="MCN Practical: Manipulation",
-        ns=ns
+        ns=ns, 
+        site=site
     )
 
 @app.route('/portability')
